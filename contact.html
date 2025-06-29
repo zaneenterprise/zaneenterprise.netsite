@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact – ZaneEnterprise LLC</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#000;--fg:#f5f5f7;--accent:#13b0f2;
+      --x:50vw;--y:50vh;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Inter',sans-serif;
+      color:var(--fg);
+      min-height:100vh;
+      padding:4rem 1.5rem;
+      background:
+        radial-gradient(600px circle at var(--x) var(--y),
+          rgba(19,176,242,0.25) 0%, rgba(0,0,0,0) 70%), var(--bg);
+    }
+
+    #stars{position:fixed;inset:0;z-index:-2;background:#000;}
+
+    main{max-width:700px;width:100%;margin:0 auto;display:flex;flex-direction:column;align-items:center}
+    h1{text-align:center;font-size:2.4rem;margin-bottom:2.5rem}
+    .card{
+      background:#111;border-radius:1rem;padding:2.8rem 3rem;
+      box-shadow:0 6px 24px rgba(0,0,0,.6);width:100%;max-width:500px;text-align:center
+    }
+    p{line-height:1.7;margin-bottom:1.2rem}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .home-link{display:inline-block;margin-top:2.5rem;font-weight:600;color:var(--accent)}
+    .home-link:hover{text-decoration:underline}
+    footer{text-align:center;margin-top:3rem;font-size:.85rem;opacity:.65}
+  </style>
+</head>
+<body>
+
+  <canvas id="stars"></canvas>
+
+  <main>
+    <h1>Let’s Build Something Together</h1>
+    <div class="card">
+      <p><strong>Email me:</strong><br>
+         <a href="mailto:christian@zaneenterprise.net">christian@zaneenterprise.net</a></p>
+    </div>
+
+    <a class="home-link" href="index.html">← Back to Home</a>
+  </main>
+
+  <footer>
+    © <span id="year"></span> ZaneEnterprise LLC. All rights reserved.
+  </footer>
+
+  <script>
+    // copy of cursor‑glow & starfield for consistency
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const root=document.documentElement;
+    window.addEventListener('pointermove',e=>{
+      root.style.setProperty('--x',e.clientX+'px');
+      root.style.setProperty('--y',e.clientY+'px');
+    });
+
+    const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');
+    function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+    addEventListener('resize',resize);resize();
+    const stars=[];
+    for(let i=0;i<100;i++)stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,z:Math.random()*0.5+.2,r:Math.random()*1+0.3});
+    (function anim(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#fff';
+      stars.forEach(s=>{s.y+=s.z;if(s.y>canvas.height)s.y=-10;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();});
+      requestAnimationFrame(anim);
+    })();
+  </script>
+</body>
+</html>

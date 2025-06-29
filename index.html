@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ZaneEnterprise LLC</title>
+  <title>ZaneEnterprise</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -37,13 +37,14 @@
     header{
       height:100vh;
       display:flex;flex-direction:column;justify-content:center;align-items:center;
-      padding:3rem 1.5rem;
+      padding:2rem 1.5rem 15rem;
       position:relative;
     }
     header img{
       width:clamp(260px,40vw,680px);
       height:auto;
-      margin-bottom:2.5rem;
+      margin-top:8rem;
+      margin-bottom:-3rem;
       filter:drop-shadow(0 0 25px var(--accent));
       transition:transform .25s ease-out;
       will-change:transform;
@@ -77,19 +78,27 @@
       font-size:1.3rem;
       font-weight:600;
       color:var(--accent);
-      overflow:hidden;
-      white-space:nowrap;
-      width:0;
-      animation:typing 2s steps(30) .5s forwards;
+      min-height:1.5em;
     }
-    @keyframes typing{
+    .cursor{
+      display:inline-block;
+      animation:cursor-blink 1s infinite;
+    }
+    @keyframes cursor-blink{
+      0%,50%{opacity:1}
+      51%,100%{opacity:0}
+    }
+    @keyframes typewriter{
       to{width:100%}
+    }
+    @keyframes blink{
+      50%{border-color:transparent}
     }
     .subline a{color:var(--fg);text-decoration:underline}
     .button{
       display:inline-block;
-      margin-top:2rem;
-      margin-bottom:3rem;
+      margin-top:1.5rem;
+      margin-bottom:1rem;
       padding:1rem 2.6rem;
       border:2px solid transparent;
       border-radius:999px;
@@ -132,7 +141,7 @@
   <header>
     <img id="logo" src="Z.svg" alt="ZaneEnterprise logo" />
     <h1>ZaneEnterprise LLC</h1>
-    <p class="tagline">App &amp; Website Development</p>
+    <p class="tagline" id="typed-tagline"></p>
     <p class="subline">
       Need a site or app that actually rocks?
       <a href="contact.html">Contact me.</a>&nbsp;&nbsp;I’ll build it and make it good.
@@ -146,6 +155,22 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    
+    const taglineElement = document.getElementById('typed-tagline');
+    const text = 'App & Website Development';
+    let i = 0;
+    
+    function typeWriter() {
+      if (i < text.length) {
+        taglineElement.innerHTML = text.substring(0, i + 1) + '<span class="cursor">|</span>';
+        i++;
+        setTimeout(typeWriter, 100);
+      } else {
+        taglineElement.innerHTML = text + '<span class="cursor">|</span>';
+      }
+    }
+    
+    setTimeout(typeWriter, 1000);
 
     const root  = document.documentElement;
     const logo  = document.getElementById('logo');

@@ -202,7 +202,7 @@
       } catch (error) {
         result.className = 'form-result error';
         result.textContent = 'Failed to send message. Please try again or email me directly.';
-        console.error('Form submission error:', error);
+        console.error(error);
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Send Message';

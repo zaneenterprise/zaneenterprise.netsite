@@ -460,9 +460,11 @@
       transform:translateX(-5px);
     }
 
-    footer{
+    body.portfolio-page{padding-bottom:.5rem;}
+    body.portfolio-page footer{
+      position:static;
       text-align:center;
-      margin-top:5rem;
+      margin-top:4rem;
       font-size:.85rem;
       opacity:.65;
     }

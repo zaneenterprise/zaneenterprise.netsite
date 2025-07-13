@@ -3,6 +3,33 @@ document.addEventListener('DOMContentLoaded', () => {
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
   }
+
+  const sublineEl = document.getElementById('dynamic-subline');
+  if (sublineEl) {
+    const lines = [
+      'Want a site or app that\'s actually awesome? "Let\'s chat," I\'ll build it better than you imagined.',
+      'Want a site or app that doesn\'t suck? "I\'ll build it" and make it awesome.',
+      'Need a killer site or app? "Hit me up," I build cool stuff for cool people.',
+      'Tired of mediocre apps and boring sites? "Let\'s fix that," I\'ll create something badass.',
+      'Want your site or app to actually stand out? "Let\'s talk," I\'ll handle the rest.',
+      'Sick of boring, half-baked websites and apps? "I\'ll build one" that\'s actually legit.',
+      'Ready for a site or app that slaps? "Reach out" and I\'ll make it happen.',
+      'Need a site or app with personality? "I\'ve got you covered."',
+      'Your idea deserves more than a basic app. "Let\'s make it epic."',
+      'Done with dull, lifeless apps? "I\'ll build something" you\'ll brag about.',
+      'Stop settling for average, "I\'ll craft a site or app" you\'ll actually love.',
+      'Want to finally be proud of your website or app? "Let\'s chat" and get it built right.',
+      'Your app idea plus my skills equals something seriously cool. "Let\'s talk."',
+      'Forget cookie cutter. "I\'ll make your website or app" genuinely awesome.',
+      'Want a website or app worth sharing? "Say the word" and I\'ll build it.',
+      'No more yawning at your own website. "I\'ll give you something" fresh and exciting.',
+      'Tired of stale apps and boring websites? "Hit me up"for something worth your time.',
+      'Ready to level up your site or app? "Let me build you something" you won\'t hate.',
+      'Want a website or app people will actually notice? "Let\'s get started."'
+    ];
+    const line = lines[Math.floor(Math.random() * lines.length)];
+    sublineEl.innerHTML = line.replace(/"([^"]+)"/, '<a href="contact.html">$1</a>');
+  }
 });
     
 const taglineElement = document.getElementById('typed-tagline');

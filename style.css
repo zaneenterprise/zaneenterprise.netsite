@@ -463,7 +463,8 @@
       transform:translateX(-5px);
     }
 
-    footer{
+    body.portfolio-page footer{
+      position:static;
       text-align:center;
       margin-top:auto;
       padding-top:2rem;

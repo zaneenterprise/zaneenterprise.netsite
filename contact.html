@@ -6,82 +6,11 @@
   <title>Contact – ZaneEnterprise LLC</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#000;--fg:#f5f5f7;--accent:#13b0f2;
-      --x:50vw;--y:50vh;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:'Inter',sans-serif;
-      color:var(--fg);
-      min-height:100vh;
-      padding:4rem 1.5rem;
-      background:
-        radial-gradient(600px circle at var(--x) var(--y),
-          rgba(19,176,242,0.25) 0%, rgba(0,0,0,0) 70%), var(--bg);
-    }
-
-    #stars{position:fixed;inset:0;z-index:-2;background:#000;}
-
-    main{max-width:700px;width:100%;margin:0 auto;display:flex;flex-direction:column;align-items:center}
-    h1{text-align:center;font-size:2.4rem;margin-bottom:2.5rem}
-    .card{
-      background:#111;border-radius:1rem;padding:2.8rem 3rem;
-      box-shadow:0 6px 24px rgba(0,0,0,.6);width:100%;max-width:500px;text-align:center
-    }
-    p{line-height:1.7;margin-bottom:1.2rem}
-    a{color:var(--accent);text-decoration:none}
-    a:hover{text-decoration:underline}
-    .home-link{display:inline-block;margin-top:2.5rem;font-weight:600;color:var(--accent)}
-    .home-link:hover{text-decoration:underline}
-    footer{text-align:center;margin-top:3rem;font-size:.85rem;opacity:.65}
-
-    .contact-form{text-align:left;margin-bottom:2rem}
-    .form-group{margin-bottom:1.5rem}
-    .form-label{
-      display:block;margin-bottom:.5rem;font-size:.9rem;font-weight:600;
-      color:var(--accent);opacity:.9
-    }
-    .form-input{
-      width:100%;padding:.8rem 1rem;border:2px solid #333;border-radius:8px;
-      background:#0a0a0a;color:var(--fg);font-size:.9rem;font-family:inherit;
-      transition:all .3s ease;outline:none
-    }
-    .form-input:focus{
-      border-color:var(--accent);box-shadow:0 0 0 3px rgba(19,176,242,0.15);
-      background:#111
-    }
-    .form-input::placeholder{color:#666}
-    .form-textarea{resize:vertical;min-height:100px}
-    .form-button{
-      width:100%;padding:1rem;margin-top:.5rem;
-      background:linear-gradient(45deg,#13b0f2,#0099ff);
-      border:none;border-radius:8px;color:white;font-weight:600;
-      font-size:1rem;cursor:pointer;transition:all .3s ease;
-      position:relative;overflow:hidden
-    }
-    .form-button:hover{
-      transform:translateY(-2px);box-shadow:0 8px 25px rgba(19,176,242,0.3);
-      filter:brightness(1.1)
-    }
-    .form-button:active{transform:translateY(0)}
-    .form-button:disabled{opacity:.6;cursor:not-allowed;transform:none}
-    .form-result{
-      margin-top:1rem;padding:.8rem;border-radius:6px;font-size:.9rem;
-      text-align:center;display:none
-    }
-    .form-result.success{background:#0f4c2b;color:#4ade80;display:block}
-    .form-result.error{background:#4c0f0f;color:#f87171;display:block}
-    .form-result.loading{background:#1f2937;color:#9ca3af;display:block}
-    .contact-alt{
-      margin-top:2rem;padding-top:2rem;border-top:1px solid #333;
-      text-align:center;font-size:.9rem;opacity:.8
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <canvas id="aurora"></canvas>
   <canvas id="stars"></canvas>
 
   <main>
@@ -145,74 +74,6 @@
     © <span id="year"></span> ZaneEnterprise LLC. All rights reserved.
   </footer>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    const root=document.documentElement;
-    window.addEventListener('pointermove',e=>{
-      root.style.setProperty('--x',e.clientX+'px');
-      root.style.setProperty('--y',e.clientY+'px');
-    });
-
-    const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');
-    function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
-    addEventListener('resize',resize);resize();
-    const stars=[];
-    for(let i=0;i<100;i++)stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,z:Math.random()*0.5+.2,r:Math.random()*1+0.3});
-    (function anim(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#fff';
-      stars.forEach(s=>{s.y+=s.z;if(s.y>canvas.height)s.y=-10;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();});
-      requestAnimationFrame(anim);
-    })();
-
-    const form = document.querySelector('.contact-form');
-    const result = document.getElementById('result');
-    const submitBtn = form.querySelector('.form-button');
-
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      const formData = new FormData(form);
-      const object = Object.fromEntries(formData);
-      const json = JSON.stringify(object);
-      
-      result.className = 'form-result loading';
-      result.textContent = 'Sending message...';
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending...';
-      
-      try {
-        const response = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: json
-        });
-        
-        const responseData = await response.json();
-        
-        if (response.status === 200) {
-          setTimeout(() => {
-            window.location.href = 'success.html';
-          }, 800);
-        } else {
-          throw new Error(responseData.message || 'Something went wrong');
-        }
-      } catch (error) {
-        result.className = 'form-result error';
-        result.textContent = 'Failed to send message. Please try again or email me directly.';
-        console.error(error);
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Send Message';
-        
-        setTimeout(() => {
-          result.style.display = 'none';
-          result.className = 'form-result';
-        }, 5000);
-      }
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

@@ -14,7 +14,11 @@
       --x:50vw;
       --y:50vh;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0
+    }
     body{
       font-family:'Inter',sans-serif;
       color:var(--fg);
@@ -26,7 +30,12 @@
           rgba(19,176,242,0.25) 0%, rgba(0,0,0,0) 70%), var(--bg);
     }
 
-    #stars{position:fixed;inset:0;z-index:-2;background:#000;}
+    #stars{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      background:#000;
+    }
     
     .scroll-progress{
       position:fixed;
@@ -48,7 +57,12 @@
       transition:width 0.1s ease;
     }
 
-    main{max-width:1200px;width:100%;margin:0 auto;position:relative}
+    main{
+      max-width:1200px;
+      width:100%;
+      margin:0 auto;
+      position:relative
+    }
     h1{
       text-align:center;
       font-size:3rem;
@@ -69,12 +83,22 @@
       animation:float-in 1s ease-out;
     }
     @keyframes shimmer{
-      0%,100%{background-position:0% 50%}
-      50%{background-position:100% 50%}
+      0%,100%{
+        background-position:0% 50%
+      }
+      50%{
+        background-position:100% 50%
+      }
     }
     @keyframes float-in{
-      from{opacity:0;transform:translateY(20px)}
-      to{opacity:1;transform:translateY(0)}
+      from{
+        opacity:0;
+        transform:translateY(20px)
+      }
+      to{
+        opacity:1;
+        transform:translateY(0)
+      }
     }
 
     .projects-grid{
@@ -96,8 +120,12 @@
       opacity:0;
       transform-style:preserve-3d;
     }
-    .project-card:nth-child(1){animation-delay:0.2s}
-    .project-card:nth-child(2){animation-delay:0.4s}
+    .project-card:nth-child(1){
+      animation-delay:0.2s
+    }
+    .project-card:nth-child(2){
+      animation-delay:0.4s
+    }
     
     .project-card::before{
       content:'';
@@ -111,8 +139,14 @@
     }
     
     @keyframes fade-in{
-      to{opacity:1;transform:translateY(0) rotateX(0)}
-      from{opacity:0;transform:translateY(30px) rotateX(10deg)}
+      to{
+        opacity:1;
+        transform:translateY(0) rotateX(0)
+      }
+      from{
+        opacity:0;
+        transform:translateY(30px) rotateX(10deg)
+      }
     }
 
     .project-card:hover{
@@ -209,12 +243,12 @@
       transform:scale(1.05) translateY(-2px);
       box-shadow:0 8px 25px rgba(19,176,242,0.2);
     }
-    .thumb-item:hover::before{
-      opacity:1;
-    }
     .thumb-item.active{
       border-color:var(--accent);
       box-shadow:0 0 20px rgba(19,176,242,0.4);
+    }
+    .thumb-item:hover::before{
+      opacity:1;
     }
     .thumb-item img{
       width:100%;
@@ -276,8 +310,12 @@
     }
     
     @keyframes gradient-shift{
-      0%,100%{background-position:0% 50%}
-      50%{background-position:100% 50%}
+      0%,100%{
+        background-position:0% 50%
+      }
+      50%{
+        background-position:100% 50%
+      }
     }
 
     .home-link{
@@ -362,9 +400,15 @@
     }
 
     @media (max-width:768px){
-      h1{font-size:2.2rem}
-      .project-content{padding:1.5rem}
-      .screenshot-thumbs{gap:0.3rem}
+      h1{
+        font-size:2.2rem
+      }
+      .project-content{
+        padding:1.5rem
+      }
+      .screenshot-thumbs{
+        gap:0.3rem
+      }
     }
   </style>
 </head>
@@ -560,9 +604,9 @@
           return;
         }
         
-        const gradient = ctx.createLinearGradient(s.x, s.y, s.x-s.vx*10, s.y-s.vy*10);
+        const gradient = ctx.createLinearGradient(s.x, s.y, s.x - s.vx * s.length/10, s.y - s.vy * s.length/10);
         gradient.addColorStop(0, `rgba(255,255,255,${s.opacity})`);
-        gradient.addColorStop(1, 'rgba(255,255,255,0)');
+      gradient.addColorStop(1, 'rgba(255,255,255,0)');
         
         ctx.strokeStyle = gradient;
         ctx.lineWidth = 2;

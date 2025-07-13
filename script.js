@@ -1,26 +1,36 @@
 document.getElementById('year').textContent = new Date().getFullYear();
-    
-    const taglineElement = document.getElementById('typed-tagline');
-    const text = 'App & Website Development';
-    let i = 0;
-    
-    function typeWriter() {
-      if (i < text.length) {
-        taglineElement.innerHTML = text.substring(0, i + 1) + '<span class="cursor">|</span>';
-        i++;
-        setTimeout(typeWriter, 100);
-      } else {
-        taglineElement.innerHTML = text + '<span class="cursor">|</span>';
-      }
+const taglineElement = document.getElementById("typed-tagline");
+if(taglineElement){
+  const text = "App & Website Development";
+  let i = 0;
+  function typeWriter(){
+    if(i < text.length){
+      taglineElement.innerHTML = text.substring(0, i + 1) + "<span class="cursor">|</span>";
+      i++;
+      setTimeout(typeWriter, 100);
+    } else {
+      taglineElement.innerHTML = text + "<span class="cursor">|</span>";
     }
-    
-    setTimeout(typeWriter, 1000);
+  }
+  setTimeout(typeWriter, 1000);
+}
 
     const root  = document.documentElement;
     const logo  = document.getElementById('logo');
     let winW, winH;
     const measure = () => { winW = window.innerWidth; winH = window.innerHeight; };
     measure(); window.addEventListener('resize', measure);
+if(document.querySelector(".scroll-progress")) {
+  window.addEventListener("pointermove", e => {
+    root.style.setProperty("--x", e.clientX + "px");
+    root.style.setProperty("--y", e.clientY + "px");
+  });
+  window.addEventListener("scroll", () => {
+    const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    root.style.setProperty("--scroll", scrolled + "%");
+  });
+}
+
 
     
 
@@ -102,8 +112,10 @@ document.getElementById('year').textContent = new Date().getFullYear();
     updateStars();
 
     
-    const auroraCanvas = document.getElementById('aurora');
-    const auroraCtx = auroraCanvas.getContext('2d');
+const auroraCanvas = document.getElementById('aurora');
+let auroraCtx;
+if(auroraCanvas){
+  auroraCtx = auroraCanvas.getContext('2d');
 
     function resizeAuroraCanvas(){
       auroraCanvas.width = window.innerWidth;
@@ -140,4 +152,43 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
       requestAnimationFrame(drawAurora);
     }
-    drawAurora();
+    drawAurora();}
+
+const projectData = {
+  azbuddy: {
+    images: [
+      'public/azbuddycash/site1.png',
+      'public/azbuddycash/site2.png',
+      'public/azbuddycash/site3.png'
+    ],
+    descriptions: [
+      "The complete homepage showcasing the artist's brand with a modern, clean design and seamless navigation.",
+      'Custom-designed animated buttons that match website theme and seamlessly link to sections on same page.',
+      'Buttons and scrollbar match custom theme design for visual consistency. Carefully crafted cohesive branding.'
+    ]
+  },
+  gardener: {
+    images: [
+      'public/gardenerplus/gard1.PNG',
+      'public/gardenerplus/gard2.PNG',
+      'public/gardenerplus/gard3.jpeg'
+    ],
+    descriptions: [
+      'The main dashboard displays all your plants with quick health status and watering schedules.',
+      'Detailed plant profiles with care instructions, watering history, and personalized growth tracking.',
+      'AI-powered plant health analysis that diagnoses issues and provides treatment recommendations.'
+    ]
+  }
+};
+
+function updateScreenshot(project, index){
+  const mainImage = document.getElementById(`${project}-main`);
+  const descElement = document.getElementById(`${project}-desc`);
+  const thumbs = mainImage.closest('.project-card').querySelectorAll('.thumb-item');
+  mainImage.src = projectData[project].images[index];
+  descElement.textContent = projectData[project].descriptions[index];
+  thumbs.forEach((thumb,i)=>{
+    thumb.classList.toggle('active', i === index);
+  });
+}
+

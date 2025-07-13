@@ -1,4 +1,9 @@
-document.getElementById('year').textContent = new Date().getFullYear();
+document.addEventListener('DOMContentLoaded', () => {
+  const yearEl = document.getElementById('year');
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
+});
     
 const taglineElement = document.getElementById('typed-tagline');
 const text = 'App & Website Development';

@@ -463,14 +463,15 @@
       transform:translateX(-5px);
     }
 
-    body.portfolio-page footer{
-      position:static;
-      text-align:center;
-      margin-top:2rem;
-      padding-top:2rem;
-      font-size:.85rem;
-      opacity:.65;
-    }
+  body.portfolio-page footer{
+    position:static;
+    text-align:center;
+    margin-top:2rem;
+    margin-bottom:1rem;
+    padding-top:2rem;
+    font-size:.85rem;
+    opacity:.65;
+  }
 
     @media (max-width:1200px){
       .projects-grid{

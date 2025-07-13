@@ -152,6 +152,8 @@
       font-family:'Inter',sans-serif;
       color:var(--fg);
       min-height:100vh;
+      display:flex;
+      flex-direction:column;
       padding:2rem 1.5rem;
       scroll-behavior:smooth;
       background:
@@ -187,6 +189,7 @@
     }
 
     main{
+      flex:1;
       max-width:1200px;
       width:100%;
       margin:0 auto;
@@ -462,7 +465,8 @@
 
     footer{
       text-align:center;
-      margin-top:5rem;
+      margin-top:auto;
+      padding-top:2rem;
       font-size:.85rem;
       opacity:.65;
     }

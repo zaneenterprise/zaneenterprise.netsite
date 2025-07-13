@@ -190,12 +190,10 @@
     </div>
   </main>
 
-  <footer>
-    © <span id="year"></span> ZaneEnterprise LLC. All rights reserved.
-  </footer>
-
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('year').textContent = new Date().getFullYear();
+    });
     
     const root = document.documentElement;
     window.addEventListener('pointermove', e => {
@@ -325,5 +323,8 @@
       });
     });
   </script>
-</body>
+  <footer>
+    © <span id="year"></span> ZaneEnterprise LLC. All rights reserved.
+  </footer>
+  </body>
 </html>

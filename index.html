@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ZaneEnterprise</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;500&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg:#000;
@@ -16,7 +16,7 @@
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
-      font-family:'Inter',sans-serif;
+      font-family:'Montserrat',sans-serif;
       color:var(--fg);
       height:100vh;
       overflow:hidden;
@@ -37,28 +37,36 @@
     header{
       height:100vh;
       display:flex;flex-direction:column;justify-content:center;align-items:center;
-      padding:2rem 1.5rem 15rem;
+      padding:6rem 1.5rem 4rem;
       position:relative;
     }
+    .logo-container {
+    }
     header img{
-      width:clamp(260px,40vw,680px);
+      width:clamp(100px,16vw,220px);
       height:auto;
-      margin-top:8rem;
-      margin-bottom:-3rem;
-      filter:drop-shadow(0 0 25px var(--accent));
+      margin-top: 0;
+      margin-bottom: 2rem;
+      filter:drop-shadow(0 0 15px var(--accent));
       transition:transform .25s ease-out;
       will-change:transform;
       animation:pulse-glow 2s ease-in-out infinite;
     }
     @keyframes pulse-glow{
-      0%,100%{filter:drop-shadow(0 0 25px var(--accent))}
-      50%{filter:drop-shadow(0 0 45px var(--accent)) brightness(1.1)}
+      0%,100%{filter:drop-shadow(0 0 15px var(--accent))}
+      50%{filter:drop-shadow(0 0 30px var(--accent)) brightness(1.1)}
     }
     h1{
       font-size:clamp(2.8rem,6vw,3.8rem);
       font-weight:600;
       letter-spacing:.03em;
       animation:float-in 1s ease-out;
+    }
+    .font-medium {
+      font-weight: 500;
+    }
+    .font-regular {
+      font-weight: 200;
     }
     @keyframes float-in{
       from{opacity:0;transform:translateY(30px)}
@@ -145,20 +153,24 @@
   <canvas id="stars"></canvas>
 
   <header>
-    <img id="logo" src="Z.svg" alt="ZaneEnterprise logo" />
-    <h1>ZaneEnterprise LLC</h1>
-    <p class="tagline" id="typed-tagline"></p>
-    <p class="subline">
-      Need a site or app that actually rocks?
-      <a href="contact.html">Contact me.</a>&nbsp;&nbsp;I’ll build it and make it good.
-    </p>
-    <div class="button-container">
-      <a class="button" href="portfolio.html" style="background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.2);">View&nbsp;My&nbsp;Work</a>
-      <a class="button" href="contact.html">Reach&nbsp;Out</a>
+    <div class="logo-container">
+      <img id="logo" src="Z.svg" alt="ZaneEnterprise logo" />
+    </div>
+    <div class="content-container">
+      <h1><span class="font-medium">Zane</span><span class="font-regular">Enterprise</span></h1>
+      <p class="tagline" id="typed-tagline"></p>
+      <p class="subline">
+        Need a site or app that actually rocks?
+        <a href="contact.html">Contact me.</a>&nbsp;&nbsp;I’ll build it and make it good.
+      </p>
+      <div class="button-container">
+        <a class="button" href="portfolio.html" style="background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.2);">View&nbsp;My&nbsp;Work</a>
+        <a class="button" href="contact.html">Reach&nbsp;Out</a>
+      </div>
     </div>
     
     <footer>
-      © <span id="year"></span> ZaneEnterprise LLC. All rights reserved.
+      © <span id="year"></span> ZaneEnterprise. All rights reserved.
     </footer>
   </header>
 

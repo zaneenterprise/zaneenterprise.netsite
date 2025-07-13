@@ -537,15 +537,127 @@
       z-index:1;
     }
 
-    @media (max-width:768px){
-      h1{
-        font-size:2.2rem
-      }
-      .project-content{
-        padding:1.5rem
-      }
-      .screenshot-thumbs{
-        gap:0.3rem
-      }
-    }
+@media (max-width:768px){
+  h1{
+    font-size:2.2rem
+  }
+  .project-content{
+    padding:1.5rem
+  }
+  .screenshot-thumbs{
+    gap:0.3rem
+  }
+}
+
+/* Contact Page Styles */
+body.contact-page{
+  --accent:#4E8BC9;
+  font-family:'Montserrat',sans-serif;
+  min-height:100vh;
+  padding:6rem 1.5rem 4rem;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  scroll-behavior:smooth;
+}
+
+body.contact-page main{
+  width:100%;
+  max-width:600px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+body.contact-page .card{
+  width:100%;
+  background:linear-gradient(135deg,#111,#0a0a0a);
+  border:1px solid #222;
+  border-radius:1rem;
+  padding:2rem;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
+  margin-top:1.5rem;
+}
+
+body.contact-page .contact-form{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+
+body.contact-page .form-group{
+  display:flex;
+  flex-direction:column;
+}
+
+body.contact-page .form-label{
+  font-size:0.9rem;
+  font-weight:600;
+  margin-bottom:0.3rem;
+}
+
+body.contact-page .form-input{
+  padding:0.75rem 1rem;
+  border-radius:0.5rem;
+  border:1px solid #333;
+  background:#0a0a0a;
+  color:var(--fg);
+}
+
+body.contact-page .form-input:focus{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 2px rgba(78,139,201,0.5);
+}
+
+body.contact-page .form-textarea{
+  resize:vertical;
+  min-height:150px;
+}
+
+body.contact-page .form-button{
+  align-self:flex-start;
+  margin-top:0.5rem;
+  padding:0.8rem 2rem;
+  border-radius:999px;
+  font-weight:600;
+  color:var(--fg);
+  border:2px solid transparent;
+  background:linear-gradient(var(--bg),var(--bg)) padding-box,
+            linear-gradient(45deg,#4E8BC9,#4E8BC9,#4E8BC9) border-box;
+  background-size:200% 200%;
+  animation:gradient-shift 3s ease infinite;
+  transition:all .3s ease;
+}
+
+body.contact-page .form-button:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 40px rgba(78,139,201,0.4);
+  filter:brightness(1.2);
+}
+
+body.contact-page .contact-alt{
+  margin-top:1.5rem;
+  text-align:center;
+  font-size:0.9rem;
+  opacity:0.85;
+}
+
+body.contact-page .contact-alt a{
+  color:var(--accent);
+}
+
+body.contact-page #result{
+  margin-top:0.5rem;
+  font-size:0.9rem;
+  opacity:0.85;
+}
+
+@media (max-width:600px){
+  body.contact-page{
+    padding:4rem 1.5rem 2rem;
+  }
+}
 

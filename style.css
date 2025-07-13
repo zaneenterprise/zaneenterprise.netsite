@@ -161,6 +161,10 @@
           rgba(19,176,242,0.25) 0%, rgba(0,0,0,0) 70%), var(--bg);
     }
 
+    body.portfolio-page{
+      padding:2rem 1.5rem 3rem;
+    }
+
     #stars{
       position:fixed;
       inset:0;
@@ -463,14 +467,15 @@
       transform:translateX(-5px);
     }
 
-    body.portfolio-page footer{
-      position:static;
-      text-align:center;
-      margin-top:2rem;
-      padding-top:2rem;
-      font-size:.85rem;
-      opacity:.65;
-    }
+      body.portfolio-page footer{
+        position:static;
+        text-align:center;
+        margin-top:2rem;
+        padding-top:2rem;
+        margin-bottom:2rem;
+        font-size:.85rem;
+        opacity:.65;
+      }
 
     @media (max-width:1200px){
       .projects-grid{

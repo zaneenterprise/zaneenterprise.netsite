@@ -26,10 +26,10 @@
     }
 
     body.index-page {
-      min-height: 100vh;
+      height: 100dvh;
       display:flex;
       flex-direction:column;
-      overflow-y: auto;
+      overflow-y: hidden;
     }
 
     body.index-page header{
@@ -481,17 +481,17 @@ body.index-page h1 {
     
 
     body.portfolio-page{
-      font-family:'Montserrat',sans-serif; 
+      font-family:'Montserrat',sans-serif;
       color:var(--fg);
-      height:100vh; 
+      min-height:100dvh;
       display:flex;
       flex-direction:column;
-      
+
       scroll-behavior:smooth;
       background:
         radial-gradient(600px circle at var(--x) var(--y),
           rgba(19,176,242,0.25) 0%, rgba(0,0,0,0) 70%), var(--bg);
-      overflow: hidden; 
+      overflow-y: auto;
     }
 
     @media (max-width:1200px){

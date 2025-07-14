@@ -4,25 +4,40 @@
       --accent:#4E8BC9;
     }
     *{box-sizing:border-box;margin:0;padding:0}
+    html, body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    *,
+    *::before,
+    *::after {
+      box-sizing: inherit;
+    }
     body{
       font-family:'Montserrat',sans-serif;
       color:var(--fg);
-      min-height:100vh; /* Ensure body takes at least full viewport height */
-      overflow-y:auto; /* Allow vertical scrolling if content overflows */
+      min-height:100vh;
+      overflow-y:auto;
       background:var(--bg);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
     }
 
     body.index-page {
       min-height: 100vh;
       display:flex;
       flex-direction:column;
-      overflow:hidden; /* Hide overflow to prevent scrolling */
+      overflow-y: auto;
     }
 
     body.index-page header{
       flex:1;
-      height:auto;
+      flex-grow: 1;
     }
+
+    
 
     #stars{
       position:fixed;inset:0;z-index:-1;
@@ -34,17 +49,19 @@
 
     header,footer{text-align:center;}
     header{
-      height:100vh;
+      height:auto;
       display:flex;
       flex-direction:column;
-      justify-content:space-between; /* Distribute space between items */
+      justify-content:space-between;
       align-items:center;
-      padding:2rem 1.5rem 4rem; /* Adjusted padding to account for footer */
       position:relative;
     }
 
     
     .logo-container {
+    }
+    body.index-page .logo-container {
+      margin-top: 5vh;
     }
     header img{
       width:clamp(100px,16vw,220px);
@@ -139,12 +156,15 @@
       0%,100%{background-position:0% 50%}
       50%{background-position:100% 50%}
     }
-    footer{
+    .common-footer{
       text-align:center;
       font-size:.85rem;
       opacity:.65;
-      padding: 0.2rem 0; /* Further reduced padding to the footer */
+      padding: 0.2rem 0;
+      line-height: 1.5;
     }
+
+    
 
     :root{
       --bg:#000;
@@ -188,18 +208,20 @@
     }
 
     main{
-      flex:1;
+      flex-grow: 1;
       max-width:1200px;
       width:100%;
-      margin:0 auto 0.5rem auto; /* Reduced bottom margin for main */
+      margin:0 auto 0 auto;
       position:relative;
       display:flex;
       flex-direction:column;
       align-items:center;
+      padding: 0;
+      overflow-y: auto;
     }
     h1{
       text-align:center;
-      font-size:2.5rem; /* Reduced font size */
+      font-size:2.5rem;
       margin-bottom:0.8rem; /* Reduced margin */
       font-weight:600;
       background:linear-gradient(45deg,var(--fg),var(--accent),var(--fg));
@@ -239,7 +261,7 @@
       display:grid;
       grid-template-columns:repeat(3,1fr);
       gap:1.5rem; /* Reduced gap */
-      margin-bottom:1.5rem; /* Reduced margin */
+      /* Removed margin-bottom */
       perspective:1000px;
     }
 
@@ -452,31 +474,20 @@
       }
     }
 
-    .home-link{
-      display:block; /* Changed to block to allow centering with align-items */
-      margin: 0.5rem auto; /* Further reduced margin */
-      font-weight:600;
-      color:var(--accent);
-      text-decoration:none;
-      transition:all .2s ease;
-    }
-    .home-link:hover{
-      text-decoration:underline;
-      transform:translateX(-5px);
-    }
+    
 
     body.portfolio-page{
-      font-family:'Inter',sans-serif;
+      font-family:'Montserrat',sans-serif; /* Standardized font */
       color:var(--fg);
-      min-height:100vh;
+      height:100vh; /* Explicitly set to 100vh */
       display:flex;
       flex-direction:column;
-      padding:0.5rem 1rem 0.2rem 1rem; /* Reduced bottom padding */
+      /* Removed padding */
       scroll-behavior:smooth;
       background:
         radial-gradient(600px circle at var(--x) var(--y),
           rgba(19,176,242,0.25) 0%, rgba(0,0,0,0) 70%), var(--bg);
-      overflow-y: auto; /* Allow vertical scrolling */
+      overflow: hidden; /* Prevent scrolling on the body */
     }
 
     @media (max-width:1200px){
@@ -552,11 +563,48 @@
   }
 }
 
+/* Success Page Styles */
+body.success-page{
+  font-family:'Montserrat',sans-serif; /* Standardized font */
+  color:var(--fg);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  /* Removed padding */
+  scroll-behavior:smooth;
+  background:
+    radial-gradient(600px circle at var(--x) var(--y),
+      rgba(19,176,242,0.25) 0%, rgba(0,0,0,0) 70%), var(--bg);
+  overflow-y: auto; /* Allow vertical scrolling */
+}
+
+/* Success Page Text Styles */
+body.success-page h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem); /* Reverted font size */
+  font-weight: 600; /* Reverted font weight */
+  letter-spacing: 0.05em;
+  background: linear-gradient(45deg, #13b0f2, #00d4ff, #13b0f2); /* Blue gradient */
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s ease-in-out infinite, float-in 1s ease-out;
+  text-shadow: 0 0 15px rgba(19, 176, 242, 0.6); /* Subtle glow */
+}
+
+body.success-page .subtitle {
+  font-size: 1.2rem; /* Reverted font size */
+  font-weight: normal; /* Reverted font weight to default */
+  opacity: 0.9;
+  color: #e0e0e0; /* Slightly lighter color */
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.2); /* Subtle text shadow */
+}
+
 /* Contact Page Styles */
 body.contact-page{
-  --accent:#4E8BC9;
   font-family:'Montserrat',sans-serif;
-  padding:1rem 1.5rem; /* Adjusted padding */
+  font-family:'Montserrat',sans-serif;
+  /* Removed padding */
   background:var(--bg);
   min-height:100vh;
   display:flex;
@@ -564,6 +612,7 @@ body.contact-page{
   align-items:center;
   scroll-behavior:smooth;
   overflow-y: auto; /* Allow vertical scrolling */
+  font-size: 1.4rem; /* Significantly increased base font size */
 }
 
 body.contact-page main{
@@ -584,9 +633,9 @@ body.contact-page .card{
   background:linear-gradient(135deg,#111,#0a0a0a);
   border:1px solid #222;
   border-radius:1rem;
-  padding:1.5rem; /* Reduced padding */
+  padding:1.2rem; /* Reduced padding to shrink the box */
   box-shadow:0 10px 40px rgba(0,0,0,0.5);
-  margin-top:1rem; /* Reduced margin-top */
+  margin-top:0.8rem; /* Reduced margin-top */
 }
 
 body.contact-page .contact-form{
@@ -607,11 +656,12 @@ body.contact-page .form-label{
 }
 
 body.contact-page .form-input{
-  padding:0.6rem 1rem; /* Reduced padding */
+  padding:1.2rem 1.8rem;
   border-radius:0.5rem;
   border:1px solid #333;
   background:#0a0a0a;
   color:var(--fg);
+  font-size:1.3rem; /* Increased font size for placeholder text */
 }
 
 body.contact-page .form-input:focus{
@@ -623,12 +673,13 @@ body.contact-page .form-input:focus{
 body.contact-page .form-textarea{
   resize:vertical;
   min-height:100px; /* Reduced min-height */
+  font-size:1.4rem; /* Increased font size for textarea text */
 }
 
 body.contact-page .form-button{
-  align-self:flex-start;
-  margin-top:0.5rem;
-  padding:0.7rem 1.8rem; /* Reduced padding */
+  align-self:center; /* Centered the button */
+  margin-top:1rem;
+  padding:1rem 2.6rem; /* Matched index page button padding */
   border-radius:999px;
   font-weight:600;
   color:var(--fg);
@@ -638,6 +689,7 @@ body.contact-page .form-button{
   background-size:200% 200%;
   animation:gradient-shift 3s ease infinite;
   transition:all .3s ease;
+  font-size:1rem; /* Matched index page button font size */
 }
 
 body.contact-page .form-button:hover{
@@ -663,18 +715,37 @@ body.contact-page #result{
   opacity:0.85;
 }
 
+
+
+@media (max-width:600px){
+  body.contact-page{
+    padding:0.8rem 0.4rem 0.4rem;
+    font-size: 0.9rem;
+  }
+  body.contact-page h1 {
+    font-size: 2.2rem;
+  }
+  body.contact-page .card {
+    padding: 1rem; /* Reduced padding for mobile */
+  }
+  body.contact-page .form-button {
+    padding: 1rem 2.6rem; /* Matched index page button padding for mobile */
+    font-size: 1.1rem; /* Matched index page button font size for mobile */
+  }
+}
+
 .home-link{
-  display:block; /* Changed to block to allow centering with align-items */
-  margin: 1rem auto; /* Reduced margin */
+  display:block;
+  margin: 0.5rem auto; /* Reduced margin to bring it closer to the form */
   font-weight:600;
   color:var(--accent);
   text-decoration:none;
   transition:all .2s ease;
+  font-size: 1rem; /* Adjusted font size */
+}
+.home-link:hover{
+  text-decoration:underline;
+  transform:translateX(-5px);
 }
 
-@media (max-width:600px){
-  body.contact-page{
-    padding:2rem 1rem 1rem; /* Adjusted padding for smaller screens */
-  }
-}
 

@@ -61,7 +61,10 @@
     .logo-container {
     }
     body.index-page .logo-container {
-      margin-top: 5vh;
+      margin-top: 15vh;
+    }
+    body.index-page header img {
+      margin-bottom: 0.5rem;
     }
     header img{
       width:clamp(100px,16vw,220px);
@@ -77,8 +80,8 @@
       0%,100%{filter:drop-shadow(0 0 10px var(--accent))}
       50%{filter:drop-shadow(0 0 20px var(--accent)) brightness(1.1)}
     }
-    h1{
-      font-size:clamp(2.8rem,6vw,3.8rem);
+    body.index-page h1{
+      font-size:clamp(4rem,10vw,6rem);
       font-weight:600;
       letter-spacing:.03em;
       animation:float-in 1s ease-out;
@@ -552,8 +555,11 @@
     }
 
 @media (max-width:768px){
+  body.index-page h1 {
+    font-size:3rem;
+  }
   h1{
-    font-size:2rem 
+    font-size:2rem
   }
   .project-content{
     padding:1rem 

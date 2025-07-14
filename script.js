@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
       'Forget cookie cutter. "I\'ll make your website or app" genuinely awesome.',
       'Want a website or app worth sharing? "Say the word" and I\'ll build it.',
       'No more yawning at your own website. "I\'ll give you something" fresh and exciting.',
-      'Tired of stale apps and boring websites? "Hit me up"for something worth your time.',
+      'Tired of stale apps and boring websites? "Hit me up" for something worth your time.',
       'Ready to level up your site or app? "Let me build you something" you won\'t hate.',
       'Want a website or app people will actually notice? "Let\'s get started."'
     ];

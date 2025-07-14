@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact – ZaneEnterprise LLC</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="contact-page">
 
   <canvas id="aurora"></canvas>
   <canvas id="stars"></canvas>
@@ -20,6 +20,7 @@
         <input type="hidden" name="access_key" value="5e473c65-d194-41d6-9e6e-36b98694c848" />
         <input type="hidden" name="subject" value="New Contact from ZaneEnterprise Website" />
         <input type="checkbox" name="botcheck" style="display: none;" />
+        <input type="hidden" name="redirect" value="https://zaneenterprise.net/success.html">
         
         <div class="form-group">
           <label for="name" class="form-label">Name</label>
@@ -71,8 +72,8 @@
   </main>
 
   <script src="script.js"></script>
-  <footer>
-    © <span id="year"></span> ZaneEnterprise LLC. All rights reserved.
+  <footer class="common-footer">
+    ©&nbsp;<span id="year"></span>&nbsp;ZaneEnterprise LLC. All rights reserved.
   </footer>
   </body>
 </html>

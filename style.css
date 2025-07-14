@@ -13,8 +13,15 @@
     }
 
     body.index-page {
-      height: 100vh; /* Set body height to 100% of viewport height */
-      overflow: hidden; /* Hide overflow to prevent scrolling */
+      min-height: 100vh;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden; /* Hide overflow to prevent scrolling */
+    }
+
+    body.index-page header{
+      flex:1;
+      height:auto;
     }
 
     #stars{
@@ -551,6 +558,7 @@ body.contact-page{
   font-family:'Montserrat',sans-serif;
   padding:1rem 1.5rem; /* Adjusted padding */
   background:var(--bg);
+  min-height:100vh;
   display:flex;
   flex-direction:column;
   align-items:center;

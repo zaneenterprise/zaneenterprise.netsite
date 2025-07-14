@@ -25,16 +25,19 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    body.index-page {
-      min-height: 100vh;
+body.index-page {
+      height: 100dvh;
       display:flex;
       flex-direction:column;
-      overflow-y: auto;
+      overflow:hidden;
     }
 
-    body.index-page header{
+body.index-page header{
       flex:1;
-      flex-grow: 1;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
     }
 
     
@@ -61,7 +64,7 @@
     .logo-container {
     }
 body.index-page .logo-container {
-      margin-top: 10vh;
+      margin-top: 8vh;
     }
     header img{
       width:clamp(100px,16vw,220px);
@@ -481,17 +484,17 @@ body.index-page h1 {
     
 
     body.portfolio-page{
-      font-family:'Montserrat',sans-serif; 
+      font-family:'Montserrat',sans-serif;
       color:var(--fg);
-      height:100vh; 
+      min-height:100dvh;
       display:flex;
       flex-direction:column;
-      
+
       scroll-behavior:smooth;
       background:
         radial-gradient(600px circle at var(--x) var(--y),
           rgba(19,176,242,0.25) 0%, rgba(0,0,0,0) 70%), var(--bg);
-      overflow: hidden; 
+      overflow-y: auto;
     }
 
     @media (max-width:1200px){
@@ -578,9 +581,9 @@ body.index-page h1 {
 
 
 body.success-page{
-  font-family:'Montserrat',sans-serif; 
+  font-family:'Montserrat',sans-serif;
   color:var(--fg);
-  min-height:100vh;
+  min-height:100dvh;
   display:flex;
   flex-direction:column;
   
@@ -619,7 +622,7 @@ body.contact-page{
   font-family:'Montserrat',sans-serif;
   
   background:var(--bg);
-  min-height:100vh;
+  min-height:100dvh;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -739,11 +742,18 @@ body.contact-page #result{
     font-size: 2.2rem;
   }
   body.contact-page .card {
-    padding: 1rem; 
+    padding: 1rem;
   }
   body.contact-page .form-button {
-    padding: 1rem 2.6rem; 
-    font-size: 1.1rem; 
+    padding: 1rem 2.6rem;
+    font-size: 1.1rem;
+  }
+
+  body.index-page .logo-container{
+    margin-top:5vh;
+  }
+  .button-container{
+    margin-top:1rem;
   }
 }
 

@@ -222,7 +222,7 @@
     h1{
       text-align:center;
       font-size:2.5rem;
-      margin-bottom:0.8rem; /* Reduced margin */
+      margin-bottom:0.8rem; 
       font-weight:600;
       background:linear-gradient(45deg,var(--fg),var(--accent),var(--fg));
       background-size:200% 200%;
@@ -233,9 +233,9 @@
     }
     .subtitle{
       text-align:center;
-      font-size:1rem; /* Reduced font size */
+      font-size:1rem; 
       opacity:.85;
-      margin-bottom:2rem; /* Reduced margin */
+      margin-bottom:2rem; 
       animation:float-in 1s ease-out;
     }
     @keyframes shimmer{
@@ -260,8 +260,8 @@
     .projects-grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
-      gap:1.5rem; /* Reduced gap */
-      /* Removed margin-bottom */
+      gap:1.5rem; 
+      
       perspective:1000px;
     }
 
@@ -307,8 +307,8 @@
 
     .project-card:hover{
       border-color:var(--accent);
-      transform:translateY(-8px) rotateX(2deg) scale(1.01); /* Adjusted transform */
-      box-shadow:0 20px 50px rgba(19,176,242,0.3), 0 0 30px rgba(19,176,242,0.1); /* Adjusted shadow */
+      transform:translateY(-8px) rotateX(2deg) scale(1.01); 
+      box-shadow:0 20px 50px rgba(19,176,242,0.3), 0 0 30px rgba(19,176,242,0.1); 
     }
     .project-card:hover::before{
       opacity:1;
@@ -316,7 +316,7 @@
 
     .main-screenshot{
       width:100%;
-      height:200px; /* Reduced height */
+      height:200px; 
       overflow:hidden;
       background:linear-gradient(135deg,#0a0a0a,#111);
       position:relative;
@@ -344,36 +344,36 @@
     }
 
     .project-content{
-      padding:1rem; /* Reduced padding */
+      padding:1rem; 
       position:relative;
       z-index:2;
     }
 
     .project-title{
-      font-size:1.4rem; /* Reduced font size */
+      font-size:1.4rem; 
       font-weight:600;
-      margin-bottom:0.4rem; /* Reduced margin */
+      margin-bottom:0.4rem; 
       color:var(--fg);
     }
     .project-type{
-      font-size:0.8rem; /* Reduced font size */
+      font-size:0.8rem; 
       color:var(--accent);
       text-transform:uppercase;
       letter-spacing:0.1em;
-      margin-bottom:0.8rem; /* Reduced margin */
+      margin-bottom:0.8rem; 
       opacity:0.9;
     }
     .project-description{
-      line-height:1.5; /* Reduced line height */
+      line-height:1.5; 
       opacity:0.85;
-      margin-bottom:1rem; /* Reduced margin */
+      margin-bottom:1rem; 
     }
 
     .screenshot-thumbs{
       display:grid;
       grid-template-columns:repeat(3,1fr);
-      gap:0.4rem; /* Reduced gap */
-      margin-bottom:1rem; /* Reduced margin */
+      gap:0.4rem; 
+      margin-bottom:1rem; 
     }
     .thumb-item{
       position:relative;
@@ -396,19 +396,19 @@
     }
     .thumb-item:hover{
       border-color:var(--accent);
-      transform:scale(1.03) translateY(-1px); /* Adjusted transform */
-      box-shadow:0 6px 20px rgba(19,176,242,0.2); /* Adjusted shadow */
+      transform:scale(1.03) translateY(-1px); 
+      box-shadow:0 6px 20px rgba(19,176,242,0.2); 
     }
     .thumb-item.active{
       border-color:var(--accent);
-      box-shadow:0 0 15px rgba(19,176,242,0.4); /* Adjusted shadow */
+      box-shadow:0 0 15px rgba(19,176,242,0.4); 
     }
     .thumb-item:hover::before{
       opacity:1;
     }
     .thumb-item img{
       width:100%;
-      height:60px; /* Reduced height */
+      height:60px; 
       object-fit:contain;
       display:block;
       background:#0a0a0a;
@@ -424,32 +424,32 @@
       right:0;
       background:linear-gradient(transparent,rgba(0,0,0,0.9));
       color:var(--fg);
-      padding:0.8rem 0.5rem 0.2rem; /* Reduced padding */
-      font-size:0.65rem; /* Reduced font size */
+      padding:0.8rem 0.5rem 0.2rem; 
+      font-size:0.65rem; 
       text-align:center;
     }
 
     .feature-description{
       background:#0a0a0a;
       border-radius:0.5rem;
-      padding:0.7rem; /* Reduced padding */
-      margin-bottom:0.8rem; /* Reduced margin */
-      font-size:0.8rem; /* Reduced font size */
-      line-height:1.2; /* Reduced line height */
+      padding:0.7rem; 
+      margin-bottom:0.8rem; 
+      font-size:0.8rem; 
+      line-height:1.2; 
       opacity:0.9;
-      min-height:40px; /* Reduced min-height */
+      min-height:40px; 
       transition:all .3s ease;
     }
 
     .project-link{
       display:inline-block;
-      padding:0.7rem 1.8rem; /* Reduced padding */
+      padding:0.7rem 1.8rem; 
       border:2px solid transparent;
       border-radius:999px;
       color:var(--fg);
       text-decoration:none;
       font-weight:600;
-      font-size:0.85rem; /* Reduced font size */
+      font-size:0.85rem; 
       text-align:center;
       position:relative;
       background:linear-gradient(var(--bg),var(--bg)) padding-box,
@@ -460,8 +460,8 @@
       width:100%;
     }
     .project-link:hover{
-      transform:translateY(-1px); /* Adjusted transform */
-      box-shadow:0 4px 15px rgba(19,176,242,0.3); /* Adjusted shadow */
+      transform:translateY(-1px); 
+      box-shadow:0 4px 15px rgba(19,176,242,0.3); 
       filter:brightness(1.1);
     }
 
@@ -477,17 +477,17 @@
     
 
     body.portfolio-page{
-      font-family:'Montserrat',sans-serif; /* Standardized font */
+      font-family:'Montserrat',sans-serif; 
       color:var(--fg);
-      height:100vh; /* Explicitly set to 100vh */
+      height:100vh; 
       display:flex;
       flex-direction:column;
-      /* Removed padding */
+      
       scroll-behavior:smooth;
       background:
         radial-gradient(600px circle at var(--x) var(--y),
           rgba(19,176,242,0.25) 0%, rgba(0,0,0,0) 70%), var(--bg);
-      overflow: hidden; /* Prevent scrolling on the body */
+      overflow: hidden; 
     }
 
     @media (max-width:1200px){
@@ -505,7 +505,7 @@
     }
     .next-project{
       text-align:center;
-      padding:2rem 1.5rem; /* Reduced padding */
+      padding:2rem 1.5rem; 
       background:linear-gradient(135deg,#111,#0a0a0a);
       border-radius:1rem;
       border:1px solid #222;
@@ -518,7 +518,7 @@
       display:flex;
       flex-direction:column;
       justify-content:center;
-      min-height:300px; /* Reduced min-height */
+      min-height:300px; 
     }
     .next-project::before{
       content:'';
@@ -530,89 +530,89 @@
     }
     .next-project:hover{
       border-color:var(--accent);
-      box-shadow:0 15px 40px rgba(19,176,242,0.25); /* Adjusted shadow */
-      transform:translateY(-3px); /* Adjusted transform */
+      box-shadow:0 15px 40px rgba(19,176,242,0.25); 
+      transform:translateY(-3px); 
     }
     .next-project:hover::before{
       opacity:1;
     }
     .next-project h2{
-      font-size:1.6rem; /* Reduced font size */
-      margin-bottom:0.8rem; /* Reduced margin */
+      font-size:1.6rem; 
+      margin-bottom:0.8rem; 
       color:var(--fg);
       position:relative;
       z-index:1;
     }
     .next-project p{
-      font-size:0.9rem; /* Reduced font size */
+      font-size:0.9rem; 
       opacity:0.85;
-      margin-bottom:1rem; /* Reduced margin */
+      margin-bottom:1rem; 
       position:relative;
       z-index:1;
     }
 
 @media (max-width:768px){
   h1{
-    font-size:2rem /* Adjusted font size for smaller screens */
+    font-size:2rem 
   }
   .project-content{
-    padding:1rem /* Adjusted padding for smaller screens */
+    padding:1rem 
   }
   .screenshot-thumbs{
-    gap:0.2rem /* Adjusted gap for smaller screens */
+    gap:0.2rem 
   }
 }
 
-/* Success Page Styles */
+
 body.success-page{
-  font-family:'Montserrat',sans-serif; /* Standardized font */
+  font-family:'Montserrat',sans-serif; 
   color:var(--fg);
   min-height:100vh;
   display:flex;
   flex-direction:column;
-  /* Removed padding */
+  
   scroll-behavior:smooth;
   background:
     radial-gradient(600px circle at var(--x) var(--y),
       rgba(19,176,242,0.25) 0%, rgba(0,0,0,0) 70%), var(--bg);
-  overflow-y: auto; /* Allow vertical scrolling */
+  overflow-y: auto; 
 }
 
-/* Success Page Text Styles */
+
 body.success-page h1 {
-  font-size: clamp(2.5rem, 5vw, 3.5rem); /* Reverted font size */
-  font-weight: 600; /* Reverted font weight */
+  font-size: clamp(2.5rem, 5vw, 3.5rem); 
+  font-weight: 600; 
   letter-spacing: 0.05em;
-  background: linear-gradient(45deg, #13b0f2, #00d4ff, #13b0f2); /* Blue gradient */
+  background: linear-gradient(45deg, #13b0f2, #00d4ff, #13b0f2); 
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: shimmer 3s ease-in-out infinite, float-in 1s ease-out;
-  text-shadow: 0 0 15px rgba(19, 176, 242, 0.6); /* Subtle glow */
+  text-shadow: 0 0 15px rgba(19, 176, 242, 0.6); 
 }
 
 body.success-page .subtitle {
-  font-size: 1.2rem; /* Reverted font size */
-  font-weight: normal; /* Reverted font weight to default */
+  font-size: 1.2rem; 
+  font-weight: normal; 
   opacity: 0.9;
-  color: #e0e0e0; /* Slightly lighter color */
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.2); /* Subtle text shadow */
+  color: #e0e0e0; 
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.2); 
 }
 
-/* Contact Page Styles */
+
 body.contact-page{
   font-family:'Montserrat',sans-serif;
   font-family:'Montserrat',sans-serif;
-  /* Removed padding */
+  
   background:var(--bg);
   min-height:100vh;
   display:flex;
   flex-direction:column;
   align-items:center;
   scroll-behavior:smooth;
-  overflow-y: auto; /* Allow vertical scrolling */
-  font-size: 1.4rem; /* Significantly increased base font size */
+  overflow-y: auto; 
+  font-size: 1.4rem; 
 }
 
 body.contact-page main{
@@ -625,7 +625,7 @@ body.contact-page main{
 }
 
 body.contact-page h1 {
-  margin-bottom: 0.5rem; /* Reduced margin-bottom for h1 */
+  margin-bottom: 0.5rem; 
 }
 
 body.contact-page .card{
@@ -633,15 +633,15 @@ body.contact-page .card{
   background:linear-gradient(135deg,#111,#0a0a0a);
   border:1px solid #222;
   border-radius:1rem;
-  padding:1.2rem; /* Reduced padding to shrink the box */
+  padding:1.2rem; 
   box-shadow:0 10px 40px rgba(0,0,0,0.5);
-  margin-top:0.8rem; /* Reduced margin-top */
+  margin-top:0.8rem; 
 }
 
 body.contact-page .contact-form{
   display:flex;
   flex-direction:column;
-  gap:0.75rem; /* Reduced gap */
+  gap:0.75rem; 
 }
 
 body.contact-page .form-group{
@@ -652,7 +652,7 @@ body.contact-page .form-group{
 body.contact-page .form-label{
   font-size:0.9rem;
   font-weight:600;
-  margin-bottom:0.2rem; /* Reduced margin-bottom */
+  margin-bottom:0.2rem; 
 }
 
 body.contact-page .form-input{
@@ -661,7 +661,7 @@ body.contact-page .form-input{
   border:1px solid #333;
   background:#0a0a0a;
   color:var(--fg);
-  font-size:1.3rem; /* Increased font size for placeholder text */
+  font-size:1.3rem; 
 }
 
 body.contact-page .form-input:focus{
@@ -672,14 +672,14 @@ body.contact-page .form-input:focus{
 
 body.contact-page .form-textarea{
   resize:vertical;
-  min-height:100px; /* Reduced min-height */
-  font-size:1.4rem; /* Increased font size for textarea text */
+  min-height:100px; 
+  font-size:1.4rem; 
 }
 
 body.contact-page .form-button{
-  align-self:center; /* Centered the button */
+  align-self:center; 
   margin-top:1rem;
-  padding:1rem 2.6rem; /* Matched index page button padding */
+  padding:1rem 2.6rem; 
   border-radius:999px;
   font-weight:600;
   color:var(--fg);
@@ -689,7 +689,7 @@ body.contact-page .form-button{
   background-size:200% 200%;
   animation:gradient-shift 3s ease infinite;
   transition:all .3s ease;
-  font-size:1rem; /* Matched index page button font size */
+  font-size:1rem; 
 }
 
 body.contact-page .form-button:hover{
@@ -699,7 +699,7 @@ body.contact-page .form-button:hover{
 }
 
 body.contact-page .contact-alt{
-  margin-top:1rem; /* Reduced margin-top */
+  margin-top:1rem; 
   text-align:center;
   font-size:0.9rem;
   opacity:0.85;
@@ -726,22 +726,22 @@ body.contact-page #result{
     font-size: 2.2rem;
   }
   body.contact-page .card {
-    padding: 1rem; /* Reduced padding for mobile */
+    padding: 1rem; 
   }
   body.contact-page .form-button {
-    padding: 1rem 2.6rem; /* Matched index page button padding for mobile */
-    font-size: 1.1rem; /* Matched index page button font size for mobile */
+    padding: 1rem 2.6rem; 
+    font-size: 1.1rem; 
   }
 }
 
 .home-link{
   display:block;
-  margin: 0.5rem auto; /* Reduced margin to bring it closer to the form */
+  margin: 0.5rem auto; 
   font-weight:600;
   color:var(--accent);
   text-decoration:none;
   transition:all .2s ease;
-  font-size: 1rem; /* Adjusted font size */
+  font-size: 1rem; 
 }
 .home-link:hover{
   text-decoration:underline;

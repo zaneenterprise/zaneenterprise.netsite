@@ -61,11 +61,6 @@ window.addEventListener('pointermove', e => {
   root.style.setProperty('--y', e.clientY + 'px');
 });
 
-window.addEventListener('scroll', () => {
-  const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-  root.style.setProperty('--scroll', scrolled + '%');
-});
-
 const projectData = {
   azbuddy: {
     images: [

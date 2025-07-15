@@ -189,25 +189,6 @@ body.index-page h1 {
       background:#000;
     }
 
-    .scroll-progress{
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:3px;
-      background:rgba(19,176,242,0.2);
-      z-index:1000;
-    }
-    .scroll-progress::before{
-      content:'';
-      position:absolute;
-      top:0;
-      left:0;
-      height:100%;
-      background:linear-gradient(90deg,var(--accent),#0099ff);
-      width:var(--scroll,0%);
-      transition:width 0.1s ease;
-    }
 
     main{
       flex-grow: 1;

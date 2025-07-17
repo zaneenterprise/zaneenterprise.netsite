@@ -164,6 +164,7 @@ body.index-page h1 {
       opacity:.65;
       padding: 0.2rem 0;
       line-height: 1.5;
+      margin-top:auto;
     }
 
     
@@ -618,6 +619,7 @@ body.contact-page main{
   display:flex;
   flex-direction:column;
   align-items:center;
+  flex:1;
 }
 
 body.contact-page h1 {
@@ -705,6 +707,45 @@ body.contact-page .contact-alt a{
   color:var(--accent);
 }
 
+.phone-digits{
+  font-size:0.8em;
+  vertical-align:sub;
+  margin-left:0.2em;
+  display:inline-block;
+}
+
+body.contact-page .phone-contact{
+  font-size:1.2rem;
+  margin-top:0.5rem;
+}
+
+body.contact-page .phone-contact a{
+  color:var(--accent);
+}
+
+body.index-page .phone-contact{
+  font-size:clamp(2rem,6vw,3rem);
+  font-weight:600;
+  margin-top:1.5rem;
+}
+
+body.index-page .phone-contact a{
+  display:inline-block;
+  background:linear-gradient(45deg,var(--fg),var(--accent),var(--fg));
+  background-size:200% 200%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:shimmer 3s ease-in-out infinite;
+  text-decoration:none;
+  color:transparent;
+  transition:transform .2s ease;
+}
+
+body.index-page .phone-contact a:hover{
+  transform:scale(1.05);
+}
+
 body.contact-page #result{
   margin-top:0.5rem;
   font-size:0.9rem;
@@ -723,6 +764,7 @@ body.contact-page #result{
   }
   body.contact-page .card {
     padding: 1rem;
+    width: 90%;
   }
   body.contact-page .form-button {
     padding: 1rem 2.6rem;

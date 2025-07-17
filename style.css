@@ -705,6 +705,12 @@ body.contact-page .contact-alt a{
   color:var(--accent);
 }
 
+body.contact-page .phone-digits{
+  font-size:0.8em;
+  vertical-align:sub;
+  margin-left:0.2em;
+}
+
 body.contact-page #result{
   margin-top:0.5rem;
   font-size:0.9rem;

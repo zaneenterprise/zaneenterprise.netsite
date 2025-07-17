@@ -705,6 +705,36 @@ body.contact-page .contact-alt a{
   color:var(--accent);
 }
 
+/* digits that replace the word ZANE in the phone number */
+.phone-digits{
+  font-size:0.8em;
+  vertical-align:sub;
+  margin-left:0.2em;
+  display:inline-block;
+}
+
+/* phone number line in contact card */
+body.contact-page .phone-contact{
+  font-size:1.2rem;
+  margin-top:0.5rem;
+}
+
+body.contact-page .phone-contact a{
+  color:var(--accent);
+}
+
+/* phone number prominently displayed on the home page */
+body.index-page .phone-contact{
+  font-size:clamp(2rem,6vw,3rem);
+  font-weight:600;
+  margin-top:1.5rem;
+}
+
+body.index-page .phone-contact a{
+  color:var(--accent);
+  text-decoration:none;
+}
+
 body.contact-page #result{
   margin-top:0.5rem;
   font-size:0.9rem;

@@ -1,1 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 778.04 1197.78"><defs><style>.cls-1{fill:#4e8bc9;}</style></defs><title>Asset 1</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><polygon class="cls-1" points="777.89 898.3 777.89 1197.78 518.6 1048.11 518.6 1047.97 259.3 898.3 0 748.63 0 449.15 83.72 400.81 343.01 550.48 259.3 598.82 518.6 748.63 777.89 898.3"/><polygon class="cls-1" points="778.04 449.15 778.04 748.63 693.89 797.11 434.44 647.45 518.6 598.82 259.3 449.15 0 299.48 0 0 259.3 149.67 518.6 299.34 518.6 299.48 778.04 449.15"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 778.04 1197.78">
+  <defs>
+    <style>
+      .cls-1{fill:#4e8bc9;}
+      .glow{fill:none;stroke:#4E8BC9;stroke-width:35;stroke-linejoin:round;stroke-linecap:round;filter:url(#glowfilter);stroke-dasharray:4000;stroke-dashoffset:4000;animation:glowdash 6s linear infinite;}
+      @keyframes glowdash{to{stroke-dashoffset:0;}}
+    </style>
+    <filter id="glowfilter" height="150%" width="150%" x="-25%" y="-25%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#4E8BC9"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="12" flood-color="#4E8BC9"/>
+    </filter>
+  </defs>
+  <title>Asset 1</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <polygon class="cls-1" points="777.89 898.3 777.89 1197.78 518.6 1048.11 518.6 1047.97 259.3 898.3 0 748.63 0 449.15 83.72 400.81 343.01 550.48 259.3 598.82 518.6 748.63 777.89 898.3"/>
+      <polygon class="cls-1" points="778.04 449.15 778.04 748.63 693.89 797.11 434.44 647.45 518.6 598.82 259.3 449.15 0 299.48 0 0 259.3 149.67 518.6 299.34 518.6 299.48 778.04 449.15"/>
+      <polygon class="glow" points="777.89 898.3 777.89 1197.78 518.6 1048.11 518.6 1047.97 259.3 898.3 0 748.63 0 449.15 83.72 400.81 343.01 550.48 259.3 598.82 518.6 748.63 777.89 898.3"/>
+      <polygon class="glow" points="778.04 449.15 778.04 748.63 693.89 797.11 434.44 647.45 518.6 598.82 259.3 449.15 0 299.48 0 0 259.3 149.67 518.6 299.34 518.6 299.48 778.04 449.15"/>
+    </g>
+  </g>
+</svg>

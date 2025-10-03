@@ -202,7 +202,7 @@ export default function Home() {
             </div>
 
             <div className="flex-1 min-w-0 overflow-x-hidden max-w-full">
-              <div className="space-y-0 leading-relaxed text-[10px] sm:text-xs md:text-sm lg:text-base overflow-x-hidden">
+              <div className="space-y-0 leading-relaxed text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl overflow-x-hidden">
                 {displayedLines.map((line, i) => (
                   <pre
                     key={i}

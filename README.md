@@ -15,8 +15,13 @@ Navigate to `http://localhost:3000` to explore the experience locally.
 
 - `pnpm dev` – start the development server
 - `pnpm build` – create a production build
+- `pnpm deploy:cf` – deploy to Cloudflare Pages using the Next on Pages adapter
 - `pnpm start` – run the production build locally
 - `pnpm lint` – lint the codebase
+
+## Deployment
+
+Use `pnpm deploy:cf` instead of `npx @cloudflare/next-on-pages` so the build runs with pnpm, matching the lockfile and avoiding package manager mismatch warnings. The project pre-approves the `sharp` and `@tailwindcss/oxide` build scripts via `.npmrc`, so no manual `pnpm approve-builds` step is required.
 
 ## Structure
 

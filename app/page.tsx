@@ -7,8 +7,32 @@ export default function Home() {
   const [displayedLines, setDisplayedLines] = useState<string[]>([])
   const [currentLineText, setCurrentLineText] = useState("")
   const [showCursor, setShowCursor] = useState(true)
-  const [subline, setSubline] = useState("")
   const [isTypingComplete, setIsTypingComplete] = useState(false)
+  const [randomLineIndex] = useState(() => Math.floor(Math.random() * 19))
+
+  const lines = [
+    { part1: "// Want a site or app that's actually awesome?", part2: "// Let's chat, I'll build it better than you imagined.", linkText: "Let's chat" },
+    { part1: "// Want a site or app that doesn't suck?", part2: "// I'll build it and make it awesome.", linkText: "I'll build it" },
+    { part1: "// Need a killer site or app?", part2: "// Hit me up, I build cool stuff for cool people.", linkText: "Hit me up" },
+    { part1: "// Tired of mediocre apps and boring sites?", part2: "// Let's fix that, I'll create something badass.", linkText: "Let's fix that" },
+    { part1: "// Want your site or app to actually stand out?", part2: "// Let's talk, I'll handle the rest.", linkText: "Let's talk" },
+    { part1: "// Sick of boring sites and apps?", part2: "// I'll build one that's legit.", linkText: "I'll build one" },
+    { part1: "// Ready for a site or app that slaps?", part2: "// Reach out and I'll make it happen.", linkText: "Reach out" },
+    { part1: "// Need a site or app with personality?", part2: "// I've got you covered.", linkText: "I've got you covered" },
+    { part1: "// Your idea deserves more than a basic app.", part2: "// Let's make it epic.", linkText: "Let's make it epic" },
+    { part1: "// Done with dull, lifeless apps?", part2: "// I'll build something you'll brag about.", linkText: "I'll build something" },
+    { part1: "// Stop settling for average,", part2: "// I'll craft a site or app you'll actually love.", linkText: "I'll craft a site or app" },
+    { part1: "// Want to finally be proud of your website or app?", part2: "// Let's chat and get it built right.", linkText: "Let's chat" },
+    { part1: "// Your app idea plus my skills equals something seriously cool.", part2: "// Let's talk.", linkText: "Let's talk" },
+    { part1: "// Forget cookie cutter.", part2: "// I'll make your website or app genuinely awesome.", linkText: "I'll make your website or app" },
+    { part1: "// Want a website or app worth sharing?", part2: "// Say the word and I'll build it.", linkText: "Say the word" },
+    { part1: "// No more yawning at your own website.", part2: "// I'll give you something fresh and exciting.", linkText: "I'll give you something" },
+    { part1: "// Tired of stale apps and boring websites?", part2: "// Hit me up for something worth your time.", linkText: "Hit me up" },
+    { part1: "// Ready to level up your site or app?", part2: "// Let me build you something you won't hate.", linkText: "Let me build you something" },
+    { part1: "// Want a website or app people will actually notice?", part2: "// Let's get started.", linkText: "Let's get started" },
+  ]
+
+  const randomLine = lines[randomLineIndex]
 
   const reactCodeLines = [
     "export default function ZaneEnterprise() {",
@@ -23,34 +47,11 @@ export default function Home() {
     "  )",
     "}",
     " ",
-    "// Sick of boring sites and apps?",
-    "// I'll build one that's legit.",
-  ]
-
-  const lines = [
-    "Want a site or app that's actually awesome? <a href=\"/contact\">Let's chat</a>, I'll build it better than you imagined.",
-    "Want a site or app that doesn't suck? <a href=\"/contact\">I'll build it</a> and make it awesome.",
-    'Need a killer site or app? <a href="/contact">Hit me up</a>, I build cool stuff for cool people.',
-    "Tired of mediocre apps and boring sites? <a href=\"/contact\">Let's fix that</a>, I'll create something badass.",
-    "Want your site or app to actually stand out? <a href=\"/contact\">Let's talk</a>, I'll handle the rest.",
-    "Sick of boring sites and apps? <a href=\"/contact\">I'll build one</a> that's legit.",
-    'Ready for a site or app that slaps? <a href="/contact">Reach out</a> and I\'ll make it happen.',
-    'Need a site or app with personality? <a href="/contact">I\'ve got you covered</a>',
-    'Your idea deserves more than a basic app. <a href="/contact">Let\'s make it epic</a>',
-    "Done with dull, lifeless apps? <a href=\"/contact\">I'll build something</a> you'll brag about.",
-    "Stop settling for average, <a href=\"/contact\">I'll craft a site or app</a> you'll actually love.",
-    'Want to finally be proud of your website or app? <a href="/contact">Let\'s chat</a> and get it built right.',
-    'Your app idea plus my skills equals something seriously cool. <a href="/contact">Let\'s talk</a>',
-    'Forget cookie cutter. <a href="/contact">I\'ll make your website or app</a> genuinely awesome.',
-    'Want a website or app worth sharing? <a href="/contact">Say the word</a> and I\'ll build it.',
-    'No more yawning at your own website. <a href="/contact">I\'ll give you something</a> fresh and exciting.',
-    'Tired of stale apps and boring websites? <a href="/contact">Hit me up</a> for something worth your time.',
-    'Ready to level up your site or app? <a href="/contact">Let me build you something</a> you won\'t hate.',
-    'Want a website or app people will actually notice? <a href="/contact">Let\'s get started</a>',
+    randomLine.part1,
+    randomLine.part2,
   ]
 
   useEffect(() => {
-    const randomLine = lines[Math.floor(Math.random() * lines.length)]
     let currentLineIndex = 0
     let currentCharIndex = 0
 
@@ -71,10 +72,7 @@ export default function Home() {
         clearInterval(typingInterval)
         setShowCursor(false)
         setTimeout(() => {
-          setSubline(randomLine)
-          setTimeout(() => {
-            setIsTypingComplete(true)
-          }, 500)
+          setIsTypingComplete(true)
         }, 300)
       }
     }, 15)
@@ -89,7 +87,7 @@ export default function Home() {
     }
   }, [])
 
-  const highlightCode = (code: string, isCurrentLine = false) => {
+  const highlightCode = (code: string, isCurrentLine = false, lineNumber = 0) => {
     const tokens: { text: string; color: string; isLink?: boolean; href?: string }[] = []
     let i = 0
 
@@ -98,17 +96,28 @@ export default function Home() {
 
       if (remaining.match(/^\/\/.*/)) {
         const commentText = remaining.match(/^\/\/.*/)![0]
-        const linkMatch = commentText.match(/(.*?)(I'll build one)(.*)/i)
-
-        if (linkMatch && !isCurrentLine) {
-          tokens.push({ text: linkMatch[1], color: "text-[#6a9955]" })
-          tokens.push({
-            text: linkMatch[2],
-            color: "text-[#6a9955]",
-            isLink: true,
-            href: "/contact",
-          })
-          tokens.push({ text: linkMatch[3], color: "text-[#6a9955]" })
+        
+        if (lineNumber === 13 && !isCurrentLine && randomLine.linkText) {
+          const linkText = randomLine.linkText
+          const linkIndex = commentText.indexOf(linkText)
+          
+          if (linkIndex !== -1) {
+            if (linkIndex > 0) {
+              tokens.push({ text: commentText.substring(0, linkIndex), color: "text-[#6a9955]" })
+            }
+            tokens.push({
+              text: linkText,
+              color: "text-[#6a9955]",
+              isLink: true,
+              href: "/contact",
+            })
+            const afterLinkIndex = linkIndex + linkText.length
+            if (afterLinkIndex < commentText.length) {
+              tokens.push({ text: commentText.substring(afterLinkIndex), color: "text-[#6a9955]" })
+            }
+          } else {
+            tokens.push({ text: commentText, color: "text-[#6a9955]" })
+          }
         } else {
           tokens.push({ text: commentText, color: "text-[#6a9955]" })
         }
@@ -207,7 +216,7 @@ export default function Home() {
                   <pre
                     key={i}
                     className="whitespace-pre-wrap sm:whitespace-pre leading-relaxed overflow-x-hidden break-words sm:break-normal max-w-full"
-                    dangerouslySetInnerHTML={{ __html: highlightCode(line) }}
+                    dangerouslySetInnerHTML={{ __html: highlightCode(line, false, i) }}
                   />
                 ))}
                 {currentLineText && (
@@ -215,7 +224,7 @@ export default function Home() {
                     className="whitespace-pre-wrap sm:whitespace-pre leading-relaxed overflow-x-hidden break-words sm:break-normal max-w-full"
                     dangerouslySetInnerHTML={{
                       __html:
-                        highlightCode(currentLineText, true) +
+                        highlightCode(currentLineText, true, displayedLines.length) +
                         (showCursor ? '<span class="text-[#d4d4d4] animate-pulse">|</span>' : ""),
                     }}
                   />

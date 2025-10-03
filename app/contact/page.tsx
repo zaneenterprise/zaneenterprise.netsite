@@ -3,6 +3,7 @@
 import type React from "react"
 import { useState, useEffect, useRef } from "react"
 import Footer from "@/components/footer"
+import Link from "next/link"
 
 type Step = "name" | "email" | "message" | "confirm" | "complete"
 
@@ -14,7 +15,12 @@ export default function Contact() {
     message: "",
   })
   const [currentInput, setCurrentInput] = useState("")
-  const [history, setHistory] = useState<string[]>(["ZaneEnterprise Contact Terminal v1.0", ""])
+  const [history, setHistory] = useState<string[]>([
+    "ZaneEnterprise Contact Terminal v1.0",
+    "",
+    "📞 Call: 877-730-ZANE (877-730-9263)",
+    "",
+  ])
   const inputRef = useRef<HTMLInputElement>(null)
   const terminalRef = useRef<HTMLDivElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
@@ -60,6 +66,11 @@ export default function Contact() {
     if (!currentInput.trim() && step !== "confirm") return
 
     const input = currentInput.trim()
+
+    if (input.toLowerCase() === "exit") {
+      window.location.href = "/"
+      return
+    }
 
     switch (step) {
       case "name":
@@ -122,7 +133,18 @@ export default function Contact() {
           }
           setStep("complete")
         } else if (response === "no" || response === "n") {
-          setHistory((prev) => [...prev, `  ${input}`, "", "✗ Cancelled", "", "> What is your name?"])
+          setHistory((prev) => [
+            ...prev,
+            `  ${input}`,
+            "",
+            "✗ Cancelled",
+            "",
+            "ZaneEnterprise Contact Terminal v1.0",
+            "",
+            "📞 Call: 877-730-ZANE (877-730-9263)",
+            "",
+            "> What is your name?",
+          ])
           setFormData({ name: "", email: "", message: "" })
           setStep("name")
         } else {
@@ -137,13 +159,13 @@ export default function Contact() {
   return (
     <div className="min-h-screen flex flex-col bg-black font-mono" onClick={handlePageClick}>
       <header className="border-b border-green-900/30 bg-black px-3 sm:px-4 py-2 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <img src="/z.svg" alt="Z" className="w-5 h-5 sm:w-6 sm:h-6" />
           <div className="flex items-baseline gap-1">
             <span className="text-sm sm:text-base font-medium text-green-400">Zane</span>
             <span className="text-sm sm:text-base text-green-400/70">Enterprise</span>
           </div>
-        </div>
+        </Link>
         <span className="text-xs text-green-600">terminal</span>
       </header>
 
@@ -191,24 +213,33 @@ export default function Contact() {
                 className="flex-1 bg-transparent border-none outline-none text-green-300 caret-green-400 text-xs sm:text-sm"
                 autoComplete="off"
                 spellCheck="false"
+                placeholder="Type 'exit' to return home..."
               />
-              <span className="w-1.5 h-3 sm:h-4 bg-green-400 animate-pulse" />
             </form>
           )}
 
           {step === "complete" && (
-            <div className="pt-2">
+            <div className="pt-2 space-y-2">
               <button
                 onClick={() => {
-                  setHistory(["ZaneEnterprise Contact Terminal v1.0", "", "> What is your name?"])
+                  setHistory([
+                    "ZaneEnterprise Contact Terminal v1.0",
+                    "",
+                    "📞 Call: 877-730-ZANE (877-730-9263)",
+                    "",
+                    "> What is your name?",
+                  ])
                   setFormData({ name: "", email: "", message: "" })
                   setCurrentInput("")
                   setStep("name")
                 }}
-                className="text-green-400 hover:text-green-300 underline text-xs sm:text-sm"
+                className="text-green-400 hover:text-green-300 underline text-xs sm:text-sm block"
               >
                 → Send another message
               </button>
+              <Link href="/" className="text-green-400 hover:text-green-300 underline text-xs sm:text-sm block">
+                → Return home
+              </Link>
             </div>
           )}
         </div>

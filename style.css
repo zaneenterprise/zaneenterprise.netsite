@@ -61,13 +61,13 @@
     .logo-container {
     }
     body.index-page .logo-container {
-      margin-top: 5vh;
+      margin-top: 10vh;
     }
     header img{
       width:clamp(100px,16vw,220px);
       height:auto;
       margin-top: 0;
-      margin-bottom: 2rem;
+      margin-bottom: 0.5rem;
       filter:drop-shadow(0 0 10px var(--accent));
       transition:transform .25s ease-out;
       will-change:transform;
@@ -78,7 +78,7 @@
       50%{filter:drop-shadow(0 0 20px var(--accent)) brightness(1.1)}
     }
     h1{
-      font-size:clamp(2.8rem,6vw,3.8rem);
+      font-size:clamp(3.5rem,8vw,5rem);
       font-weight:600;
       letter-spacing:.03em;
       animation:float-in 1s ease-out;

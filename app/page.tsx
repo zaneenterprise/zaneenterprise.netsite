@@ -192,7 +192,7 @@ export default function Home() {
       <main className="flex-1 px-2 sm:px-4 py-6 sm:py-12 overflow-x-hidden w-full">
         <div className="max-w-full sm:max-w-4xl w-full mx-auto overflow-x-hidden">
           <div className="flex items-start gap-1 sm:gap-2 md:gap-4 overflow-x-hidden w-full">
-            <div className="text-[#858585] select-none text-right pr-1 sm:pr-2 md:pr-4 border-r border-[#2d2d2d] min-w-[1.5rem] sm:min-w-[2rem] md:min-w-[3rem] flex flex-col items-end text-[10px] sm:text-xs md:text-base flex-shrink-0">
+            <div className="text-[#858585] select-none text-right pr-1 sm:pr-2 md:pr-4 border-r border-[#2d2d2d] min-w-[1.5rem] sm:min-w-[2rem] md:min-w-[3rem] flex flex-col items-end text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl flex-shrink-0">
               {displayedLines.map((_, i) => (
                 <div key={i} className="leading-relaxed">
                   {i + 1}

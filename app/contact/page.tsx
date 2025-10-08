@@ -161,7 +161,7 @@ export default function Contact() {
       <header className="border-b border-green-900/30 bg-black px-3 sm:px-4 py-2 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <img src="/z.svg" alt="Z" className="w-5 h-5 sm:w-6 sm:h-6" />
-          <div className="flex items-baseline gap-1">
+          <div className="flex items-baseline">
             <span className="text-sm sm:text-base font-medium text-green-400">Zane</span>
             <span className="text-sm sm:text-base text-green-400/70">Enterprise</span>
           </div>

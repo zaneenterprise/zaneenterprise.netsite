@@ -440,6 +440,17 @@ export default function Portfolio() {
   return (
     <>
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <header className="border-b border-green-900/30 bg-black/90 backdrop-blur-sm px-3 sm:px-4 py-2">
+          <div className="flex items-center">
+            <Link href="/" aria-label="Back to home" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <img src="/z.svg" alt="ZaneEnterprise logo" className="w-5 h-5 sm:w-6 sm:h-6" />
+              <div className="flex items-baseline">
+                <span className="text-sm sm:text-base font-medium text-white">Zane</span>
+                <span className="text-sm sm:text-base text-white">Enterprise</span>
+              </div>
+            </Link>
+          </div>
+        </header>
         <div className="flex-1 p-2 sm:p-4 md:p-8 flex items-center justify-center">
           {isMinimized ? null : (
             <div
@@ -448,15 +459,22 @@ export default function Portfolio() {
                 isMaximized ? "fixed inset-2 sm:inset-8 w-auto h-auto" : "w-full max-w-6xl"
               }`}
               style={
-                !isMaximized && position
-                  ? {
-                      position: "fixed",
-                      transform: `translate(${position.x}px, ${position.y}px)`,
-                      willChange: isDragging ? "transform" : "auto",
-                    }
-                  : !isMaximized
-                    ? { position: "relative" }
-                    : undefined
+                isMaximized
+                  ? undefined
+                  : position
+                    ? {
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        transform: `translate(${position.x}px, ${position.y}px)`,
+                        willChange: isDragging ? "transform" : "auto",
+                      }
+                    : {
+                        position: "fixed",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                      }
               }
             >
               <div

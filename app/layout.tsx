@@ -8,6 +8,45 @@ import "./globals.css"
 export const metadata: Metadata = {
   title: "ZaneEnterprise - App & Website Development",
   description: "Professional web development and app development services",
+  keywords: ["web development", "app development", "hosting", "optimization", "mobile apps", "websites"],
+  authors: [{ name: "ZaneEnterprise" }],
+  creator: "ZaneEnterprise",
+  publisher: "ZaneEnterprise",
+  metadataBase: new URL('https://zaneenterprise.net'),
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://zaneenterprise.net',
+    title: 'ZaneEnterprise - App & Website Development',
+    description: 'Anything from development, to hosting, to optimization',
+    siteName: 'ZaneEnterprise',
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'ZaneEnterprise - App & Website Development',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ZaneEnterprise - App & Website Development',
+    description: 'Anything from development, to hosting, to optimization',
+    creator: '@zaneenterprise',
+    images: ['/twitter-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },

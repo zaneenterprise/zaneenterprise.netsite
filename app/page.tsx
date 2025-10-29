@@ -196,6 +196,9 @@ export default function Home() {
           </div>
           <span className="text-xs sm:text-sm text-[#cccccc] ml-2 sm:ml-4">zane-enterprise.tsx</span>
         </div>
+        <div className="text-xs sm:text-sm text-[#cccccc] font-mono pr-10">
+          877-730-ZANE
+        </div>
       </header>
 
       <main className="flex-1 px-2 sm:px-4 py-6 sm:py-12 overflow-x-hidden w-full">

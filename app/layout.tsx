@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Suspense } from "react"
 import "./globals.css"
+import { PostHogProvider } from "../components/PostHogProvider"
 
 export const metadata: Metadata = {
   title: "ZaneEnterprise - App & Website Development",
@@ -68,10 +69,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-        <Suspense fallback={<div>Loading...</div>}>
-          {children}
-        </Suspense>
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>        
+        <PostHogProvider>
+          <Suspense fallback={<div>Loading...</div>}>
+            {children}
+          </Suspense>
+        </PostHogProvider>
       </body>
     </html>
   )

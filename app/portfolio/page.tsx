@@ -1,823 +1,504 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, useEffect } from "react"
-import { Folder, ChevronLeft, ChevronRight, Home, Clock, ImageIcon, Menu } from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { ArrowLeft, ChevronLeft, ChevronRight, Sparkles, X } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import Footer from "@/components/footer"
+import { useState, useEffect } from "react"
 
-const projectData = {
-  Pawcasso: {
+const projects = [
+  {
+    id: "pawcasso",
+    title: "Pawcasso",
+    tagline: "Cat-Approved Digital Art Studio",
+    description:
+      "An innovative mobile app that turns your cat's playful movements into beautiful digital artwork. Watch your feline friend chase a bird across the screen and create unique masterpieces with customizable color themes.",
     images: [
       {
-        src: "/projects/pawcasso/pawcasso1.webp",
-        caption: "Choose from multiple color themes including Vibrant, Pastel, Ocean, Sunset, and seasonal options",
+        url: "/images/pawcasso1.webp",
+        alt: "Pawcasso theme selection screen",
       },
       {
-        src: "/projects/pawcasso/pawcasso2.webp",
-        caption: "Watch your cat chase the bird and create unique digital artwork",
+        url: "/images/pawcasso2.webp",
+        alt: "Pawcasso gameplay with cat painting",
       },
       {
-        src: "/projects/pawcasso/pawcasso3.webp",
-        caption: "Cat-approved interactive painting experience with real-time canvas updates",
+        url: "/images/pawcasso3.webp",
+        alt: "Cat-approved painting experience",
       },
     ],
+    tags: ["React Native", "Mobile", "iOS", "Android"],
+    features: [
+      "Multiple color themes (Vibrant, Pastel, Ocean, Sunset, Gray, Halloween)",
+      "Real-time canvas updates as your cat plays",
+      "Save and share your cat's artwork",
+      "Interactive bird chase mechanics",
+    ],
+    color: "from-pink-500 to-purple-600",
   },
-  "AZBuddy.Cash": {
+  {
+    id: "azbuddy",
+    title: "AZBuddy.Cash",
+    tagline: "Custom built page for musician",
+    description:
+      "A professional musician portfolio website featuring custom animations, seamless navigation, and cohesive branding. Built for Buddy Cash with a powerful custom admin portal for gig management, schedule integration, and real-time updates.",
     images: [
       {
-        src: "/projects/azbuddy/azbuddy1.webp",
-        caption:
-          "The complete homepage showcasing the artist's brand with a modern, clean design and seamless navigation.",
+        url: "/images/azbuddy1.png",
+        alt: "AZBuddy.Cash homepage",
       },
       {
-        src: "/projects/azbuddy/azbuddy2.webp",
-        caption:
-          "Custom-designed animated buttons that match website theme and seamlessly link to sections on same page.",
+        url: "/images/azbuddy2.png",
+        alt: "Custom animated navigation buttons",
       },
       {
-        src: "/projects/azbuddy/azbuddy3.webp",
-        caption:
-          "Buttons and scrollbar match custom theme design for visual consistency. Carefully crafted cohesive branding.",
+        url: "/images/azbuddy3.png",
+        alt: "Social media integration section",
+      },
+      {
+        url: "/images/azbuddy4.png",
+        alt: "Performance schedule page",
+      },
+      {
+        url: "/images/azbuddy5.png",
+        alt: "Custom admin portal for gig management",
       },
     ],
+    tags: ["React", "Custom Scheduling Portal", "Portfolio"],
+    features: [
+      "Custom-designed animated buttons and transitions",
+      "Seamless single-page navigation",
+      "Social media integration (YouTube, Facebook)",
+      "Desert-inspired color scheme and branding",
+      "Custom admin portal for gig management and scheduling",
+      "Real-time schedule updates and performance tracking",
+    ],
+    color: "from-orange-500 to-teal-500",
   },
-  GardenerPlus: {
+  {
+    id: "gardenerplus",
+    title: "GardenerPlus",
+    tagline: "AI-Powered Plant Care Companion",
+    description:
+      "A comprehensive plant care tracking app with AI-powered health diagnostics. Track watering schedules, get personalized care recommendations, and analyze plant health using advanced photo analysis technology.",
     images: [
       {
-        src: "/projects/gardenerplus/gard1.webp",
-        caption: "The main dashboard displays all your plants with quick health status and watering schedules.",
+        url: "/images/gard1.png",
+        alt: "GardenerPlus main dashboard",
       },
       {
-        src: "/projects/gardenerplus/gard2.webp",
-        caption: "Detailed plant profiles with care instructions, watering history, and personalized growth tracking.",
+        url: "/images/gard2.png",
+        alt: "Detailed plant profile with care instructions",
       },
       {
-        src: "/projects/gardenerplus/gard3.webp",
-        caption: "AI-powered plant health analysis that diagnoses issues and provides treatment recommendations.",
+        url: "/images/gard3.jpeg",
+        alt: "AI plant health checkup feature",
       },
     ],
+    tags: ["Swift", "AI/ML", "Mobile", "Python Backend"],
+    features: [
+      "AI-powered plant health diagnostics",
+      "Personalized care recommendations and reminders",
+      "Photo analysis with care history integration",
+      "Track multiple plants with detailed profiles",
+    ],
+    color: "from-green-500 to-emerald-600",
   },
-}
+]
 
-function ImageViewer({
-  id,
-  image,
-  initialPosition,
-  zIndex,
-  isMinimized,
+function ImageLightbox({
+  projectImages,
+  initialIndex,
   onClose,
-  onBringToFront,
-  onUpdatePosition,
-  onMinimize,
 }: {
-  id: string
-  image: { src: string; caption: string } | null
-  initialPosition: { x: number; y: number }
-  zIndex: number
-  isMinimized: boolean
+  projectImages: { url: string; alt: string }[]
+  initialIndex: number
   onClose: () => void
-  onBringToFront: () => void
-  onUpdatePosition: (pos: { x: number; y: number }) => void
-  onMinimize: () => void
 }) {
-  const [position, setPosition] = useState(initialPosition)
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
-  const [isMaximized, setIsMaximized] = useState(false)
-  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 })
-  const [windowSize, setWindowSize] = useState({ width: 700, height: 500 })
-  const windowRef = useRef<HTMLDivElement>(null)
+  const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
   useEffect(() => {
-    if (imageDimensions.width > 0 && imageDimensions.height > 0 && !isMaximized) {
-      const isMobile = window.innerWidth < 768
-      const maxWidth = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.85
-      const maxHeight = isMobile ? window.innerHeight * 0.85 : window.innerHeight * 0.75
-      const captionHeight = 60
-      const headerHeight = 50
-      const padding = isMobile ? 16 : 32
-
-      let targetWidth = imageDimensions.width
-      let targetHeight = imageDimensions.height
-
-      if (targetWidth > maxWidth) {
-        const scale = maxWidth / targetWidth
-        targetWidth = maxWidth
-        targetHeight = targetHeight * scale
-      }
-
-      if (targetHeight > maxHeight - headerHeight - captionHeight - padding) {
-        const scale = (maxHeight - headerHeight - captionHeight - padding) / targetHeight
-        targetHeight = maxHeight - headerHeight - captionHeight - padding
-        targetWidth = targetWidth * scale
-      }
-
-      targetWidth = Math.max(isMobile ? 300 : 400, targetWidth)
-      targetHeight = Math.max(isMobile ? 250 : 300, targetHeight)
-
-      const finalWidth = Math.round(targetWidth + padding)
-      const finalHeight = Math.round(targetHeight + headerHeight + captionHeight + padding)
-
-      setWindowSize({
-        width: finalWidth,
-        height: finalHeight,
-      })
-
-      setPosition({
-        x: Math.max(10, (window.innerWidth - finalWidth) / 2),
-        y: Math.max(60, (window.innerHeight - finalHeight) / 2),
-      })
-    }
-  }, [imageDimensions, isMaximized])
-
-  useEffect(() => {
-    if (image) {
-      setImageDimensions({ width: 0, height: 0 })
-    }
-  }, [image])
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (isDragging && !isMaximized) {
-        requestAnimationFrame(() => {
-          const newPos = {
-            x: e.clientX - dragOffset.x,
-            y: e.clientY - dragOffset.y,
-          }
-          setPosition(newPos)
-          onUpdatePosition(newPos)
-        })
-      }
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+      if (e.key === "ArrowLeft") handlePrev()
+      if (e.key === "ArrowRight") handleNext()
     }
 
-    const handleMouseUp = () => {
-      setIsDragging(false)
-    }
-
-    if (isDragging) {
-      document.addEventListener("mousemove", handleMouseMove)
-      document.addEventListener("mouseup", handleMouseUp)
-      document.body.style.userSelect = "none"
-      document.body.style.cursor = "grabbing"
-    } else {
-      document.body.style.userSelect = ""
-      document.body.style.cursor = ""
-    }
+    document.addEventListener("keydown", handleEscape)
+    document.body.style.overflow = "hidden"
 
     return () => {
-      document.removeEventListener("mousemove", handleMouseMove)
-      document.removeEventListener("mouseup", handleMouseUp)
-      document.body.style.userSelect = ""
-      document.body.style.cursor = ""
+      document.removeEventListener("keydown", handleEscape)
+      document.body.style.overflow = "unset"
     }
-  }, [isDragging, dragOffset, isMaximized, onUpdatePosition])
+  }, [currentIndex])
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setDragOffset({
-      x: e.clientX - position.x,
-      y: e.clientY - position.y,
-    })
-    setIsDragging(true)
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % projectImages.length)
   }
 
-  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = e.target as HTMLImageElement
-    setImageDimensions({ width: img.width, height: img.height })
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
   }
 
-  if (!image) return null
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    onClose()
+  }
 
-  if (isMinimized) return null
+  if (projectImages.length === 0) return null
 
   return (
     <div
-      className="fixed inset-0 pointer-events-none"
-      style={{ zIndex }}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) {
-          onBringToFront()
-        }
-      }}
+      className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4"
+      onClick={handleBackdropClick}
     >
-      <div
-        ref={windowRef}
-        className={`pointer-events-auto bg-[#1e1e1e] rounded-xl shadow-2xl border border-[#3d3d3d] overflow-hidden flex flex-col ${
-          isMaximized ? "w-[95vw] sm:w-[90vw] h-[95vh] sm:h-[90vh]" : ""
-        }`}
-        style={
-          isMaximized
-            ? { position: "fixed", top: "2.5vh", left: "2.5vw" }
-            : {
-                position: "fixed",
-                transform: `translate(${position.x}px, ${position.y}px)`,
-                willChange: isDragging ? "transform" : "auto",
-                width: `${windowSize.width}px`,
-                maxWidth: "95vw",
-                maxHeight: "90vh",
-              }
-        }
-        onClick={onBringToFront}
+      <button
+        onClick={(e) => {
+          e.stopPropagation()
+          onClose()
+        }}
+        className="absolute top-4 right-4 p-3 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all hover:scale-110 z-[10001] shadow-xl border border-white/20"
+        aria-label="Close"
       >
+        <X className="h-6 w-6" />
+      </button>
+
+      {projectImages.length > 1 && (
         <div
-          className={`bg-gradient-to-b from-[#2d2d2d] to-[#252526] border-b border-[#3d3d3d] px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between flex-shrink-0 ${
-            isDragging ? "cursor-grabbing" : "cursor-grab"
-          }`}
-          onMouseDown={handleMouseDown}
+          onClick={(e) => e.stopPropagation()}
+          className="absolute top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/70 backdrop-blur-sm text-white text-sm z-[10001] shadow-xl border border-white/20"
         >
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="flex gap-1.5 sm:gap-2 flex-shrink-0">
-              <button
-                onClick={onClose}
-                className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ff5f57] hover:bg-[#ff3b30] hover:shadow-[0_0_8px_rgba(255,59,48,0.6)] transition-all block"
-                title="Close"
-              />
-              <button
-                onClick={onMinimize}
-                className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#febc2e] hover:bg-[#ffcc00] hover:shadow-[0_0_8px_rgba(255,204,0,0.6)] transition-all"
-                title="Minimize"
-              />
-              <button
-                onClick={() => setIsMaximized(!isMaximized)}
-                className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#28c840] hover:bg-[#30d158] hover:shadow-[0_0_8px_rgba(48,209,88,0.6)] transition-all"
-                title="Maximize"
-              />
-            </div>
-            <ImageIcon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 ml-1 sm:ml-2" />
-            <span className="text-xs sm:text-sm text-gray-300 font-medium truncate">Image Viewer</span>
-          </div>
+          {currentIndex + 1} / {projectImages.length}
         </div>
+      )}
 
-        <div className={`bg-[#1e1e1e] flex items-center justify-center p-2 sm:p-4 overflow-hidden flex-1`}>
-          <img
-            src={image.src || "/placeholder.svg"}
-            alt={image.caption}
-            onLoad={handleImageLoad}
-            className="max-w-full max-h-full object-contain rounded-lg"
-          />
-        </div>
+      {projectImages.length > 1 && (
+        <>
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handlePrev()
+            }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all hover:scale-110 z-[10001] shadow-xl border border-white/20"
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="h-8 w-8" />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handleNext()
+            }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all hover:scale-110 z-[10001] shadow-xl border border-white/20"
+            aria-label="Next image"
+          >
+            <ChevronRight className="h-8 w-8" />
+          </button>
+        </>
+      )}
 
-        <div className="bg-[#252526] border-t border-[#3d3d3d] px-3 sm:px-4 py-2 sm:py-3 flex-shrink-0">
-          <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">{image.caption}</p>
+      {projectImages.length > 1 && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-[10001]"
+        >
+          {projectImages.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={(e) => {
+                e.stopPropagation()
+                setCurrentIndex(idx)
+              }}
+              className={`h-2 rounded-full transition-all shadow-lg ${
+                idx === currentIndex ? "w-8 bg-white" : "w-2 bg-white/50 hover:bg-white/75"
+              }`}
+              aria-label={`Go to image ${idx + 1}`}
+            />
+          ))}
         </div>
+      )}
+
+      <div
+        onClick={(e) => {
+          e.stopPropagation()
+        }}
+        className="relative max-w-7xl max-h-[90vh] animate-in zoom-in-95 duration-200"
+      >
+        <img
+          src={projectImages[currentIndex]?.url || "/placeholder.svg"}
+          alt={projectImages[currentIndex]?.alt || "Project image"}
+          className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
+          style={{ maxWidth: "90vw" }}
+        />
       </div>
     </div>
   )
 }
 
-export default function Portfolio() {
-  const [selectedFolder, setSelectedFolder] = useState<string | null>(null)
-  const [openImages, setOpenImages] = useState<
-    Array<{
-      id: string
-      src: string
-      caption: string
-      position: { x: number; y: number }
-      zIndex: number
-      isMinimized: boolean
-    }>
-  >([])
-  const [nextZIndex, setNextZIndex] = useState(100)
-  const [selectedSidebarItem, setSelectedSidebarItem] = useState<string>("Projects")
-  const [recentItems, setRecentItems] = useState<Array<{ name: string; type: "folder" | "image"; timestamp: Date }>>([])
-  const [position, setPosition] = useState<{ x: number; y: number } | null>(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
-  const [pathInput, setPathInput] = useState("")
-  const [isEditingPath, setIsEditingPath] = useState(false)
-  const [isMinimized, setIsMinimized] = useState(false)
-  const [isMaximized, setIsMaximized] = useState(false)
-  const windowRef = useRef<HTMLDivElement>(null)
-  const [showMobileSidebar, setShowMobileSidebar] = useState(false)
+function ProjectCarousel({
+  project,
+  onImageClick,
+}: {
+  project: (typeof projects)[0]
+  onImageClick: (images: { url: string; alt: string }[], index: number) => void
+}) {
+  const [currentIndex, setCurrentIndex] = useState(0)
 
-  useEffect(() => {
-    if (position === null && windowRef.current) {
-      const rect = windowRef.current.getBoundingClientRect()
-      setPosition({
-        x: (window.innerWidth - rect.width) / 2,
-        y: Math.max(50, (window.innerHeight - rect.height) / 2 - 50),
-      })
-    }
-  }, [position])
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (isDragging && position) {
-        requestAnimationFrame(() => {
-          setPosition({
-            x: e.clientX - dragOffset.x,
-            y: e.clientY - dragOffset.y,
-          })
-        })
-      }
-    }
-
-    const handleMouseUp = () => {
-      setIsDragging(false)
-    }
-
-    if (isDragging) {
-      document.addEventListener("mousemove", handleMouseMove)
-      document.addEventListener("mouseup", handleMouseUp)
-      document.body.style.userSelect = "none"
-      document.body.style.cursor = "grabbing"
-    } else {
-      document.body.style.userSelect = ""
-      document.body.style.cursor = ""
-    }
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove)
-      document.removeEventListener("mouseup", handleMouseUp)
-      document.body.style.userSelect = ""
-      document.body.style.cursor = ""
-    }
-  }, [isDragging, dragOffset, position])
-
-  const projects = [
-    { name: "Pawcasso", items: 3, modified: "Oct 1, 2025" },
-    { name: "AZBuddy.Cash", items: 3, modified: "Sep 28, 2025" },
-    { name: "GardenerPlus", items: 3, modified: "Sep 25, 2025" },
-  ]
-
-  const currentImages = selectedFolder ? projectData[selectedFolder as keyof typeof projectData]?.images || [] : []
-
-  const getPath = () => {
-    if (selectedFolder) {
-      return `${selectedSidebarItem} > ${selectedFolder}`
-    }
-    return selectedSidebarItem
+  const next = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setCurrentIndex((prev) => (prev + 1) % project.images.length)
   }
 
-  const handleSidebarClick = (item: string) => {
-    setSelectedSidebarItem(item)
-    setSelectedFolder(null)
-  }
-
-  const addToRecent = (name: string, type: "folder" | "image") => {
-    setRecentItems((prev) => {
-      const filtered = prev.filter((item) => item.name !== name)
-      return [{ name, type, timestamp: new Date() }, ...filtered].slice(0, 10)
-    })
-  }
-
-  const handleFolderClick = (folderName: string) => {
-    setSelectedFolder(folderName)
-    addToRecent(folderName, "folder")
-  }
-
-  const handleImageClick = (image: { src: string; caption: string }) => {
-    const filename = image.src.split("/").pop() || "image.webp"
-    addToRecent(filename, "image")
-
-    const existingImage = openImages.find((img) => img.src === image.src)
-    if (existingImage) {
-      setOpenImages((prev) =>
-        prev.map((img) => (img.id === existingImage.id ? { ...img, zIndex: nextZIndex, isMinimized: false } : img)),
-      )
-      setNextZIndex((prev) => prev + 1)
-      return
-    }
-
-    const isMobile = window.innerWidth < 768
-    const offset = isMobile ? 0 : openImages.length * 30
-    const baseX = isMobile ? 10 : window.innerWidth / 2 - 350
-    const baseY = isMobile ? 60 : Math.max(80, window.innerHeight / 2 - 300)
-
-    const newImage = {
-      id: `image-${Date.now()}`,
-      src: image.src,
-      caption: image.caption,
-      position: {
-        x: baseX + offset,
-        y: baseY + offset,
-      },
-      zIndex: nextZIndex,
-      isMinimized: false,
-    }
-    setOpenImages((prev) => [...prev, newImage])
-    setNextZIndex((prev) => prev + 1)
-  }
-
-  const handleCloseImage = (id: string) => {
-    setOpenImages((prev) => prev.filter((img) => img.id !== id))
-  }
-
-  const handleBringToFront = (id: string) => {
-    setOpenImages((prev) => prev.map((img) => (img.id === id ? { ...img, zIndex: nextZIndex } : img)))
-    setNextZIndex((prev) => prev + 1)
-  }
-
-  const handleUpdatePosition = (id: string, position: { x: number; y: number }) => {
-    setOpenImages((prev) => prev.map((img) => (img.id === id ? { ...img, position } : img)))
-  }
-
-  const handlePathNavigation = (path: string) => {
-    console.log("Navigating to path:", path)
-  }
-
-  const handleMinimizeImage = (id: string) => {
-    setOpenImages((prev) => prev.map((img) => (img.id === id ? { ...img, isMinimized: true } : img)))
-  }
-
-  const handleRestoreImage = (id: string) => {
-    setOpenImages((prev) =>
-      prev.map((img) => (img.id === id ? { ...img, isMinimized: false, zIndex: nextZIndex } : img)),
-    )
-    setNextZIndex((prev) => prev + 1)
-  }
-
-  const handleFileManagerMouseDown = (e: React.MouseEvent) => {
-    if (isMaximized || !position) return
-    setDragOffset({
-      x: e.clientX - position.x,
-      y: e.clientY - position.y,
-    })
-    setIsDragging(true)
+  const prev = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setCurrentIndex((curr) => (curr - 1 + project.images.length) % project.images.length)
   }
 
   return (
-    <>
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-        <header className="border-b border-green-900/30 bg-black/90 backdrop-blur-sm px-3 sm:px-4 py-2">
-          <div className="flex items-center">
-            <Link href="/" aria-label="Back to home" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <img src="/z.svg" alt="ZaneEnterprise logo" className="w-5 h-5 sm:w-6 sm:h-6" />
-              <div className="flex items-baseline">
-                <span className="text-sm sm:text-base font-medium text-white">Zane</span>
-                <span className="text-sm sm:text-base text-white">Enterprise</span>
-              </div>
-            </Link>
-          </div>
-        </header>
-        <div className="flex-1 p-2 sm:p-4 md:p-8 flex items-center justify-center">
-          {isMinimized ? null : (
-            <div
-              ref={windowRef}
-              className={`bg-[#1e1e1e] rounded-xl shadow-2xl overflow-hidden border border-[#3d3d3d] ${
-                isMaximized ? "fixed inset-2 sm:inset-8 w-auto h-auto" : "w-full max-w-6xl"
-              }`}
-              style={
-                isMaximized
-                  ? undefined
-                  : position
-                    ? {
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        transform: `translate(${position.x}px, ${position.y}px)`,
-                        willChange: isDragging ? "transform" : "auto",
-                      }
-                    : {
-                        position: "fixed",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                      }
-              }
-            >
-              <div
-                className={`bg-gradient-to-b from-[#2d2d2d] to-[#252526] border-b border-[#3d3d3d] px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between ${
-                  isDragging ? "cursor-grabbing" : "cursor-grab"
-                }`}
-                onMouseDown={handleFileManagerMouseDown}
-              >
-                <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
-                  <div className="flex gap-1.5 sm:gap-2 flex-shrink-0">
-                    <Link
-                      href="/"
-                      className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ff5f57] hover:bg-[#ff3b30] hover:shadow-[0_0_8px_rgba(255,59,48,0.6)] transition-all block"
-                      title="Close"
-                    />
-                    <button
-                      onClick={() => setIsMinimized(true)}
-                      className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#febc2e] hover:bg-[#ffcc00] hover:shadow-[0_0_8px_rgba(255,204,0,0.6)] transition-all"
-                      title="Minimize"
-                    />
-                    <button
-                      onClick={() => setIsMaximized(!isMaximized)}
-                      className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#28c840] hover:bg-[#30d158] hover:shadow-[0_0_8px_rgba(48,209,88,0.6)] transition-all"
-                      title="Maximize"
-                    />
-                  </div>
-                  <span className="ml-2 sm:ml-4 text-xs sm:text-sm text-gray-300 font-medium truncate">
-                    {getPath()} - File Manager
-                  </span>
-                </div>
-              </div>
-
-              <div className="bg-[#252526] border-b border-[#3d3d3d] px-2 sm:px-4 py-2 flex flex-col gap-2">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <button
-                    onClick={() => setShowMobileSidebar(!showMobileSidebar)}
-                    className="md:hidden p-1.5 rounded hover:bg-[#3d3d3d] text-gray-400 hover:text-white transition-colors"
-                  >
-                    <Menu className="w-4 h-4" />
-                  </button>
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={() => setSelectedFolder(null)}
-                      disabled={!selectedFolder}
-                      className="p-1 sm:p-1.5 rounded hover:bg-[#3d3d3d] text-gray-400 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
-                    </button>
-                    <button className="p-1 sm:p-1.5 rounded hover:bg-[#3d3d3d] text-gray-400 hover:text-white transition-colors opacity-50 cursor-not-allowed">
-                      <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1.5 sm:gap-2 text-xs bg-[#1e1e1e] rounded px-2 sm:px-3 py-1.5 border border-[#3d3d3d]">
-                  <Home className="w-3 h-3 text-gray-400 flex-shrink-0" />
-                  <span className="text-gray-400">/</span>
-                  {isEditingPath ? (
-                    <input
-                      type="text"
-                      value={pathInput}
-                      onChange={(e) => setPathInput(e.target.value)}
-                      onBlur={() => {
-                        setIsEditingPath(false)
-                        handlePathNavigation(pathInput)
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          setIsEditingPath(false)
-                          handlePathNavigation(pathInput)
-                        } else if (e.key === "Escape") {
-                          setIsEditingPath(false)
-                          setPathInput("")
-                        }
-                      }}
-                      autoFocus
-                      className="flex-1 bg-transparent text-gray-300 outline-none min-w-0"
-                      placeholder="Type path (e.g., Projects/Pawcasso)"
-                    />
-                  ) : (
-                    <button
-                      onClick={() => {
-                        setIsEditingPath(true)
-                        setPathInput(getPath().replace(" > ", "/"))
-                      }}
-                      className="flex-1 text-left text-gray-300 hover:text-white transition-colors truncate"
-                    >
-                      <span>{selectedSidebarItem}</span>
-                      {selectedFolder && (
-                        <>
-                          <span className="text-gray-400"> / </span>
-                          <span>{selectedFolder}</span>
-                        </>
-                      )}
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex h-[400px] sm:h-[500px] relative">
-                <div
-                  className={`${
-                    showMobileSidebar ? "absolute inset-y-0 left-0 z-10" : "hidden"
-                  } md:block w-48 bg-[#252526] border-r border-[#3d3d3d] p-3 space-y-1 overflow-y-auto`}
-                >
-                  <button
-                    onClick={() => setShowMobileSidebar(false)}
-                    className="md:hidden w-full text-right text-gray-400 hover:text-white mb-2"
-                  >
-                    ✕
-                  </button>
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 px-2">
-                    Favorites
-                  </div>
-                  <button
-                    onClick={() => {
-                      handleSidebarClick("Home")
-                      setShowMobileSidebar(false)
-                    }}
-                    className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-sm transition-colors ${
-                      selectedSidebarItem === "Home" ? "bg-[#3d3d3d] text-white" : "text-gray-300 hover:bg-[#3d3d3d]"
-                    }`}
-                  >
-                    <Home className="w-4 h-4" />
-                    <span>Home</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleSidebarClick("Recent")
-                      setShowMobileSidebar(false)
-                    }}
-                    className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-sm transition-colors ${
-                      selectedSidebarItem === "Recent" ? "bg-[#3d3d3d] text-white" : "text-gray-300 hover:bg-[#3d3d3d]"
-                    }`}
-                  >
-                    <Clock className="w-4 h-4" />
-                    <span>Recent</span>
-                  </button>
-
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 px-2 mt-4">
-                    Locations
-                  </div>
-                  <button
-                    onClick={() => {
-                      handleSidebarClick("Projects")
-                      setShowMobileSidebar(false)
-                    }}
-                    className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-sm transition-colors ${
-                      selectedSidebarItem === "Projects"
-                        ? "bg-[#3d3d3d] text-white"
-                        : "text-gray-300 hover:bg-[#3d3d3d]"
-                    }`}
-                  >
-                    <Folder className="w-4 h-4 text-blue-400 fill-blue-400/20" />
-                    <span>Projects</span>
-                  </button>
-                </div>
-
-                {showMobileSidebar && (
-                  <div
-                    className="md:hidden absolute inset-0 bg-black/50 z-[9]"
-                    onClick={() => setShowMobileSidebar(false)}
-                  />
-                )}
-
-                <div className="flex-1 bg-[#1e1e1e] overflow-y-auto">
-                  {selectedSidebarItem === "Recent" ? (
-                    <>
-                      <div className="sticky top-0 bg-[#252526] border-b border-[#3d3d3d] px-3 sm:px-6 py-2 flex items-center text-xs font-medium text-gray-400">
-                        <div className="flex-1">Name</div>
-                        <div className="w-20 sm:w-32 text-right">Type</div>
-                        <div className="w-20 sm:w-32 text-right hidden sm:block">Opened</div>
-                      </div>
-                      <div className="p-2 sm:p-4 space-y-1">
-                        {recentItems.length === 0 ? (
-                          <div className="flex items-center justify-center h-64">
-                            <div className="text-center text-gray-500">
-                              <Clock className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 opacity-50" />
-                              <p className="text-base sm:text-lg font-medium">No Recent Items</p>
-                              <p className="text-xs sm:text-sm mt-2">Items you open will appear here</p>
-                            </div>
-                          </div>
-                        ) : (
-                          recentItems.map((item, index) => (
-                            <div
-                              key={index}
-                              className="w-full flex items-center px-2 sm:px-4 py-2 sm:py-3 rounded-lg border border-transparent hover:bg-[#252526]"
-                            >
-                              <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                                {item.type === "folder" ? (
-                                  <Folder className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400 fill-blue-400/20 flex-shrink-0" />
-                                ) : (
-                                  <ImageIcon className="w-5 h-5 sm:w-6 sm:h-6 text-green-400 flex-shrink-0" />
-                                )}
-                                <span className="text-xs sm:text-sm font-medium text-gray-200 truncate">
-                                  {item.name}
-                                </span>
-                              </div>
-                              <div className="w-20 sm:w-32 text-right text-xs sm:text-sm text-gray-400 capitalize">
-                                {item.type}
-                              </div>
-                              <div className="w-20 sm:w-32 text-right text-xs sm:text-sm text-gray-400 hidden sm:block">
-                                {item.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                              </div>
-                            </div>
-                          ))
-                        )}
-                      </div>
-                    </>
-                  ) : selectedSidebarItem === "Projects" && !selectedFolder ? (
-                    <>
-                      <div className="sticky top-0 bg-[#252526] border-b border-[#3d3d3d] px-3 sm:px-6 py-2 flex items-center text-xs font-medium text-gray-400">
-                        <div className="flex-1">Name</div>
-                        <div className="w-16 sm:w-24 text-right">Items</div>
-                        <div className="w-24 sm:w-32 text-right hidden sm:block">Modified</div>
-                      </div>
-
-                      <div className="p-2 sm:p-4 space-y-1">
-                        {projects.map((project) => (
-                          <button
-                            key={project.name}
-                            onClick={() => handleFolderClick(project.name)}
-                            className="w-full flex items-center px-2 sm:px-4 py-2 sm:py-3 rounded-lg transition-all group hover:bg-[#252526] border border-transparent"
-                          >
-                            <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                              <div className="relative flex-shrink-0">
-                                <Folder className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400 fill-blue-400/20" />
-                              </div>
-                              <span className="text-xs sm:text-sm font-medium text-gray-200 truncate">
-                                {project.name}
-                              </span>
-                            </div>
-                            <div className="w-16 sm:w-24 text-right text-xs sm:text-sm text-gray-400">
-                              {project.items} items
-                            </div>
-                            <div className="w-24 sm:w-32 text-right text-xs sm:text-sm text-gray-400 hidden sm:block">
-                              {project.modified}
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    </>
-                  ) : selectedFolder ? (
-                    <>
-                      <div className="p-3 sm:p-6">
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-                          {currentImages.map((image, index) => {
-                            const filename = image.src.split("/").pop() || "image.webp"
-                            return (
-                              <button
-                                key={index}
-                                onClick={() => handleImageClick(image)}
-                                className="group flex flex-col items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-lg hover:bg-[#252526] transition-all"
-                              >
-                                <div className="relative w-full aspect-square bg-[#252526] rounded-lg overflow-hidden border border-[#3d3d3d] hover:border-blue-500/50 transition-all">
-                                  <Image
-                                    src={image.src || "/placeholder.svg"}
-                                    alt={filename}
-                                    fill
-                                    className="object-cover"
-                                  />
-                                  <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                </div>
-                                <span className="text-[10px] sm:text-xs text-gray-300 text-center w-full truncate px-1">
-                                  {filename}
-                                </span>
-                              </button>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="flex items-center justify-center h-full">
-                      <div className="text-center text-gray-500 px-4">
-                        <Folder className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 opacity-50" />
-                        <p className="text-base sm:text-lg font-medium">No items in {selectedSidebarItem}</p>
-                        <p className="text-xs sm:text-sm mt-2">This folder is empty</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="bg-[#252526] border-t border-[#3d3d3d] px-3 sm:px-4 py-2 flex items-center justify-between text-[10px] sm:text-xs text-gray-400">
-                <span>
-                  {selectedFolder
-                    ? `${currentImages.length} images`
-                    : selectedSidebarItem === "Projects"
-                      ? `${projects.length} folders`
-                      : "0 items"}
-                </span>
-                <span className="hidden sm:inline">ZaneEnterprise Portfolio</span>
-              </div>
-            </div>
-          )}
-        </div>
-        <Footer />
+    <div className="relative group">
+      <div
+        className="relative aspect-[9/16] sm:aspect-[3/4] rounded-lg overflow-hidden bg-muted cursor-pointer hover:ring-2 hover:ring-brand/50 transition-all"
+        onClick={() => onImageClick(project.images, currentIndex)}
+      >
+        <Image
+          src={project.images[currentIndex].url || "/placeholder.svg"}
+          alt={project.images[currentIndex].alt}
+          fill
+          className="object-contain"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
+        />
       </div>
 
-      {openImages.map((image) => (
-        <ImageViewer
-          key={image.id}
-          id={image.id}
-          image={{ src: image.src, caption: image.caption }}
-          initialPosition={image.position}
-          zIndex={image.zIndex}
-          isMinimized={image.isMinimized}
-          onClose={() => handleCloseImage(image.id)}
-          onBringToFront={() => handleBringToFront(image.id)}
-          onUpdatePosition={(pos) => handleUpdatePosition(image.id, pos)}
-          onMinimize={() => handleMinimizeImage(image.id)}
-        />
-      ))}
+      <button
+        onClick={prev}
+        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+        aria-label="Previous image"
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </button>
+      <button
+        onClick={next}
+        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+        aria-label="Next image"
+      >
+        <ChevronRight className="h-4 w-4" />
+      </button>
 
-      {(isMinimized || openImages.some((img) => img.isMinimized)) && (
-        <div className="fixed bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-[100] flex gap-1.5 sm:gap-2 px-2 max-w-[95vw] overflow-x-auto">
-          {isMinimized && (
-            <button
-              onClick={() => setIsMinimized(false)}
-              className="bg-[#2d2d2d] hover:bg-[#3d3d3d] border border-[#3d3d3d] rounded-lg px-3 sm:px-4 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-2 shadow-xl transition-colors flex-shrink-0"
-            >
-              <Folder className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400" />
-              <span className="text-xs sm:text-sm text-gray-300">File Manager</span>
-            </button>
-          )}
-          {openImages
-            .filter((img) => img.isMinimized)
-            .map((image) => {
-              const filename = image.src.split("/").pop() || "image.webp"
-              return (
-                <button
-                  key={image.id}
-                  onClick={() => handleRestoreImage(image.id)}
-                  className="bg-[#2d2d2d] hover:bg-[#3d3d3d] border border-[#3d3d3d] rounded-lg px-3 sm:px-4 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-2 shadow-xl transition-colors flex-shrink-0"
-                >
-                  <ImageIcon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
-                  <span className="text-xs sm:text-sm text-gray-300 truncate max-w-[120px]">{filename}</span>
-                </button>
-              )
-            })}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+        {project.images.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={(e) => {
+              e.stopPropagation()
+              setCurrentIndex(idx)
+            }}
+            className={`h-1.5 rounded-full transition-all ${
+              idx === currentIndex ? "w-6 bg-white" : "w-1.5 bg-white/50"
+            }`}
+            aria-label={`Go to image ${idx + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function PlaceholderProjectCard() {
+  return (
+    <Card className="overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 border-dashed border-2">
+      <CardContent className="p-0">
+        <div className="p-3 sm:p-4">
+          <div className="relative aspect-[9/16] sm:aspect-[3/4] rounded-lg overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center">
+            <Sparkles className="h-12 w-12 sm:h-16 sm:w-16 text-brand/30" />
+          </div>
         </div>
+
+        <div className="px-3 sm:px-4 pb-4 flex flex-col min-h-[200px]">
+          <div className="space-y-0.5 mb-2.5">
+            <h2 className="text-base sm:text-lg font-bold text-foreground">Your Project Here</h2>
+            <p className="text-xs font-medium text-brand">This Could Be Your Next Project</p>
+          </div>
+
+          <p className="text-xs text-muted-foreground leading-relaxed mb-2.5">
+            Ready to bring your ideas to life? Let's collaborate on creating something amazing that stands out.
+          </p>
+
+          <div className="flex flex-wrap gap-1 mt-auto">
+            <Badge variant="secondary" className="text-xs px-1.5 py-0 h-5">
+              Custom
+            </Badge>
+            <Badge variant="secondary" className="text-xs px-1.5 py-0 h-5">
+              Innovative
+            </Badge>
+            <Badge variant="secondary" className="text-xs px-1.5 py-0 h-5">
+              Modern
+            </Badge>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+export default function PortfolioPage() {
+  const [lightboxData, setLightboxData] = useState<{
+    images: { url: string; alt: string }[]
+    index: number
+  } | null>(null)
+
+  const openLightbox = (images: { url: string; alt: string }[], index: number) => {
+    setLightboxData({ images, index })
+  }
+
+  const closeLightbox = () => {
+    setLightboxData(null)
+  }
+
+  return (
+    <div className="min-h-screen relative overflow-x-hidden">
+      <div
+        className="fixed inset-0 bg-cover bg-center -z-10"
+        style={{
+          backgroundImage: 'url("/desert-joshua-tree-landscape.jpg")',
+          filter: "blur(8px)",
+          transform: "scale(1.1)",
+        }}
+      />
+      <div className="fixed inset-0 bg-background/10 -z-10" />
+
+      <div className="relative min-h-screen p-3 sm:p-6 lg:p-8">
+        <div className="w-full max-w-7xl mx-auto bg-white dark:bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden">
+          <nav className="border-b border-border px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
+            <div className="flex items-center justify-between gap-2">
+              <Link href="/" className="flex items-center gap-1.5 sm:gap-2 min-w-0 hover:opacity-80 transition-opacity">
+                <Image
+                  src="/logo.svg"
+                  alt="ZaneEnterprise Logo"
+                  width={48}
+                  height={48}
+                  className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 flex-shrink-0 transition-all duration-300 hover:scale-110 hover:rotate-12 hover:brightness-125"
+                />
+                <div className="text-base sm:text-lg lg:text-xl truncate">
+                  <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>
+                  <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>
+                </div>
+              </Link>
+
+              <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+                <Link href="/contact">
+                  <Button
+                    size="sm"
+                    className="bg-foreground text-background hover:bg-foreground/90 text-xs sm:text-sm px-2 sm:px-3"
+                  >
+                    Contact
+                  </Button>
+                </Link>
+                <Link href="/">
+                  <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm px-2 sm:px-3">
+                    <ArrowLeft className="h-4 w-4" />
+                    <span className="hidden sm:inline">Back</span>
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </nav>
+
+          <main className="px-3 sm:px-4 md:px-6 py-6 sm:py-8">
+            <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
+              <div className="text-center space-y-1 sm:space-y-2 px-2">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">Featured Projects</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl mx-auto">
+                  Real-world applications built with modern tech
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
+                {projects.map((project) => (
+                  <Card
+                    key={project.id}
+                    className="overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1"
+                  >
+                    <CardContent className="p-0">
+                      <div className="p-3 sm:p-4">
+                        <ProjectCarousel project={project} onImageClick={openLightbox} />
+                      </div>
+
+                      <div className="px-3 sm:px-4 pb-4 flex flex-col min-h-[200px]">
+                        <div className="space-y-0.5 mb-2.5">
+                          <h2 className="text-base sm:text-lg font-bold text-foreground">{project.title}</h2>
+                          <p className="text-xs font-medium text-brand">{project.tagline}</p>
+                        </div>
+
+                        <p className="text-xs text-muted-foreground leading-relaxed mb-2.5">{project.description}</p>
+
+                        <div className="flex flex-wrap gap-1 mt-auto">
+                          {project.tags.map((tag) => (
+                            <Badge key={tag} variant="secondary" className="text-xs px-1.5 py-0 h-5">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+
+                <PlaceholderProjectCard />
+              </div>
+
+              <div className="text-center space-y-2 sm:space-y-3 pt-4 sm:pt-6 pb-2 px-2">
+                <h2 className="text-base sm:text-lg md:text-xl font-bold text-foreground">
+                  Ready to Start Your Project?
+                </h2>
+                <p className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto">
+                  Let's build something exceptional together.
+                </p>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-3 pt-1 sm:pt-2">
+                  <Link href="/contact" className="w-full sm:w-auto">
+                    <Button size="sm" className="bg-foreground text-background hover:bg-foreground/90 w-full">
+                      Start a Project
+                    </Button>
+                  </Link>
+                  <Link href="/" className="w-full sm:w-auto">
+                    <Button size="sm" variant="outline" className="w-full bg-transparent">
+                      Back to Home
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </main>
+
+          <footer className="border-t border-border px-4 py-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center py-4">
+                <a
+                  href="https://zaneenterprise.net"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
+                >
+                  <span className="text-xs sm:text-sm text-muted-foreground">Made by</span>
+                  <Image src="/logo.svg" alt="Z logo" width={24} height={24} className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <span className="text-xs sm:text-sm">
+                    <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>
+                    <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>
+                    <span className="text-muted-foreground ml-0.5">LLC</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+
+      {lightboxData && (
+        <ImageLightbox projectImages={lightboxData.images} initialIndex={lightboxData.index} onClose={closeLightbox} />
       )}
-    </>
+    </div>
   )
 }

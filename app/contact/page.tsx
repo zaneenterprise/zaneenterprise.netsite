@@ -1,251 +1,245 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useRef } from "react"
-import Footer from "@/components/footer"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Phone, Mail, ArrowLeft, Send } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
+import { useState } from "react"
 
-type Step = "name" | "email" | "message" | "confirm" | "complete"
+export default function ContactPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
 
-export default function Contact() {
-  const [step, setStep] = useState<Step>("name")
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  })
-  const [currentInput, setCurrentInput] = useState("")
-  const [history, setHistory] = useState<string[]>([
-    "ZaneEnterprise Contact Terminal v1.0",
-    "",
-    "📞 Call: 877-730-ZANE (877-730-9263)",
-    "",
-  ])
-  const inputRef = useRef<HTMLInputElement>(null)
-  const terminalRef = useRef<HTMLDivElement>(null)
-  const formRef = useRef<HTMLFormElement>(null)
-
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [step])
-
-  useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight
-    }
-  }, [history])
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setHistory((prev) => [...prev, "> What is your name?"])
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [])
-
-  useEffect(() => {
-    const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      if (step !== "complete" && document.activeElement !== inputRef.current) {
-        if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key.length === 1 && e.key !== "Tab" && e.key !== "Escape") {
-          inputRef.current?.focus()
-        }
-      }
-    }
-
-    window.addEventListener("keydown", handleGlobalKeyDown)
-    return () => window.removeEventListener("keydown", handleGlobalKeyDown)
-  }, [step])
-
-  const handlePageClick = () => {
-    if (step !== "complete") {
-      inputRef.current?.focus()
-    }
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!currentInput.trim() && step !== "confirm") return
+    setIsSubmitting(true)
+    setSubmitStatus("idle")
 
-    const input = currentInput.trim()
+    const formData = new FormData(e.currentTarget)
 
-    if (input.toLowerCase() === "exit") {
-      window.location.href = "/"
-      return
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (response.ok) {
+        setSubmitStatus("success")
+        ;(e.target as HTMLFormElement).reset()
+      } else {
+        setSubmitStatus("error")
+      }
+    } catch (error) {
+      setSubmitStatus("error")
+    } finally {
+      setIsSubmitting(false)
     }
-
-    switch (step) {
-      case "name":
-        setFormData((prev) => ({ ...prev, name: input }))
-        setHistory((prev) => [...prev, `  ${input}`, "", "> Email address?"])
-        setStep("email")
-        break
-
-      case "email":
-        if (!input.includes("@")) {
-          setHistory((prev) => [...prev, `  ${input}`, "! Invalid email", "", "> Email address?"])
-          setCurrentInput("")
-          return
-        }
-        setFormData((prev) => ({ ...prev, email: input }))
-        setHistory((prev) => [...prev, `  ${input}`, "", "> Your message?"])
-        setStep("message")
-        break
-
-      case "message":
-        setFormData((prev) => ({ ...prev, message: input }))
-        setHistory((prev) => [
-          ...prev,
-          `  ${input}`,
-          "",
-          "──────────────────────",
-          `Name:    ${formData.name}`,
-          `Email:   ${input}`,
-          `Message: ${input}`,
-          "──────────────────────",
-          "",
-          "> Send? (yes/no)",
-        ])
-        setStep("confirm")
-        break
-
-      case "confirm":
-        const response = input.toLowerCase()
-        if (response === "yes" || response === "y") {
-          setHistory((prev) => [...prev, `  ${input}`, "", "⟳ Sending..."])
-
-          if (formRef.current) {
-            try {
-              const formElement = formRef.current
-              const formDataToSend = new FormData(formElement)
-
-              const res = await fetch("https://api.web3forms.com/submit", {
-                method: "POST",
-                body: formDataToSend,
-              })
-
-              if (res.ok) {
-                setHistory((prev) => [...prev.slice(0, -1), "✓ Message sent!", "", "We'll get back to you soon."])
-              } else {
-                setHistory((prev) => [...prev.slice(0, -1), "✗ Failed to send. Try again."])
-              }
-            } catch (error) {
-              setHistory((prev) => [...prev.slice(0, -1), "✗ Network error. Try again."])
-            }
-          }
-          setStep("complete")
-        } else if (response === "no" || response === "n") {
-          setHistory((prev) => [
-            ...prev,
-            `  ${input}`,
-            "",
-            "✗ Cancelled",
-            "",
-            "ZaneEnterprise Contact Terminal v1.0",
-            "",
-            "📞 Call: 877-730-ZANE (877-730-9263)",
-            "",
-            "> What is your name?",
-          ])
-          setFormData({ name: "", email: "", message: "" })
-          setStep("name")
-        } else {
-          setHistory((prev) => [...prev, `  ${input}`, "! Type 'yes' or 'no'", "", "> Send? (yes/no)"])
-        }
-        break
-    }
-
-    setCurrentInput("")
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-black font-mono" onClick={handlePageClick}>
-      <header className="border-b border-green-900/30 bg-black px-3 sm:px-4 py-2 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <img src="/z.svg" alt="Z" className="w-5 h-5 sm:w-6 sm:h-6" />
-          <div className="flex items-baseline">
-            <span className="text-sm sm:text-base font-medium text-green-400">Zane</span>
-            <span className="text-sm sm:text-base text-green-400/70">Enterprise</span>
-          </div>
-        </Link>
-        <span className="text-xs text-green-600">terminal</span>
-      </header>
+    <div className="min-h-screen relative overflow-x-hidden">
+      <div
+        className="fixed inset-0 bg-cover bg-center -z-10"
+        style={{
+          backgroundImage: 'url("/desert-joshua-tree-landscape.jpg")',
+          filter: "blur(8px)",
+          transform: "scale(1.1)",
+        }}
+      />
+      <div className="fixed inset-0 bg-background/10 -z-10" />
 
-      <main className="flex-1 flex flex-col overflow-hidden">
-        <div ref={terminalRef} className="flex-1 overflow-y-auto px-3 sm:px-4 py-3 space-y-0.5 text-xs sm:text-sm">
-          {history.map((line, i) => (
-            <div
-              key={i}
-              className={`leading-relaxed ${
-                line.startsWith(">")
-                  ? "text-green-400 font-semibold"
-                  : line.startsWith("!")
-                    ? "text-red-400"
-                    : line.startsWith("✓")
-                      ? "text-green-400"
-                      : line.startsWith("✗") || line.startsWith("⟳")
-                        ? "text-yellow-400"
-                        : line.startsWith("─")
-                          ? "text-green-700"
-                          : line.startsWith(" ")
-                            ? "text-green-300 pl-3"
-                            : "text-green-500"
-              }`}
-            >
-              {line || "\u00A0"}
-            </div>
-          ))}
-
-          <form ref={formRef} className="hidden">
-            <input type="hidden" name="access_key" value="5e473c65-d194-41d6-9e6e-36b98694c848" />
-            <input type="hidden" name="subject" value="New Contact from ZaneEnterprise Website" />
-            <input type="text" name="name" value={formData.name} readOnly />
-            <input type="email" name="email" value={formData.email} readOnly />
-            <textarea name="message" value={formData.message} readOnly />
-          </form>
-
-          {step !== "complete" && (
-            <form onSubmit={handleSubmit} className="flex items-center gap-2 pt-1">
-              <span className="text-green-400">$</span>
-              <input
-                ref={inputRef}
-                type="text"
-                value={currentInput}
-                onChange={(e) => setCurrentInput(e.target.value)}
-                className="flex-1 bg-transparent border-none outline-none text-green-300 caret-green-400 text-xs sm:text-sm"
-                autoComplete="off"
-                spellCheck="false"
-                placeholder="Type 'exit' to return home..."
-              />
-            </form>
-          )}
-
-          {step === "complete" && (
-            <div className="pt-2 space-y-2">
-              <button
-                onClick={() => {
-                  setHistory([
-                    "ZaneEnterprise Contact Terminal v1.0",
-                    "",
-                    "📞 Call: 877-730-ZANE (877-730-9263)",
-                    "",
-                    "> What is your name?",
-                  ])
-                  setFormData({ name: "", email: "", message: "" })
-                  setCurrentInput("")
-                  setStep("name")
-                }}
-                className="text-green-400 hover:text-green-300 underline text-xs sm:text-sm block"
-              >
-                → Send another message
-              </button>
-              <Link href="/" className="text-green-400 hover:text-green-300 underline text-xs sm:text-sm block">
-                → Return home
+      <div className="relative min-h-screen p-3 sm:p-6 lg:p-8">
+        <div className="w-full max-w-7xl mx-auto bg-white dark:bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden">
+          <nav className="border-b border-border px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
+            <div className="flex items-center justify-between gap-2">
+              <Link href="/" className="flex items-center gap-1.5 sm:gap-2 min-w-0 hover:opacity-80 transition-opacity">
+                <Image
+                  src="/logo.svg"
+                  alt="ZaneEnterprise Logo"
+                  width={48}
+                  height={48}
+                  className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 flex-shrink-0 transition-all duration-300 hover:scale-110 hover:rotate-12 hover:brightness-125"
+                />
+                <div className="text-base sm:text-lg lg:text-xl truncate">
+                  <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>
+                  <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>
+                </div>
               </Link>
-            </div>
-          )}
-        </div>
-      </main>
 
-      <Footer />
+              <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+                <Link href="/">
+                  <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm px-2 sm:px-3">
+                    <ArrowLeft className="h-4 w-4" />
+                    <span className="hidden sm:inline">Back</span>
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </nav>
+
+          <main className="px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-10 lg:py-16">
+            <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
+              <div className="text-center space-y-2 sm:space-y-3">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+                  Reach out to get started
+                </h1>
+                <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-2xl mx-auto px-2">
+                  Ready to start your project? Let's talk about how I can help bring your ideas to life.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+                <Card className="border-2">
+                  <CardHeader>
+                    <CardTitle className="text-xl sm:text-2xl">Contact Information</CardTitle>
+                    <CardDescription>Get in touch via phone or fill out the form</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3 p-3 sm:p-4 rounded-lg bg-muted/50">
+                        <Phone className="h-5 w-5 text-brand mt-0.5 flex-shrink-0" />
+                        <div className="space-y-1 min-w-0 flex-1 overflow-hidden">
+                          <p className="text-sm font-medium text-foreground">Call Me</p>
+                          <a href="tel:877-730-9263" className="text-brand hover:underline font-semibold block">
+                            <div className="flex flex-col sm:flex-row sm:gap-1">
+                              <span className="text-lg sm:text-xl lg:text-2xl">877-730-ZANE</span>
+                              <span className="text-xs sm:text-sm lg:text-base text-muted-foreground">
+                                (877-730-9263)
+                              </span>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3 p-4 rounded-lg bg-muted/50">
+                        <Mail className="h-5 w-5 text-brand mt-0.5 flex-shrink-0" />
+                        <div className="space-y-1 min-w-0">
+                          <p className="text-sm font-medium text-foreground">Email</p>
+                          <p className="text-sm text-muted-foreground">Or use the contact form to send a message</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 border-t">
+                      <h3 className="text-sm font-semibold text-foreground mb-3">What I Can Help With</h3>
+                      <ul className="space-y-4 text-sm text-muted-foreground">
+                        <li className="flex items-start gap-2">
+                          <span className="text-brand mt-0.5">✓</span>
+                          <span>Custom web and mobile app development</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-brand mt-0.5">✓</span>
+                          <span>UI/UX design and modern interfaces</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-brand mt-0.5">✓</span>
+                          <span>Full-stack development and API integration</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-brand mt-0.5">✓</span>
+                          <span>Consultation and technical guidance</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-2">
+                  <CardHeader>
+                    <CardTitle className="text-xl sm:text-2xl">Send a Message</CardTitle>
+                    <CardDescription>Fill out the form and I'll get back to you soon</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <input type="hidden" name="access_key" value="5e473c65-d194-41d6-9e6e-36b98694c848" />
+                      <input type="hidden" name="subject" value="New Contact Form Submission from ZaneEnterprise" />
+
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Name</Label>
+                        <Input id="name" name="name" placeholder="Your name" required />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input id="email" name="email" type="email" placeholder="your@email.com" required />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="message">Message</Label>
+                        <Textarea
+                          id="message"
+                          name="message"
+                          placeholder="Tell me about your project..."
+                          rows={5}
+                          required
+                        />
+                      </div>
+
+                      {submitStatus === "success" && (
+                        <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20">
+                          <p className="text-sm text-green-600 dark:text-green-400">
+                            Message sent successfully! I'll get back to you soon.
+                          </p>
+                        </div>
+                      )}
+
+                      {submitStatus === "error" && (
+                        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                          <p className="text-sm text-red-600 dark:text-red-400">
+                            Something went wrong. Please try again or call me directly.
+                          </p>
+                        </div>
+                      )}
+
+                      <Button
+                        type="submit"
+                        className="w-full bg-foreground text-background hover:bg-foreground/90"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          "Sending..."
+                        ) : (
+                          <>
+                            <Send className="h-4 w-4 mr-2" />
+                            Send Message
+                          </>
+                        )}
+                      </Button>
+                    </form>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </main>
+
+          <footer className="border-t border-border px-4 py-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center py-4">
+                <a
+                  href="https://zaneenterprise.net"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
+                >
+                  <span className="text-xs sm:text-sm text-muted-foreground">Made by</span>
+                  <Image src="/logo.svg" alt="Z logo" width={24} height={24} className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <span className="text-xs sm:text-sm">
+                    <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>
+                    <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>
+                    <span className="text-muted-foreground ml-0.5">LLC</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
     </div>
   )
 }

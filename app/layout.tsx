@@ -1,9 +1,11 @@
 import type React from "react"
 import type { Metadata } from "next"
+import Image from "next/image"
 import { Montserrat, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import { PHProvider } from "@/components/posthog-provider"
 import { PostHogPageView } from "@/components/posthog-pageview"
+import { LandingFooter } from "@/components/landing-footer"
 import { Suspense } from "react"
 import { getBunnyCDNHostname, getBunnyCDNUrl } from "@/lib/cdn-utils"
 
@@ -89,7 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <head>
           <link rel="preconnect" href={`https://${cdnHost}`} />
           <link rel="dns-prefetch" href={`https://${cdnHost}`} />
-          <link rel="preload" as="image" href={backgroundImage} />
+          <link rel="preload" as="image" href={backgroundImage} fetchPriority="high" crossOrigin="anonymous" />
         </head>
       ) : null}
       <PHProvider>
@@ -99,6 +101,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <PostHogPageView />
           </Suspense>
           <div className="relative z-10 min-h-screen">{children}</div>
+          <LandingFooter />
         </body>
       </PHProvider>
     </html>
@@ -108,15 +111,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 function GlobalBackground({ image }: { image: string }) {
   return (
     <>
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 bg-cover bg-center -z-10"
-        style={{
-          backgroundImage: `url("${image}")`,
-          filter: "blur(8px)",
-          transform: "scale(1.1)",
-        }}
-      />
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
+        <div className="relative h-full w-full">
+          <Image
+            src={image}
+            alt=""
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            className="object-cover"
+            style={{ filter: "blur(8px)", transform: "scale(1.1)" }}
+          />
+        </div>
+      </div>
       <div aria-hidden className="pointer-events-none fixed inset-0 bg-background/10 -z-10" />
     </>
   )

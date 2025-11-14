@@ -4,7 +4,6 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { CodeMarquee } from "@/components/code-marquee"
-import { LandingFooter } from "@/components/landing-footer"
 import { codeExamples } from "@/lib/code-examples"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
@@ -148,7 +147,6 @@ export default function LandingPage() {
           </div>
         </main>
 
-        <LandingFooter />
       </div>
     </div>
   )

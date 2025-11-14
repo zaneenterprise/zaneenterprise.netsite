@@ -8,7 +8,6 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, ChevronLeft, ChevronRight, Sparkles, X } from "lucide-react"
 import Link from "next/link"
 import { CDNImage, LogoImage } from "@/components/cdn-image"
-import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 import { useState, useEffect } from "react"
 
 const projects = [
@@ -229,17 +228,12 @@ function ImageLightbox({
         }}
         className="relative max-w-7xl max-h-[90vh] animate-in zoom-in-95 duration-200"
       >
-        {(() => {
-          const src = getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", { quality: 85, format: 'webp' })
-          return (
-            <img
-              src={src}
+        <img
+          src={projectImages[currentIndex]?.url || "/placeholder.svg"}
           alt={projectImages[currentIndex]?.alt || "Project image"}
           className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
           style={{ maxWidth: "90vw" }}
-            />
-          )
-        })()}
+        />
       </div>
     </div>
   )
@@ -356,9 +350,7 @@ export default function PortfolioPage() {
     images: { url: string; alt: string }[]
     index: number
   } | null>(null)
-  const cdnHost = getBunnyCDNHostname()
-  const bgLq = '/desert-joshua-tree-landscape-blurred.avif'
-  const bgHq = getBunnyCDNUrl('/desert-joshua-tree-landscape.avif', { width: 1920, quality: 75, format: 'avif' })
+  const bgImage = '/desert-joshua-tree-landscape.avif'
 
   const openLightbox = (images: { url: string; alt: string }[], index: number) => {
     setLightboxData({ images, index })
@@ -373,7 +365,7 @@ export default function PortfolioPage() {
       <div
         className="fixed inset-0 bg-cover bg-center -z-10"
         style={{
-          backgroundImage: `url("${bgHq}"), url("${bgLq}")`,
+          backgroundImage: `url("${bgImage}")`,
           filter: "blur(8px)",
           transform: "scale(1.1)",
         }}

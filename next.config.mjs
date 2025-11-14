@@ -33,6 +33,7 @@ const nextConfig = {
   images: {
     unoptimized: false,
     loader: 'custom',
+    loaderFile: './lib/image-loader.ts',
     path: '/',
     remotePatterns: [
       {

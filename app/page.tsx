@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button"
 import { Code2, Smartphone, Zap } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 
-import { LogoImage } from "@/components/cdn-image"
 import { CodeMarquee } from "@/components/code-marquee"
 import { LandingFooter } from "@/components/landing-footer"
 import { codeExamples } from "@/lib/code-examples"
+import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
 const taglines = [
   { text: "Want a site or app that's actually awesome?" },
@@ -37,6 +38,7 @@ const services = [
 export default function LandingPage() {
   const highlightedTagline = taglines[Math.floor(Math.random() * taglines.length)]
   const snippet = codeExamples[Math.floor(Math.random() * codeExamples.length)] ?? []
+  const logoSrc = getBunnyCDNUrl("/logo.svg", { width: 96, quality: 90, auto_optimize: "low" })
 
   return (
     <div className="relative min-h-screen p-3 sm:p-6 lg:p-8">
@@ -44,12 +46,14 @@ export default function LandingPage() {
         <nav className="border-b border-border px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
           <div className="flex items-center justify-between gap-2">
             <Link href="/" prefetch={false} className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-              <LogoImage
-                src="/logo.svg"
+              <Image
+                src={logoSrc}
                 alt="ZaneEnterprise Logo"
                 width={48}
                 height={48}
                 className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 flex-shrink-0 transition-transform transition-filter transition-opacity duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-110 hover:rotate-[10deg] hover:brightness-110 hover:opacity-90"
+                priority
+                unoptimized
               />
               <div className="text-base sm:text-lg lg:text-xl truncate">
                 <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>

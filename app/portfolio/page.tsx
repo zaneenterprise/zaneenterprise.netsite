@@ -361,8 +361,9 @@ export default function PortfolioPage() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden p-3 sm:p-6 lg:p-8">
-      <div className="w-full max-w-7xl mx-auto bg-white dark:bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden">
+    <>
+      <div className="relative min-h-screen overflow-x-hidden p-3 sm:p-6 lg:p-8">
+        <div className="w-full max-w-7xl mx-auto bg-white dark:bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden">
           <nav className="border-b border-border px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
             <div className="flex items-center justify-between gap-2">
               <Link
@@ -494,6 +495,6 @@ export default function PortfolioPage() {
       {lightboxData && (
         <ImageLightbox projectImages={lightboxData.images} initialIndex={lightboxData.index} onClose={closeLightbox} />
       )}
-    </div>
+    </>
   )
 }

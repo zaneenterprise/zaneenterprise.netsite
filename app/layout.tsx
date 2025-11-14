@@ -86,8 +86,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   const cdnHost = getBunnyCDNHostname()
-  const bgLq = '/desert-joshua-tree-landscape-blurred.avif'
-  const bgHq = getBunnyCDNUrl('/desert-joshua-tree-landscape.avif', { width: 1920, quality: 75, format: 'avif' })
+  const bgLq = '/background.avif'
+  const bgHq = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, format: 'avif' })
   return (
     <html lang="en">
       {cdnHost ? (

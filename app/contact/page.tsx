@@ -47,7 +47,7 @@ export default function ContactPage() {
       <div
         className="fixed inset-0 bg-cover bg-center -z-10"
         style={{
-          backgroundImage: 'url("/desert-joshua-tree-landscape.jpg")',
+          backgroundImage: 'url("/desert-joshua-tree-landscape.avif")',
           filter: "blur(8px)",
           transform: "scale(1.1)",
         }}

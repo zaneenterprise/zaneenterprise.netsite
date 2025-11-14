@@ -2,6 +2,10 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Montserrat, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
+import { PHProvider } from "@/components/posthog-provider"
+import { PostHogPageView } from "@/components/posthog-pageview"
+import { Suspense } from "react"
+import { getBunnyCDNHostname, getBunnyCDNUrl } from "@/lib/cdn-utils"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -81,11 +85,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const cdnHost = getBunnyCDNHostname()
+  const bgLq = '/desert-joshua-tree-landscape-blurred.avif'
+  const bgHq = getBunnyCDNUrl('/desert-joshua-tree-landscape.avif', { width: 1920, quality: 75, format: 'avif' })
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
-        {children}
-      </body>
+      {cdnHost ? (
+        <head>
+          <link rel="preconnect" href={`https://${cdnHost}`} />
+          <link rel="dns-prefetch" href={`https://${cdnHost}`} />
+          <link rel="preload" as="image" href={bgLq} />
+          <link rel="preload" as="image" href={bgHq} />
+        </head>
+      ) : null}
+      <PHProvider>
+        <body className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
+          <Suspense fallback={null}>
+            <PostHogPageView />
+          </Suspense>
+          {children}
+        </body>
+      </PHProvider>
     </html>
   )
 }

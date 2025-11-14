@@ -7,7 +7,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, ChevronLeft, ChevronRight, Sparkles, X } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
+import { CDNImage, LogoImage } from "@/components/cdn-image"
+import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 import { useState, useEffect } from "react"
 
 const projects = [
@@ -19,15 +20,15 @@ const projects = [
       "An innovative mobile app that turns your cat's playful movements into beautiful digital artwork. Watch your feline friend chase a bird across the screen and create unique masterpieces with customizable color themes.",
     images: [
       {
-        url: "/images/pawcasso1.webp",
+        url: "/images/pawcasso1.avif",
         alt: "Pawcasso theme selection screen",
       },
       {
-        url: "/images/pawcasso2.webp",
+        url: "/images/pawcasso2.avif",
         alt: "Pawcasso gameplay with cat painting",
       },
       {
-        url: "/images/pawcasso3.webp",
+        url: "/images/pawcasso3.avif",
         alt: "Cat-approved painting experience",
       },
     ],
@@ -48,23 +49,23 @@ const projects = [
       "A professional musician portfolio website featuring custom animations, seamless navigation, and cohesive branding. Built for Buddy Cash with a powerful custom admin portal for gig management, schedule integration, and real-time updates.",
     images: [
       {
-        url: "/images/azbuddy1.png",
+        url: "/images/azbuddy1.avif",
         alt: "AZBuddy.Cash homepage",
       },
       {
-        url: "/images/azbuddy2.png",
+        url: "/images/azbuddy2.avif",
         alt: "Custom animated navigation buttons",
       },
       {
-        url: "/images/azbuddy3.png",
+        url: "/images/azbuddy3.avif",
         alt: "Social media integration section",
       },
       {
-        url: "/images/azbuddy4.png",
+        url: "/images/azbuddy4.avif",
         alt: "Performance schedule page",
       },
       {
-        url: "/images/azbuddy5.png",
+        url: "/images/azbuddy5.avif",
         alt: "Custom admin portal for gig management",
       },
     ],
@@ -87,15 +88,15 @@ const projects = [
       "A comprehensive plant care tracking app with AI-powered health diagnostics. Track watering schedules, get personalized care recommendations, and analyze plant health using advanced photo analysis technology.",
     images: [
       {
-        url: "/images/gard1.png",
+        url: "/images/gard1.avif",
         alt: "GardenerPlus main dashboard",
       },
       {
-        url: "/images/gard2.png",
+        url: "/images/gard2.avif",
         alt: "Detailed plant profile with care instructions",
       },
       {
-        url: "/images/gard3.jpeg",
+        url: "/images/gard3.avif",
         alt: "AI plant health checkup feature",
       },
     ],
@@ -228,12 +229,17 @@ function ImageLightbox({
         }}
         className="relative max-w-7xl max-h-[90vh] animate-in zoom-in-95 duration-200"
       >
-        <img
-          src={projectImages[currentIndex]?.url || "/placeholder.svg"}
+        {(() => {
+          const src = getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", { quality: 85, format: 'webp' })
+          return (
+            <img
+              src={src}
           alt={projectImages[currentIndex]?.alt || "Project image"}
           className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
           style={{ maxWidth: "90vw" }}
-        />
+            />
+          )
+        })()}
       </div>
     </div>
   )
@@ -264,12 +270,13 @@ function ProjectCarousel({
         className="relative aspect-[9/16] sm:aspect-[3/4] rounded-lg overflow-hidden bg-muted cursor-pointer hover:ring-2 hover:ring-brand/50 transition-all"
         onClick={() => onImageClick(project.images, currentIndex)}
       >
-        <Image
+        <CDNImage
           src={project.images[currentIndex].url || "/placeholder.svg"}
           alt={project.images[currentIndex].alt}
           fill
           className="object-contain"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
+          cdnOptions={{ quality: 85, format: 'webp' }}
         />
       </div>
 
@@ -349,6 +356,9 @@ export default function PortfolioPage() {
     images: { url: string; alt: string }[]
     index: number
   } | null>(null)
+  const cdnHost = getBunnyCDNHostname()
+  const bgLq = '/desert-joshua-tree-landscape-blurred.avif'
+  const bgHq = getBunnyCDNUrl('/desert-joshua-tree-landscape.avif', { width: 1920, quality: 75, format: 'avif' })
 
   const openLightbox = (images: { url: string; alt: string }[], index: number) => {
     setLightboxData({ images, index })
@@ -363,7 +373,7 @@ export default function PortfolioPage() {
       <div
         className="fixed inset-0 bg-cover bg-center -z-10"
         style={{
-          backgroundImage: 'url("/desert-joshua-tree-landscape.jpg")',
+          backgroundImage: `url("${bgHq}"), url("${bgLq}")`,
           filter: "blur(8px)",
           transform: "scale(1.1)",
         }}
@@ -375,7 +385,7 @@ export default function PortfolioPage() {
           <nav className="border-b border-border px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
             <div className="flex items-center justify-between gap-2">
               <Link href="/" className="flex items-center gap-1.5 sm:gap-2 min-w-0 hover:opacity-80 transition-opacity">
-                <Image
+                <LogoImage
                   src="/logo.svg"
                   alt="ZaneEnterprise Logo"
                   width={48}
@@ -483,7 +493,7 @@ export default function PortfolioPage() {
                   className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
                 >
                   <span className="text-xs sm:text-sm text-muted-foreground">Made by</span>
-                  <Image src="/logo.svg" alt="Z logo" width={24} height={24} className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <LogoImage src="/logo.svg" alt="Z logo" width={24} height={24} className="h-5 w-5 sm:h-6 sm:w-6" />
                   <span className="text-xs sm:text-sm">
                     <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>
                     <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>

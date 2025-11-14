@@ -4,7 +4,8 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Code2, Smartphone, Zap } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
+import { LogoImage } from "@/components/cdn-image"
+import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 import { codeExamples } from "@/lib/code-examples"
 
 const taglines = [
@@ -64,13 +65,14 @@ export default function LandingPage() {
 
   const codeSnippets = codeExamples[selectedCodeExample]
   const allLines = [...codeSnippets, ...codeSnippets, ...codeSnippets, ...codeSnippets]
-
+  const bgImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, format: 'avif' })
+  
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div
         className="fixed inset-0 bg-cover bg-center -z-10"
         style={{
-          backgroundImage: 'url("/desert-joshua-tree-landscape.jpg")',
+          backgroundImage: `url("${bgImage}")`,
           filter: "blur(8px)",
           transform: "scale(1.1)",
         }}
@@ -82,7 +84,7 @@ export default function LandingPage() {
           <nav className="border-b border-border px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
             <div className="flex items-center justify-between gap-2">
               <Link href="/" className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                <Image
+                <LogoImage
                   src="/logo.svg"
                   alt="ZaneEnterprise Logo"
                   width={48}
@@ -230,7 +232,7 @@ export default function LandingPage() {
                   className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
                 >
                   <span className="text-xs sm:text-sm text-muted-foreground">Made by</span>
-                  <Image src="/logo.svg" alt="Z logo" width={24} height={24} className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <LogoImage src="/logo.svg" alt="Z logo" width={24} height={24} className="h-5 w-5 sm:h-6 sm:w-6" />
                   <span className="text-xs sm:text-sm">
                     <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>
                     <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>

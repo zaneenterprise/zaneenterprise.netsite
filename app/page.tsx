@@ -7,6 +7,7 @@ import Link from "next/link"
 import { LogoImage } from "@/components/cdn-image"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 import { codeExamples } from "@/lib/code-examples"
+import { motion, AnimatePresence } from "framer-motion"
 
 const taglines = [
   { text: "Want a site or app that's actually awesome?" },
@@ -40,6 +41,7 @@ export default function LandingPage() {
   const [scrollOffset, setScrollOffset] = useState(0)
   const [selectedCodeExample, setSelectedCodeExample] = useState(() => Math.floor(Math.random() * codeExamples.length))
   const [mounted, setMounted] = useState(false)
+  const [showPopup, setShowPopup] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -67,6 +69,15 @@ export default function LandingPage() {
   const allLines = [...codeSnippets, ...codeSnippets, ...codeSnippets, ...codeSnippets]
   const bgImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, format: 'avif' })
   
+  const handleFooterClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setShowPopup(true)
+    setTimeout(() => {
+      setShowPopup(false)
+    }, 2500)
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div
@@ -206,7 +217,7 @@ export default function LandingPage() {
             </div>
           </main>
 
-          <footer className="border-t border-border px-3 sm:px-6 lg:px-8 py-3 sm:py-6 lg:py-8">
+          <footer className="border-t border-border px-3 sm:px-6 lg:px-8 py-3 sm:py-6 lg:py-8 cursor-pointer" onClick={handleFooterClick}>
             <div className="max-w-4xl mx-auto">
               <p className="text-xs sm:text-sm text-muted-foreground text-center mb-1.5 sm:mb-4 lg:mb-6">
                 Built with industry-leading technologies
@@ -225,11 +236,9 @@ export default function LandingPage() {
                 <div className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">CSS</div>
               </div>
               <div className="text-center py-2 sm:py-4 border-t border-border/50">
-                <a
-                  href="https://zaneenterprise.net"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
+                <div
+                  onClick={handleFooterClick}
+                  className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
                 >
                   <span className="text-xs sm:text-sm text-muted-foreground">Made by</span>
                   <LogoImage src="/logo.svg" alt="Z logo" width={24} height={24} className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -238,12 +247,88 @@ export default function LandingPage() {
                     <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>
                     <span className="text-muted-foreground ml-0.5">LLC</span>
                   </span>
-                </a>
+                </div>
               </div>
             </div>
           </footer>
         </div>
       </div>
+
+      <AnimatePresence>
+        {showPopup && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.3, y: 100 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1, 
+              y: 0,
+              transition: {
+                type: "spring",
+                stiffness: 500,
+                damping: 25,
+                mass: 0.8
+              }
+            }}
+            exit={{ 
+              opacity: 0, 
+              scale: 0.5, 
+              y: 50,
+              transition: {
+                duration: 0.2
+              }
+            }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
+          >
+            <motion.div
+              animate={{
+                rotate: [0, -3, 3, -3, 3, 0],
+              }}
+              transition={{
+                duration: 0.5,
+                delay: 0.2,
+                ease: "easeInOut"
+              }}
+              className="relative"
+            >
+              <motion.p 
+                className="text-2xl sm:text-3xl font-bold whitespace-nowrap bg-gradient-to-r from-brand to-brand/70 bg-clip-text text-transparent drop-shadow-lg"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                You're already here!
+              </motion.p>
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-2 h-2 bg-yellow-300 rounded-full"
+                  initial={{ 
+                    opacity: 1,
+                    scale: 0,
+                    x: 0,
+                    y: 0 
+                  }}
+                  animate={{
+                    opacity: [1, 1, 0],
+                    scale: [0, 1, 0.5],
+                    x: [0, Math.cos((i * Math.PI * 2) / 6) * 60],
+                    y: [0, Math.sin((i * Math.PI * 2) / 6) * 60],
+                  }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.3,
+                    ease: "easeOut"
+                  }}
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                  }}
+                />
+              ))}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

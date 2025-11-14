@@ -350,7 +350,7 @@ export default function PortfolioPage() {
     images: { url: string; alt: string }[]
     index: number
   } | null>(null)
-  const bgImage = '/desert-joshua-tree-landscape.avif'
+  const bgImage = '/background.avif'
 
   const openLightbox = (images: { url: string; alt: string }[], index: number) => {
     setLightboxData({ images, index })

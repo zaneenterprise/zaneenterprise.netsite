@@ -24,7 +24,10 @@ export default function customImageLoader({
   params.append('width', width.toString())
   if (quality) {
     params.append('quality', quality.toString())
+  } else {
+    params.append('quality', '85')
   }
+  params.append('auto_optimize', 'medium')
   
   return `${baseUrl}?${params.toString()}`
 }

@@ -67,7 +67,7 @@ export default function LandingPage() {
 
   const codeSnippets = codeExamples[selectedCodeExample]
   const allLines = [...codeSnippets, ...codeSnippets, ...codeSnippets, ...codeSnippets]
-  const bgImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, format: 'avif' })
+  const bgImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, auto_optimize: 'medium' })
   
   const handleFooterClick = (e: React.MouseEvent) => {
     e.preventDefault()

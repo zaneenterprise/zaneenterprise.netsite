@@ -43,7 +43,7 @@ export default function ContactPage() {
     }
   }
 
-  const bgImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, format: 'avif' })
+  const bgImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, auto_optimize: 'medium' })
   
   return (
     <div className="min-h-screen relative overflow-x-hidden">

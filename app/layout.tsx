@@ -84,10 +84,10 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
-}>) {
+}) {
   const cdnHost = getBunnyCDNHostname()
   const bgLq = '/background.avif'
-  const bgHq = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, format: 'avif' })
+  const bgHq = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, auto_optimize: 'medium' })
   return (
     <html lang="en">
       {cdnHost ? (

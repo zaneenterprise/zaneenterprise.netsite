@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, ChevronLeft, ChevronRight, Sparkles, X } from "lucide-react"
 import Link from "next/link"
 import { CDNImage, LogoImage } from "@/components/cdn-image"
+import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 import { useState, useEffect } from "react"
 
 const projects = [
@@ -229,7 +230,7 @@ function ImageLightbox({
         className="relative max-w-7xl max-h-[90vh] animate-in zoom-in-95 duration-200"
       >
         <img
-          src={projectImages[currentIndex]?.url || "/placeholder.svg"}
+          src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
           alt={projectImages[currentIndex]?.alt || "Project image"}
           className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
           style={{ maxWidth: "90vw" }}
@@ -270,7 +271,7 @@ function ProjectCarousel({
           fill
           className="object-contain"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
-          cdnOptions={{ quality: 85, format: 'webp' }}
+          cdnOptions={{ quality: 85, auto_optimize: 'high' }}
         />
       </div>
 
@@ -350,7 +351,7 @@ export default function PortfolioPage() {
     images: { url: string; alt: string }[]
     index: number
   } | null>(null)
-  const bgImage = '/background.avif'
+  const bgImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, auto_optimize: 'medium' })
 
   const openLightbox = (images: { url: string; alt: string }[], index: number) => {
     setLightboxData({ images, index })

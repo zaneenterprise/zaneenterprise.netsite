@@ -10,6 +10,7 @@ export function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
   const defaultOptions: BunnyImageOptions = {
     quality: 85,
     format: 'webp',
+    auto_optimize: 'medium',
   }
 
   const optimizationOptions: BunnyImageOptions = {
@@ -42,5 +43,5 @@ export function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
 }
 
 export function LogoImage(props: Omit<CDNImageProps, 'cdnOptions'>) {
-  return <CDNImage {...props} cdnOptions={{ quality: 90, format: 'png' }} />
+  return <CDNImage {...props} cdnOptions={{ quality: 90 }} />
 }

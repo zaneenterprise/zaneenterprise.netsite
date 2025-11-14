@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     siteName: "ZaneEnterprise",
     images: [
       {
-        url: "/opengraph-image.png",
+        url: getBunnyCDNUrl("/opengraph-image.png", { width: 1200, quality: 85, auto_optimize: 'medium' }),
         width: 1200,
         height: 630,
         alt: "ZaneEnterprise - App & Website Development",
@@ -53,17 +53,17 @@ export const metadata: Metadata = {
     title: "ZaneEnterprise - App & Website Development",
     description: "Anything from development, to hosting, to optimization",
     creator: "@zaneenterprise",
-    images: ["/twitter-image.png"],
+    images: [getBunnyCDNUrl("/twitter-image.png", { width: 1200, quality: 85, auto_optimize: 'medium' })],
   },
   icons: {
     icon: [
       {
-        url: "/favicon-32.png",
+        url: getBunnyCDNUrl("/favicon-32.png", { width: 32, quality: 90, auto_optimize: 'low' }),
         sizes: "32x32",
         type: "image/png",
       },
       {
-        url: "/favicon-16.png",
+        url: getBunnyCDNUrl("/favicon-16.png", { width: 16, quality: 90, auto_optimize: 'low' }),
         sizes: "16x16",
         type: "image/png",
       },
@@ -73,18 +73,14 @@ export const metadata: Metadata = {
     ],
     apple: [
       {
-        url: "/apple-touch-icon.png",
+        url: getBunnyCDNUrl("/apple-touch-icon.png", { width: 180, quality: 90, auto_optimize: 'low' }),
         sizes: "180x180",
       },
     ],
   },
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const cdnHost = getBunnyCDNHostname()
   const bgLq = '/background.avif'
   const bgHq = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, auto_optimize: 'medium' })

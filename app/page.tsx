@@ -77,8 +77,8 @@ export default function LandingPage() {
       />
       <div className="fixed inset-0 bg-background/10 -z-10" />
 
-      <div className="relative min-h-screen flex items-center justify-center p-3 sm:p-6 lg:p-8">
-        <div className="w-full max-w-7xl bg-white dark:bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden">
+      <div className="relative min-h-screen p-3 sm:p-6 lg:p-8">
+        <div className="w-full max-w-7xl mx-auto bg-white dark:bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden">
           <nav className="border-b border-border px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
             <div className="flex items-center justify-between gap-2">
               <Link href="/" className="flex items-center gap-1.5 sm:gap-2 min-w-0">
@@ -111,7 +111,7 @@ export default function LandingPage() {
             </div>
           </nav>
 
-          <main className="px-3 sm:px-6 lg:px-8 py-4 sm:py-10 lg:py-16">
+          <main className="px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-10 lg:py-16">
             <div className="max-w-4xl mx-auto text-center space-y-2 sm:space-y-6 lg:space-y-8">
               <div className="text-brand text-xs sm:text-base lg:text-lg font-bold tracking-wider sm:tracking-widest uppercase leading-normal sm:leading-relaxed bg-gradient-to-r from-brand to-brand/70 bg-clip-text text-transparent">
                 Web and App Development

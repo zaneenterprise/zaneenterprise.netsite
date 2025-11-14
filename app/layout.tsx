@@ -82,26 +82,42 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const cdnHost = getBunnyCDNHostname()
-  const bgLq = '/background.avif'
-  const bgHq = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, auto_optimize: 'medium' })
+  const backgroundImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, auto_optimize: 'medium' })
   return (
     <html lang="en">
       {cdnHost ? (
         <head>
           <link rel="preconnect" href={`https://${cdnHost}`} />
           <link rel="dns-prefetch" href={`https://${cdnHost}`} />
-          <link rel="preload" as="image" href={bgLq} />
-          <link rel="preload" as="image" href={bgHq} />
+          <link rel="preload" as="image" href={backgroundImage} />
         </head>
       ) : null}
       <PHProvider>
         <body className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
+          <GlobalBackground image={backgroundImage} />
           <Suspense fallback={null}>
             <PostHogPageView />
           </Suspense>
-          {children}
+          <div className="relative z-10 min-h-screen">{children}</div>
         </body>
       </PHProvider>
     </html>
+  )
+}
+
+function GlobalBackground({ image }: { image: string }) {
+  return (
+    <>
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 bg-cover bg-center -z-10"
+        style={{
+          backgroundImage: `url("${image}")`,
+          filter: "blur(8px)",
+          transform: "scale(1.1)",
+        }}
+      />
+      <div aria-hidden className="pointer-events-none fixed inset-0 bg-background/10 -z-10" />
+    </>
   )
 }

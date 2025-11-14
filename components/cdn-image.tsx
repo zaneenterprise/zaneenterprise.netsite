@@ -41,18 +41,6 @@ export function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
   )
 }
 
-export function HeroImage(props: Omit<CDNImageProps, 'cdnOptions'>) {
-  return <CDNImage {...props} cdnOptions={{ quality: 85, format: 'webp' }} />
-}
-
-export function ThumbnailImage(props: Omit<CDNImageProps, 'cdnOptions'>) {
-  return <CDNImage {...props} cdnOptions={{ quality: 80, format: 'webp' }} />
-}
-
 export function LogoImage(props: Omit<CDNImageProps, 'cdnOptions'>) {
   return <CDNImage {...props} cdnOptions={{ quality: 90, format: 'png' }} />
-}
-
-export function BackgroundImage(props: Omit<CDNImageProps, 'cdnOptions'>) {
-  return <CDNImage {...props} cdnOptions={{ quality: 75, format: 'webp' }} />
 }

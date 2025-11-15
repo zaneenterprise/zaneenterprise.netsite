@@ -1,5 +1,3 @@
-"use client"
-
 export const codeExamples = [
   [
     'import React, { useState } from "react";',

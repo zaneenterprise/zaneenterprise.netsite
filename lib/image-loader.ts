@@ -7,12 +7,30 @@ export default function customImageLoader({
   width: number
   quality?: number
 }) {
+  const cdnHostname = process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME
+  const defaultQuality = quality ?? 85
+
   if (src.startsWith('/') && !src.includes('images/')) {
     return src
   }
 
-  const cdnHostname = process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME
-  
+  if (/^https?:\/\//i.test(src)) {
+    try {
+      const url = new URL(src)
+      if (cdnHostname && url.hostname === cdnHostname) {
+        url.searchParams.set('width', width.toString())
+        url.searchParams.set('quality', defaultQuality.toString())
+        if (!url.searchParams.has('auto_optimize')) {
+          url.searchParams.set('auto_optimize', 'medium')
+        }
+        return url.toString()
+      }
+      return src
+    } catch {
+      return src
+    }
+  }
+
   if (!cdnHostname) {
     return src.startsWith('/') ? src : `/${src}`
   }
@@ -22,11 +40,7 @@ export default function customImageLoader({
   const params = new URLSearchParams()
   
   params.append('width', width.toString())
-  if (quality) {
-    params.append('quality', quality.toString())
-  } else {
-    params.append('quality', '85')
-  }
+  params.append('quality', defaultQuality.toString())
   params.append('auto_optimize', 'medium')
   
   return `${baseUrl}?${params.toString()}`

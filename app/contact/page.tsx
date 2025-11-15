@@ -11,7 +11,7 @@ import { Phone, Mail, ArrowLeft, Send } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import { LogoImage } from "@/components/cdn-image"
-import { getBunnyCDNUrl } from "@/lib/cdn-utils"
+import { SiteFooter } from "@/components/site-footer"
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -43,25 +43,16 @@ export default function ContactPage() {
     }
   }
 
-  const bgImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, auto_optimize: 'medium' })
-  
   return (
-    <div className="min-h-screen relative overflow-x-hidden">
-      <div
-        className="fixed inset-0 bg-cover bg-center -z-10"
-        style={{
-          backgroundImage: `url("${bgImage}")`,
-          filter: "blur(8px)",
-          transform: "scale(1.1)",
-        }}
-      />
-      <div className="fixed inset-0 bg-background/10 -z-10" />
-
-      <div className="relative min-h-screen p-3 sm:p-6 lg:p-8">
-        <div className="w-full max-w-7xl mx-auto bg-white dark:bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden">
+    <div className="relative min-h-screen overflow-x-hidden p-3 sm:p-6 lg:p-8">
+      <div className="w-full max-w-7xl mx-auto bg-white dark:bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden">
           <nav className="border-b border-border px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
             <div className="flex items-center justify-between gap-2">
-              <Link href="/" className="flex items-center gap-1.5 sm:gap-2 min-w-0 hover:opacity-80 transition-opacity">
+              <Link
+                href="/"
+                prefetch={false}
+                className="flex items-center gap-1.5 sm:gap-2 min-w-0 hover:opacity-80 transition-opacity"
+              >
                 <LogoImage
                   src="/logo.svg"
                   alt="ZaneEnterprise Logo"
@@ -76,7 +67,7 @@ export default function ContactPage() {
               </Link>
 
               <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-                <Link href="/">
+                <Link href="/" prefetch={false}>
                   <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm px-2 sm:px-3">
                     <ArrowLeft className="h-4 w-4" />
                     <span className="hidden sm:inline">Back</span>
@@ -221,27 +212,7 @@ export default function ContactPage() {
             </div>
           </main>
 
-          <footer className="border-t border-border px-4 py-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center py-4">
-                <a
-                  href="https://zaneenterprise.net"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
-                >
-                  <span className="text-xs sm:text-sm text-muted-foreground">Made by</span>
-                  <LogoImage src="/logo.svg" alt="Z logo" width={24} height={24} className="h-5 w-5 sm:h-6 sm:w-6" />
-                  <span className="text-xs sm:text-sm">
-                    <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>
-                    <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>
-                    <span className="text-muted-foreground ml-0.5">LLC</span>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </footer>
-        </div>
+          <SiteFooter />
       </div>
     </div>
   )

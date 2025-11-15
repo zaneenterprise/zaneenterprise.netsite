@@ -6,7 +6,7 @@ import { Montserrat, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import { PHProvider } from "@/components/posthog-provider"
 import { PostHogPageView } from "@/components/posthog-pageview"
-import { LandingFooter } from "@/components/landing-footer"
+import { PageFade } from "@/components/page-fade" 
 import { getBunnyCDNHostname, getBunnyCDNUrl } from "@/lib/cdn-utils"
 
 const montserrat = Montserrat({
@@ -87,20 +87,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const backgroundImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, auto_optimize: 'medium' })
   return (
     <html lang="en">
-      {cdnHost ? (
-        <head>
-          <link rel="preconnect" href={`https://${cdnHost}`} />
-          <link rel="dns-prefetch" href={`https://${cdnHost}`} />
-        </head>
-      ) : null}
+      <head>
+        {cdnHost && (
+          <>
+            <link rel="preconnect" href={`https://${cdnHost}`} />
+            <link rel="dns-prefetch" href={`https://${cdnHost}`} />
+          </>
+        )}
+      </head>
       <PHProvider>
         <body className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
+          <PageFade>
           <GlobalBackground image={backgroundImage} />
           <Suspense fallback={null}>
             <PostHogPageView />
           </Suspense>
           <div className="relative z-10 min-h-screen">{children}</div>
-          <LandingFooter />
+          </PageFade>
         </body>
       </PHProvider>
     </html>
@@ -117,9 +120,7 @@ function GlobalBackground({ image }: { image: string }) {
             alt=""
             fill
             priority
-            fetchPriority="high"
             sizes="100vw"
-            quality={80}
             aria-hidden
             className="object-cover scale-110 blur-[8px]"
           />

@@ -27,8 +27,7 @@ export function LandingFooter() {
   return (
     <>
       <footer
-        className="border-t border-border px-3 sm:px-6 lg:px-8 py-3 sm:py-6 lg:py-8 cursor-pointer"
-        onClick={handleClick}
+        className="border-t border-border px-3 sm:px-6 lg:px-8 py-3 sm:py-6 lg:py-8"
       >
         <div className="max-w-4xl mx-auto">
           <p className="text-xs sm:text-sm text-muted-foreground text-center mb-1.5 sm:mb-4 lg:mb-6">
@@ -48,7 +47,10 @@ export function LandingFooter() {
             <div className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">CSS</div>
           </div>
           <div className="text-center py-2 sm:py-4 border-t border-border/50">
-            <div className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer">
+            <div
+              className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
+              onClick={handleClick}
+            >
               <span className="text-xs sm:text-sm text-muted-foreground">Made by</span>
               <LogoImage src="/logo.svg" alt="Z logo" width={24} height={24} className="h-5 w-5 sm:h-6 sm:w-6" />
               <span className="text-xs sm:text-sm">

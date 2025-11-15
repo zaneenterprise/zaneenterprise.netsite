@@ -1,11 +1,12 @@
 import type React from "react"
 import type { Metadata } from "next"
+import Image from "next/image"
+import { Suspense } from "react"
 import { Montserrat, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import { PHProvider } from "@/components/posthog-provider"
 import { PostHogPageView } from "@/components/posthog-pageview"
 import { LandingFooter } from "@/components/landing-footer"
-import { Suspense } from "react"
 import { getBunnyCDNHostname, getBunnyCDNUrl } from "@/lib/cdn-utils"
 
 const montserrat = Montserrat({
@@ -90,7 +91,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <head>
           <link rel="preconnect" href={`https://${cdnHost}`} />
           <link rel="dns-prefetch" href={`https://${cdnHost}`} />
-          <link rel="preload" as="image" href={backgroundImage} fetchPriority="high" crossOrigin="anonymous" />
         </head>
       ) : null}
       <PHProvider>
@@ -111,10 +111,19 @@ function GlobalBackground({ image }: { image: string }) {
   return (
     <>
       <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
-        <div
-          className="relative h-full w-full bg-cover bg-center"
-          style={{ backgroundImage: `url(${image})`, filter: "blur(8px)", transform: "scale(1.1)" }}
-        />
+        <div className="relative h-full w-full overflow-hidden" style={{ backgroundColor: "oklch(0.15 0 0)" }}>
+          <Image
+            src={image}
+            alt=""
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            quality={80}
+            aria-hidden
+            className="object-cover scale-110 blur-[8px]"
+          />
+        </div>
       </div>
       <div aria-hidden className="pointer-events-none fixed inset-0 bg-background/10 -z-10" />
     </>

@@ -1,6 +1,5 @@
 import type React from "react"
 import type { Metadata } from "next"
-import Image from "next/image"
 import { Montserrat, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import { PHProvider } from "@/components/posthog-provider"
@@ -112,18 +111,10 @@ function GlobalBackground({ image }: { image: string }) {
   return (
     <>
       <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
-        <div className="relative h-full w-full">
-          <Image
-            src={image}
-            alt=""
-            fill
-            priority
-            fetchPriority="high"
-            sizes="100vw"
-            className="object-cover"
-            style={{ filter: "blur(8px)", transform: "scale(1.1)" }}
-          />
-        </div>
+        <div
+          className="relative h-full w-full bg-cover bg-center"
+          style={{ backgroundImage: `url(${image})`, filter: "blur(8px)", transform: "scale(1.1)" }}
+        />
       </div>
       <div aria-hidden className="pointer-events-none fixed inset-0 bg-background/10 -z-10" />
     </>

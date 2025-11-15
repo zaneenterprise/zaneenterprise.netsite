@@ -7,6 +7,8 @@ import { CodeMarquee } from "@/components/code-marquee"
 import { codeExamples } from "@/lib/code-examples"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
+export const dynamic = "force-dynamic"
+
 const taglines = [
   { text: "Want a site or app that's actually awesome?" },
   { text: "Want a site or app that doesn't suck?" },

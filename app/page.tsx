@@ -1,244 +1,334 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import Footer from "@/components/footer"
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Code2, Smartphone, Zap } from "lucide-react"
+import Link from "next/link"
+import { LogoImage } from "@/components/cdn-image"
+import { getBunnyCDNUrl } from "@/lib/cdn-utils"
+import { codeExamples } from "@/lib/code-examples"
+import { motion, AnimatePresence } from "framer-motion"
 
-export default function Home() {
-  const [displayedLines, setDisplayedLines] = useState<string[]>([])
-  const [currentLineText, setCurrentLineText] = useState("")
-  const [showCursor, setShowCursor] = useState(true)
-  const [isTypingComplete, setIsTypingComplete] = useState(false)
-  const [randomLineIndex] = useState(() => Math.floor(Math.random() * 19))
+const taglines = [
+  { text: "Want a site or app that's actually awesome?" },
+  { text: "Want a site or app that doesn't suck?" },
+  { text: "Need a killer site or app?" },
+  { text: "Tired of mediocre apps and boring sites?" },
+  { text: "Want your site or app to actually stand out?" },
+  { text: "Sick of boring sites and apps?" },
+  { text: "Ready for a site or app that slaps?" },
+  { text: "Need a site or app with personality?" },
+  { text: "Your idea deserves more than a basic app." },
+  { text: "Done with dull, lifeless apps?" },
+  { text: "Want to finally be proud of your website or app?" },
+  { text: "Your app idea plus my skills equals something seriously cool." },
+  { text: "Forget cookie cutter." },
+  { text: "Want a website or app worth sharing?" },
+  { text: "No more yawning at your own website." },
+  { text: "Tired of stale apps and boring websites?" },
+  { text: "Ready to level up your site or app?" },
+  { text: "Want a website or app that people will actually notice?" },
+]
 
-  const lines = [
-    { part1: "// Want a site or app that's actually awesome?", part2: "// Let's chat, I'll build it better than you imagined.", linkText: "Let's chat" },
-    { part1: "// Want a site or app that doesn't suck?", part2: "// I'll build it and make it awesome.", linkText: "I'll build it" },
-    { part1: "// Need a killer site or app?", part2: "// Hit me up, I build cool stuff for cool people.", linkText: "Hit me up" },
-    { part1: "// Tired of mediocre apps and boring sites?", part2: "// Let's fix that, I'll create something badass.", linkText: "Let's fix that" },
-    { part1: "// Want your site or app to actually stand out?", part2: "// Let's talk, I'll handle the rest.", linkText: "Let's talk" },
-    { part1: "// Sick of boring sites and apps?", part2: "// I'll build one that's legit.", linkText: "I'll build one" },
-    { part1: "// Ready for a site or app that slaps?", part2: "// Reach out and I'll make it happen.", linkText: "Reach out" },
-    { part1: "// Need a site or app with personality?", part2: "// I've got you covered.", linkText: "I've got you covered" },
-    { part1: "// Your idea deserves more than a basic app.", part2: "// Let's make it epic.", linkText: "Let's make it epic" },
-    { part1: "// Done with dull, lifeless apps?", part2: "// I'll build something you'll brag about.", linkText: "I'll build something" },
-    { part1: "// Stop settling for average,", part2: "// I'll craft a site or app you'll actually love.", linkText: "I'll craft a site or app" },
-    { part1: "// Want to finally be proud of your website or app?", part2: "// Let's chat and get it built right.", linkText: "Let's chat" },
-    { part1: "// Your app idea plus my skills equals something seriously cool.", part2: "// Let's talk.", linkText: "Let's talk" },
-    { part1: "// Forget cookie cutter.", part2: "// I'll make your website or app genuinely awesome.", linkText: "I'll make your website or app" },
-    { part1: "// Want a website or app worth sharing?", part2: "// Say the word and I'll build it.", linkText: "Say the word" },
-    { part1: "// No more yawning at your own website.", part2: "// I'll give you something fresh and exciting.", linkText: "I'll give you something" },
-    { part1: "// Tired of stale apps and boring websites?", part2: "// Hit me up for something worth your time.", linkText: "Hit me up" },
-    { part1: "// Ready to level up your site or app?", part2: "// Let me build you something you won't hate.", linkText: "Let me build you something" },
-    { part1: "// Want a website or app people will actually notice?", part2: "// Let's get started.", linkText: "Let's get started" },
-  ]
+const services = [
+  { icon: Code2, label: "Web Development" },
+  { icon: Smartphone, label: "App Development" },
+  { icon: Zap, label: "Fast Delivery" },
+]
 
-  const randomLine = lines[randomLineIndex]
-
-  const reactCodeLines = [
-    "export default function ZaneEnterprise() {",
-    "  return (",
-    '    <div className="container">',
-    "      <h1>App & Website Development</h1>",
-    "      <nav>",
-    '        <a href="/portfolio">Portfolio</a>',
-    '        <a href="/contact">Contact</a>',
-    "      </nav>",
-    "    </div>",
-    "  )",
-    "}",
-    " ",
-    randomLine.part1,
-    randomLine.part2,
-  ]
+export default function LandingPage() {
+  const [currentTagline, setCurrentTagline] = useState(() => Math.floor(Math.random() * taglines.length))
+  const [scrollOffset, setScrollOffset] = useState(0)
+  const [selectedCodeExample, setSelectedCodeExample] = useState(() => Math.floor(Math.random() * codeExamples.length))
+  const [mounted, setMounted] = useState(false)
+  const [showPopup, setShowPopup] = useState(false)
 
   useEffect(() => {
-    let currentLineIndex = 0
-    let currentCharIndex = 0
-
-    const typingInterval = setInterval(() => {
-      if (currentLineIndex < reactCodeLines.length) {
-        const currentLine = reactCodeLines[currentLineIndex]
-
-        if (currentCharIndex < currentLine.length) {
-          setCurrentLineText(currentLine.slice(0, currentCharIndex + 1))
-          currentCharIndex++
-        } else {
-          setDisplayedLines((prev) => [...prev, currentLine])
-          setCurrentLineText("")
-          currentLineIndex++
-          currentCharIndex = 0
-        }
-      } else {
-        clearInterval(typingInterval)
-        setShowCursor(false)
-        setTimeout(() => {
-          setIsTypingComplete(true)
-        }, 300)
-      }
-    }, 15)
-
-    const cursorInterval = setInterval(() => {
-      setShowCursor((prev) => !prev)
-    }, 500)
-
-    return () => {
-      clearInterval(typingInterval)
-      clearInterval(cursorInterval)
-    }
+    setMounted(true)
   }, [])
 
-  const highlightCode = (code: string, isCurrentLine = false, lineNumber = 0) => {
-    const tokens: { text: string; color: string; isLink?: boolean; href?: string }[] = []
-    let i = 0
+  useEffect(() => {
+    const codeLines = codeExamples[selectedCodeExample] ?? []
+    const singleCodeHeight = Math.max(codeLines.length, 1) * 32
+    setScrollOffset(0)
 
-    while (i < code.length) {
-      const remaining = code.slice(i)
-
-      if (remaining.match(/^\/\/.*/)) {
-        const commentText = remaining.match(/^\/\/.*/)![0]
-        
-        if (lineNumber === 13 && !isCurrentLine && randomLine.linkText) {
-          const linkText = randomLine.linkText
-          const linkIndex = commentText.indexOf(linkText)
-          
-          if (linkIndex !== -1) {
-            if (linkIndex > 0) {
-              tokens.push({ text: commentText.substring(0, linkIndex), color: "text-[#6a9955]" })
-            }
-            tokens.push({
-              text: linkText,
-              color: "text-[#6a9955]",
-              isLink: true,
-              href: "/contact",
-            })
-            const afterLinkIndex = linkIndex + linkText.length
-            if (afterLinkIndex < commentText.length) {
-              tokens.push({ text: commentText.substring(afterLinkIndex), color: "text-[#6a9955]" })
-            }
-          } else {
-            tokens.push({ text: commentText, color: "text-[#6a9955]" })
-          }
-        } else {
-          tokens.push({ text: commentText, color: "text-[#6a9955]" })
+    const interval = setInterval(() => {
+      setScrollOffset((prev) => {
+        const next = prev + 0.5
+        if (next >= singleCodeHeight) {
+          return 0
         }
-        i += commentText.length
-      } else if (remaining.match(/^Portfolio(?=<\/a>)/)) {
-        tokens.push({
-          text: "Portfolio",
-          color: "text-[#d4d4d4]",
-          isLink: isCurrentLine ? false : true,
-          href: "/portfolio",
-        })
-        i += 9
-      } else if (remaining.match(/^Contact(?=<\/a>)/)) {
-        tokens.push({
-          text: "Contact",
-          color: "text-[#d4d4d4]",
-          isLink: isCurrentLine ? false : true,
-          href: "/contact",
-        })
-        i += 7
-      }
-      else if (remaining.match(/^(export|default|function|return|const|let|var)\b/)) {
-        const match = remaining.match(/^(export|default|function|return|const|let|var)\b/)!
-        tokens.push({ text: match[0], color: "text-[#c586c0]" })
-        i += match[0].length
-      }
-      else if (remaining.match(/^[A-Z][a-zA-Z0-9]*(?=\()/)) {
-        const match = remaining.match(/^[A-Z][a-zA-Z0-9]*/)!
-        tokens.push({ text: match[0], color: "text-[#dcdcaa]" })
-        i += match[0].length
-      }
-      else if (remaining.match(/^<\/?[a-z][a-zA-Z0-9]*/)) {
-        const match = remaining.match(/^<\/?[a-z][a-zA-Z0-9]*/)!
-        tokens.push({ text: match[0], color: "text-[#4ec9b0]" })
-        i += match[0].length
-      }
-      else if (remaining.match(/^>/)) {
-        tokens.push({ text: ">", color: "text-[#4ec9b0]" })
-        i += 1
-      }
-      else if (remaining.match(/^(className|href|id|style)\b/)) {
-        const match = remaining.match(/^(className|href|id|style)\b/)!
-        tokens.push({ text: match[0], color: "text-[#9cdcfe]" })
-        i += match[0].length
-      }
-      else if (remaining.match(/^"[^"]*"/)) {
-        const match = remaining.match(/^"[^"]*"/)!
-        tokens.push({ text: match[0], color: "text-[#ce9178]" })
-        i += match[0].length
-      }
-      else {
-        tokens.push({ text: code[i], color: "text-[#d4d4d4]" })
-        i += 1
-      }
-    }
-
-    return tokens
-      .map((token) => {
-        const escapedText = token.text.replace(/</g, "&lt;").replace(/>/g, "&gt;")
-        if (token.isLink && isTypingComplete) {
-          return `<a href="${token.href}" class="text-[#4e8bc9] hover:text-[#6ba3d8] underline transition-colors">${escapedText}</a>`
-        }
-        return `<span class="${token.color}">${escapedText}</span>`
+        return next
       })
-      .join("")
+    }, 20)
+
+    return () => clearInterval(interval)
+  }, [selectedCodeExample])
+
+  const codeSnippets = codeExamples[selectedCodeExample]
+  const allLines = [...codeSnippets, ...codeSnippets, ...codeSnippets, ...codeSnippets]
+  const bgImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, auto_optimize: 'medium' })
+  
+  const handleFooterClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setShowPopup(true)
+    setTimeout(() => {
+      setShowPopup(false)
+    }, 2500)
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#1e1e1e] text-[#d4d4d4] font-mono overflow-x-hidden">
-      <header className="border-b border-[#2d2d2d] bg-[#252526] px-3 sm:px-4 py-2 flex items-center justify-between">
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="flex gap-1 sm:gap-1.5">
-            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ff5f56]" />
-            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ffbd2e]" />
-            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#27c93f]" />
-          </div>
-          <span className="text-xs sm:text-sm text-[#cccccc] ml-2 sm:ml-4">zane-enterprise.tsx</span>
-        </div>
-        <div className="text-xs sm:text-sm text-[#cccccc] font-mono pr-10">
-          877-730-ZANE
-        </div>
-      </header>
+    <div className="min-h-screen relative overflow-hidden">
+      <div
+        className="fixed inset-0 bg-cover bg-center -z-10"
+        style={{
+          backgroundImage: `url("${bgImage}")`,
+          filter: "blur(8px)",
+          transform: "scale(1.1)",
+        }}
+      />
+      <div className="fixed inset-0 bg-background/10 -z-10" />
 
-      <main className="flex-1 px-2 sm:px-4 py-6 sm:py-12 overflow-x-hidden w-full">
-        <div className="max-w-full sm:max-w-4xl w-full mx-auto overflow-x-hidden">
-          <div className="flex items-start gap-1 sm:gap-2 md:gap-4 overflow-x-hidden w-full">
-            <div className="text-[#858585] select-none text-right pr-1 sm:pr-2 md:pr-4 border-r border-[#2d2d2d] min-w-[1.5rem] sm:min-w-[2rem] md:min-w-[3rem] flex flex-col items-end text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl flex-shrink-0">
-              {displayedLines.map((_, i) => (
-                <div key={i} className="leading-relaxed">
-                  {i + 1}
+      <div className="relative min-h-screen p-3 sm:p-6 lg:p-8">
+        <div className="w-full max-w-7xl mx-auto bg-white dark:bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden">
+          <nav className="border-b border-border px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
+            <div className="flex items-center justify-between gap-2">
+              <Link href="/" className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <LogoImage
+                  src="/logo.svg"
+                  alt="ZaneEnterprise Logo"
+                  width={48}
+                  height={48}
+                  className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 flex-shrink-0 transition-transform transition-filter transition-opacity duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-110 hover:rotate-[10deg] hover:brightness-110 hover:opacity-90"
+                />
+                <div className="text-base sm:text-lg lg:text-xl truncate">
+                  <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>
+                  <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>
                 </div>
-              ))}
-              {currentLineText && <div className="leading-relaxed">{displayedLines.length + 1}</div>}
-            </div>
+              </Link>
 
-            <div className="flex-1 min-w-0 overflow-x-hidden max-w-full">
-              <div className="space-y-0 leading-relaxed text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl overflow-x-hidden">
-                {displayedLines.map((line, i) => (
-                  <pre
-                    key={i}
-                    className="whitespace-pre-wrap sm:whitespace-pre leading-relaxed overflow-x-hidden break-words sm:break-normal max-w-full"
-                    dangerouslySetInnerHTML={{ __html: highlightCode(line, false, i) }}
-                  />
-                ))}
-                {currentLineText && (
-                  <pre
-                    className="whitespace-pre-wrap sm:whitespace-pre leading-relaxed overflow-x-hidden break-words sm:break-normal max-w-full"
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        highlightCode(currentLineText, true, displayedLines.length) +
-                        (showCursor ? '<span class="text-[#d4d4d4] animate-pulse">|</span>' : ""),
-                    }}
-                  />
-                )}
+              <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+              </div>
+
+              <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+                <Link href="/contact">
+                  <Button
+                    size="sm"
+                    className="bg-foreground text-background hover:bg-foreground/90 text-xs sm:text-sm px-2 sm:px-3"
+                  >
+                    Contact
+                  </Button>
+                </Link>
               </div>
             </div>
-          </div>
-        </div>
-      </main>
+          </nav>
 
-      <Footer />
+          <main className="px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-10 lg:py-16">
+            <div className="max-w-4xl mx-auto text-center space-y-2 sm:space-y-6 lg:space-y-8">
+              <div className="text-brand text-xs sm:text-base lg:text-lg font-bold tracking-wider sm:tracking-widest uppercase leading-normal sm:leading-relaxed bg-gradient-to-r from-brand to-brand/70 bg-clip-text text-transparent">
+                Web and App Development
+              </div>
+
+              <div className="min-h-[60px] sm:min-h-[100px] lg:min-h-[120px] flex items-center justify-center px-1 overflow-hidden">
+                {mounted && (
+                  <div className="animate-soft-fade-in w-full">
+                    <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-balance text-foreground leading-tight">
+                      {taglines[currentTagline].text}
+                    </h1>
+                  </div>
+                )}
+              </div>
+
+              <p className="text-xs sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto text-balance px-1">
+                I build exceptional web and mobile apps that people love to use. No boring templates, just custom
+                solutions.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-1.5 sm:gap-3 pt-1 sm:pt-4 px-1">
+                <Link href="/contact">
+                  <Button
+                    size="lg"
+                    className="bg-foreground text-background hover:bg-foreground/90 w-full sm:w-auto sm:min-w-[160px] text-sm sm:text-base"
+                  >
+                    Contact Me
+                  </Button>
+                </Link>
+                <Link href="/portfolio">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full sm:w-auto sm:min-w-[160px] bg-transparent border-2 text-sm sm:text-base"
+                  >
+                    View Portfolio
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="pt-3 sm:pt-8 lg:pt-12">
+                <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 px-0.5">
+                  {services.map((service, index) => {
+                    const Icon = service.icon
+                    return (
+                      <div
+                        key={index}
+                        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
+                      >
+                        <Icon className="h-4 w-4 text-brand flex-shrink-0" />
+                        <span className="text-xs sm:text-sm font-medium text-foreground whitespace-nowrap">
+                          {service.label}
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-3 sm:pt-8 lg:pt-12 max-w-6xl mx-auto">
+              <div className="rounded-lg sm:rounded-xl lg:rounded-2xl border-2 border-border bg-muted/30 p-1 sm:p-4 lg:p-6 backdrop-blur-sm w-full">
+                <div className="space-y-1 sm:space-y-3">
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <div className="w-1.5 h-1.5 sm:w-3 sm:h-3 rounded-full bg-destructive" />
+                    <div className="w-1.5 h-1.5 sm:w-3 sm:h-3 rounded-full bg-chart-4" />
+                    <div className="w-1.5 h-1.5 sm:w-3 sm:h-3 rounded-full bg-green-400" />
+                  </div>
+                  <div className="bg-[#1e1e1e] rounded-lg p-1 sm:p-4 lg:p-8 text-left font-mono text-[8px] sm:text-xs lg:text-base overflow-hidden h-48 sm:h-80 lg:h-96 relative w-full">
+                    <div
+                      className="absolute inset-0 p-1 sm:p-4 lg:p-8"
+                      style={{
+                        transform: `translateY(-${scrollOffset}px)`,
+                      }}
+                    >
+                      {allLines.map((line, index) => (
+                        <div
+                          key={`${index}-${line?.substring(0, 20)}`}
+                          className="text-green-400 leading-loose whitespace-pre min-h-[32px] flex items-start"
+                        >
+                          {line || "\u00A0"}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="absolute top-0 left-0 right-0 h-6 sm:h-10 lg:h-12 bg-gradient-to-b from-[#1e1e1e] to-transparent pointer-events-none" />
+                    <div className="absolute bottom-0 left-0 right-0 h-6 sm:h-10 lg:h-12 bg-gradient-to-t from-[#1e1e1e] to-transparent pointer-events-none" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+
+          <footer className="border-t border-border px-3 sm:px-6 lg:px-8 py-3 sm:py-6 lg:py-8 cursor-pointer" onClick={handleFooterClick}>
+            <div className="max-w-4xl mx-auto">
+              <p className="text-xs sm:text-sm text-muted-foreground text-center mb-1.5 sm:mb-4 lg:mb-6">
+                Built with industry-leading technologies
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-4 lg:gap-6 opacity-50 mb-3 sm:mb-8">
+                <div className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">React</div>
+                <div className="hidden sm:block text-muted-foreground">•</div>
+                <div className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">Swift</div>
+                <div className="hidden sm:block text-muted-foreground">•</div>
+                <div className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">JavaScript</div>
+                <div className="hidden sm:block text-muted-foreground">•</div>
+                <div className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">Python</div>
+                <div className="hidden sm:block text-muted-foreground">•</div>
+                <div className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">HTML</div>
+                <div className="hidden sm:block text-muted-foreground">•</div>
+                <div className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">CSS</div>
+              </div>
+              <div className="text-center py-2 sm:py-4 border-t border-border/50">
+                <div
+                  onClick={handleFooterClick}
+                  className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
+                >
+                  <span className="text-xs sm:text-sm text-muted-foreground">Made by</span>
+                  <LogoImage src="/logo.svg" alt="Z logo" width={24} height={24} className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <span className="text-xs sm:text-sm">
+                    <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>
+                    <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>
+                    <span className="text-muted-foreground ml-0.5">LLC</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {showPopup && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.3, y: 100 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1, 
+              y: 0,
+              transition: {
+                type: "spring",
+                stiffness: 500,
+                damping: 25,
+                mass: 0.8
+              }
+            }}
+            exit={{ 
+              opacity: 0, 
+              scale: 0.5, 
+              y: 50,
+              transition: {
+                duration: 0.2
+              }
+            }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
+          >
+            <motion.div
+              animate={{
+                rotate: [0, -3, 3, -3, 3, 0],
+              }}
+              transition={{
+                duration: 0.5,
+                delay: 0.2,
+                ease: "easeInOut"
+              }}
+              className="relative"
+            >
+              <motion.p 
+                className="text-2xl sm:text-3xl font-bold whitespace-nowrap bg-gradient-to-r from-brand to-brand/70 bg-clip-text text-transparent drop-shadow-lg"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                You're already here!
+              </motion.p>
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-2 h-2 bg-yellow-300 rounded-full"
+                  initial={{ 
+                    opacity: 1,
+                    scale: 0,
+                    x: 0,
+                    y: 0 
+                  }}
+                  animate={{
+                    opacity: [1, 1, 0],
+                    scale: [0, 1, 0.5],
+                    x: [0, Math.cos((i * Math.PI * 2) / 6) * 60],
+                    y: [0, Math.sin((i * Math.PI * 2) / 6) * 60],
+                  }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.3,
+                    ease: "easeOut"
+                  }}
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                  }}
+                />
+              ))}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

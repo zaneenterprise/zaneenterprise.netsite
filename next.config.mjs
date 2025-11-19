@@ -1,4 +1,18 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const projectRoot = path.dirname(fileURLToPath(import.meta.url))
+const envDevOrigins = (process.env.NEXT_ALLOWED_DEV_ORIGINS ?? process.env.DEV_ALLOWED_ORIGINS ?? '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean)
+const allowedOrigins = envDevOrigins.length > 0 ? envDevOrigins : ['192.168.1.75']
+
 const nextConfig = {
+  allowedDevOrigins: allowedOrigins,
+  turbopack: {
+    root: projectRoot,
+  },
   async headers() {
     return [
       {
@@ -25,6 +39,12 @@ const nextConfig = {
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],
       },
+      {
+        source: '/background.avif',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
     ]
   },
   images: {
@@ -44,6 +64,7 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 7,
+    qualities: [75, 80],
   },
 }
 

@@ -6,7 +6,7 @@ import { Montserrat, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import { PHProvider } from "@/components/posthog-provider"
 import { PostHogPageView } from "@/components/posthog-pageview"
-import { PageFade } from "@/components/page-fade" 
+import { PageFade } from "@/components/page-fade"
 import { getBunnyCDNHostname, getBunnyCDNUrl } from "@/lib/cdn-utils"
 
 const montserrat = Montserrat({
@@ -97,12 +97,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <PHProvider>
         <body className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
-          <PageFade>
           <GlobalBackground image={backgroundImage} />
-          <Suspense fallback={null}>
-            <PostHogPageView />
-          </Suspense>
-          <div className="relative z-10 min-h-screen">{children}</div>
+          <PageFade>
+            <Suspense fallback={null}>
+              <PostHogPageView />
+            </Suspense>
+            <div className="relative z-10 min-h-screen">{children}</div>
           </PageFade>
         </body>
       </PHProvider>

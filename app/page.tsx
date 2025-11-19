@@ -1,66 +1,21 @@
 import { Button } from "@/components/ui/button"
-import { Code2, Smartphone, Zap } from "lucide-react"
-import Image from "next/image"
 import Link from "next/link"
 
-import { CodeMarquee } from "@/components/code-marquee"
 import { LandingFooter } from "@/components/landing-footer"
-import { codeExamples } from "@/lib/code-examples"
-import { getBunnyCDNUrl } from "@/lib/cdn-utils"
-
-export const dynamic = "force-dynamic"
-
-const taglines = [
-  { text: "Want a site or app that's actually awesome?" },
-  { text: "Want a site or app that doesn't suck?" },
-  { text: "Need a killer site or app?" },
-  { text: "Tired of mediocre apps and boring sites?" },
-  { text: "Want your site or app to actually stand out?" },
-  { text: "Sick of boring sites and apps?" },
-  { text: "Ready for a site or app that slaps?" },
-  { text: "Need a site or app with personality?" },
-  { text: "Your idea deserves more than a basic app." },
-  { text: "Done with dull, lifeless apps?" },
-  { text: "Want to finally be proud of your website or app?" },
-  { text: "Your app idea plus my skills equals something seriously cool." },
-  { text: "Forget cookie cutter." },
-  { text: "Want a website or app worth sharing?" },
-  { text: "No more yawning at your own website." },
-  { text: "Tired of stale apps and boring websites?" },
-  { text: "Ready to level up your site or app?" },
-  { text: "Want a website or app that people will actually notice?" },
-]
-
-const services = [
-  { icon: Code2, label: "Web Development" },
-  { icon: Smartphone, label: "App Development" },
-  { icon: Zap, label: "Fast Delivery" },
-]
+import { DynamicTagline } from "@/components/dynamic-tagline"
+import { DynamicCodeMarquee } from "@/components/dynamic-code-marquee"
+import { BrandLogo } from "@/components/brand-logo"
+import { services } from "@/lib/data"
 
 export default function LandingPage() {
-  const highlightedTagline = taglines[Math.floor(Math.random() * taglines.length)]
-  const snippet = codeExamples[Math.floor(Math.random() * codeExamples.length)] ?? []
-  const logoSrc = getBunnyCDNUrl("/logo.svg", { width: 96, quality: 90, auto_optimize: "low" })
 
   return (
     <div className="relative min-h-screen p-3 sm:p-6 lg:p-8">
       <div className="w-full max-w-7xl mx-auto bg-white dark:bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden flex flex-col min-h-[calc(100vh-1.5rem*2)]">
         <nav className="border-b border-border px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
           <div className="flex items-center justify-between gap-2">
-            <Link href="/" prefetch={false} className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-              <Image
-                src={logoSrc}
-                alt="ZaneEnterprise Logo"
-                width={48}
-                height={48}
-                className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 flex-shrink-0 transition-transform transition-filter transition-opacity duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-110 hover:rotate-[10deg] hover:brightness-110 hover:opacity-90"
-                priority
-                unoptimized
-              />
-              <div className="text-base sm:text-lg lg:text-xl truncate">
-                <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>
-                <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>
-              </div>
+            <Link href="/" prefetch={false} className="min-w-0">
+              <BrandLogo />
             </Link>
 
             <div className="hidden lg:flex items-center gap-6 xl:gap-8" />
@@ -86,9 +41,7 @@ export default function LandingPage() {
 
             <div className="min-h-[60px] sm:min-h-[100px] lg:min-h-[120px] flex items-center justify-center px-1 overflow-hidden">
               <div className="animate-soft-fade-in w-full">
-                <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-balance text-foreground leading-tight">
-                  {highlightedTagline.text}
-                </h1>
+                <DynamicTagline />
               </div>
             </div>
 
@@ -144,7 +97,7 @@ export default function LandingPage() {
                   <div className="w-1.5 h-1.5 sm:w-3 sm:h-3 rounded-full bg-chart-4" />
                   <div className="w-1.5 h-1.5 sm:w-3 sm:h-3 rounded-full bg-green-400" />
                 </div>
-                <CodeMarquee snippet={snippet} />
+                <DynamicCodeMarquee />
               </div>
             </div>
           </div>

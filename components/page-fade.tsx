@@ -6,17 +6,7 @@ export function PageFade({ children }: { children: React.ReactNode }) {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
-    if (mq.matches) {
-      setIsVisible(true)
-      return
-    }
-
-    const timer = setTimeout(() => {
-      setIsVisible(true)
-    }, 200)
-
-    return () => clearTimeout(timer)
+    setIsVisible(true)
   }, [])
 
   return (

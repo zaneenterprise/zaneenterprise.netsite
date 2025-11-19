@@ -13,7 +13,7 @@ interface CodeMarqueeProps {
 export function CodeMarquee({ snippet, className }: CodeMarqueeProps) {
   const lines = snippet.length ? snippet : [""]
   const duplicated = useMemo(() => [...lines, ...lines], [lines])
-  const duration = Math.max(lines.length * 0.2, 2)
+  const duration = Math.max(lines.length * 0.5, 10)
 
   return (
     <div
@@ -23,7 +23,7 @@ export function CodeMarquee({ snippet, className }: CodeMarqueeProps) {
       )}
     >
       <div
-        className="absolute inset-0 p-1 sm:p-4 lg:p-8 animate-vertical-marquee"
+        className="absolute top-0 left-0 right-0 p-1 sm:p-4 lg:p-8 animate-vertical-marquee"
         style={
           {
             animationDuration: `${duration}s`,
@@ -33,7 +33,7 @@ export function CodeMarquee({ snippet, className }: CodeMarqueeProps) {
         {duplicated.map((line, index) => (
           <div
             key={`${index}-${line?.slice(0, 20)}`}
-            className="text-green-400 leading-loose whitespace-pre min-h-[32px] flex items-start"
+            className="text-green-400 leading-loose whitespace-pre-wrap break-words min-h-[32px] flex items-start"
           >
             {line || "\u00A0"}
           </div>

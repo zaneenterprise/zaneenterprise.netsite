@@ -7,6 +7,7 @@ import "./globals.css"
 import { PHProvider } from "@/components/posthog-provider"
 import { PostHogPageView } from "@/components/posthog-pageview"
 import { PageFade } from "@/components/page-fade"
+import { GlobalBackground } from "@/components/global-background"
 import { getBunnyCDNHostname, getBunnyCDNUrl } from "@/lib/cdn-utils"
 
 const montserrat = Montserrat({
@@ -88,17 +89,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {cdnHost && (
+        {cdnHost ? (
           <>
             <link rel="preconnect" href={`https://${cdnHost}`} />
             <link rel="dns-prefetch" href={`https://${cdnHost}`} />
           </>
-        )}
+        ) : null}
+        <link rel="preload" href={backgroundImage} as="image" />
       </head>
       <PHProvider>
         <body className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
-          <GlobalBackground image={backgroundImage} />
           <PageFade>
+            <GlobalBackground image={backgroundImage} />
             <Suspense fallback={null}>
               <PostHogPageView />
             </Suspense>
@@ -110,23 +112,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   )
 }
 
-function GlobalBackground({ image }: { image: string }) {
-  return (
-    <>
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
-        <div className="relative h-full w-full overflow-hidden" style={{ backgroundColor: "oklch(0.15 0 0)" }}>
-          <Image
-            src={image}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            aria-hidden
-            className="object-cover scale-110 blur-[8px]"
-          />
-        </div>
-      </div>
-      <div aria-hidden className="pointer-events-none fixed inset-0 bg-background/10 -z-10" />
-    </>
-  )
-}
+

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState, type MouseEvent } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 
-import { LogoImage } from "@/components/cdn-image"
+import { BrandLogo } from "@/components/brand-logo"
 
 export function LandingFooter() {
   const [showPopup, setShowPopup] = useState(false)
@@ -52,12 +52,7 @@ export function LandingFooter() {
               onClick={handleClick}
             >
               <span className="text-xs sm:text-sm text-muted-foreground">Made by</span>
-              <LogoImage src="/logo.svg" alt="Z logo" width={24} height={24} className="h-5 w-5 sm:h-6 sm:w-6" />
-              <span className="text-xs sm:text-sm">
-                <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>
-                <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>
-                <span className="text-muted-foreground ml-0.5">LLC</span>
-              </span>
+              <BrandLogo size="sm" />
             </div>
           </div>
         </div>
@@ -91,7 +86,6 @@ export function LandingFooter() {
               </motion.p>
               {[...Array(6)].map((_, i) => (
                 <motion.div
-                  // eslint-disable-next-line react/no-array-index-key
                   key={i}
                   className="absolute w-2 h-2 bg-yellow-300 rounded-full"
                   initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}

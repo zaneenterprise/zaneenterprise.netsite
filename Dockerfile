@@ -1,5 +1,5 @@
-# Use the latest patched Node.js 22 LTS with security fixes (Jan 2026)
-FROM node:22.22.0-alpine AS base
+# Use the latest Node.js 25 "Current" release with security fixes (Jan 2026)
+FROM node:25.4.0-alpine AS base
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate

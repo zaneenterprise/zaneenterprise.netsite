@@ -9,6 +9,7 @@ const envDevOrigins = (process.env.NEXT_ALLOWED_DEV_ORIGINS ?? process.env.DEV_A
 const allowedOrigins = envDevOrigins.length > 0 ? envDevOrigins : ['192.168.1.75']
 
 const nextConfig = {
+  output: 'standalone',
   allowedDevOrigins: allowedOrigins,
   turbopack: {
     root: projectRoot,

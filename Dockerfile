@@ -7,7 +7,7 @@ RUN corepack enable
 # Dependencies stage
 FROM base AS deps
 WORKDIR /app
-COPY package.json pnpm-lock.yaml .npmrc ./
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # Build stage
@@ -42,6 +42,7 @@ COPY --from=builder /app/public ./public
 # Copy standalone build (includes server.js and required node_modules)
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/docker-entrypoint.cjs ./docker-entrypoint.cjs
 
 # Debug: List files to confirm server.js exists
 RUN ls -la /app/ && echo "--- Checking for server.js ---" && test -f /app/server.js
@@ -52,14 +53,12 @@ EXPOSE 3000
 
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+ENV ENABLE_ADVANCED_LOGGING="true"
 
 # Runtime env passthrough defaults
 ENV NEXT_PUBLIC_POSTHOG_KEY=""
 ENV NEXT_PUBLIC_POSTHOG_HOST=""
 ENV NEXT_PUBLIC_BUNNY_CDN_HOSTNAME=""
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-  CMD wget -qO- "http://127.0.0.1:${PORT}/api/health" || exit 1
-
-# Start the server
-CMD ["node", "server.js"]
+# Start the server with verbose output
+CMD ["node", "docker-entrypoint.cjs"]

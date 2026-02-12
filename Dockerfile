@@ -15,6 +15,15 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# Allow NEXT_PUBLIC_* variables to be provided at build-time
+ARG NEXT_PUBLIC_POSTHOG_KEY=""
+ARG NEXT_PUBLIC_POSTHOG_HOST=""
+ARG NEXT_PUBLIC_BUNNY_CDN_HOSTNAME=""
+ENV NEXT_PUBLIC_POSTHOG_KEY=${NEXT_PUBLIC_POSTHOG_KEY}
+ENV NEXT_PUBLIC_POSTHOG_HOST=${NEXT_PUBLIC_POSTHOG_HOST}
+ENV NEXT_PUBLIC_BUNNY_CDN_HOSTNAME=${NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}
+
 RUN pnpm run build
 
 # Production stage - use minimal node alpine
@@ -35,7 +44,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Debug: List files to confirm server.js exists
-RUN ls -la /app/ && echo "--- Checking for server.js ---" && ls -la /app/server.js || echo "server.js NOT FOUND"
+RUN ls -la /app/ && echo "--- Checking for server.js ---" && test -f /app/server.js
 
 USER nextjs
 
@@ -44,5 +53,13 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Start the server with verbose output
+# Runtime env passthrough defaults
+ENV NEXT_PUBLIC_POSTHOG_KEY=""
+ENV NEXT_PUBLIC_POSTHOG_HOST=""
+ENV NEXT_PUBLIC_BUNNY_CDN_HOSTNAME=""
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+  CMD wget -qO- "http://127.0.0.1:${PORT}/api/health" || exit 1
+
+# Start the server
 CMD ["node", "server.js"]

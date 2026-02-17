@@ -1,21 +1,21 @@
 "use client"
 
-import { memo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ProjectCarousel } from "./project-carousel"
 import { projects } from "@/lib/data"
+import { memo } from "react"
 
 /**
  * ProjectCard is memoized to prevent unnecessary re-renders when the parent
  * portfolio page state changes (e.g., when the lightbox opens or closes).
  */
 export const ProjectCard = memo(function ProjectCard({
-    project,
-    onImageClick,
+  project,
+  onImageClick,
 }: {
-    project: (typeof projects)[0]
-    onImageClick: (images: { url: string; alt: string }[], index: number) => void
+  project: (typeof projects)[0]
+  onImageClick: (images: { url: string; alt: string }[], index: number) => void
 }) {
     return (
         <Card className="overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1">

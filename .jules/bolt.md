@@ -5,3 +5,7 @@
 ## 2025-03-05 - [React.memo and Client Components]
 **Learning:** Using React hooks like `memo`, `useMemo`, or `useCallback` in Next.js App Router requires the component to be marked with `"use client"`.
 **Action:** Always add `"use client"` when introducing these features to a component.
+
+## 2025-03-05 - [Inline useMemo vs React.memo]
+**Learning:** When React.memo() on a component causes build or CI issues in complex environments like Cloudflare Pages + Next.js App Router, using inline useMemo() for the mapped elements in the parent component is a robust alternative that achieves similar performance gains by stabilizing the rendered element tree.
+**Action:** Consider inline useMemo for lists of components to prevent re-renders when parent state changes.

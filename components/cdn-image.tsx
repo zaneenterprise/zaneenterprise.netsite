@@ -8,10 +8,6 @@ export interface CDNImageProps extends Omit<ImageProps, 'src' | 'loader'> {
   cdnOptions?: BunnyImageOptions
 }
 
-/**
- * CDNImage wraps the Next.js Image component and provides automatic
- * BunnyCDN URL generation.
- */
 export function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
   const defaultOptions: BunnyImageOptions = {
     quality: 85,
@@ -31,11 +27,12 @@ export function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
   const optimizedSrc = getBunnyCDNUrl(src, optimizationOptions)
 
   const customLoader = ({ src: loaderSrc, width: loaderWidth, quality }: { src: string; width: number; quality?: number }) => {
-    return getBunnyCDNUrl(loaderSrc, {
+    const cdnUrl = getBunnyCDNUrl(src, {
       ...optimizationOptions,
       width: loaderWidth,
       quality: quality || optimizationOptions.quality,
     })
+    return cdnUrl
   }
 
   return (

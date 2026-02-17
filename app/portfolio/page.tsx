@@ -9,7 +9,7 @@ import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { BrandLogo } from "@/components/brand-logo"
 import { SiteFooter } from "@/components/site-footer"
-import { useState, useCallback } from "react"
+import { useState, useCallback, useMemo } from "react"
 import { projects } from "@/lib/data"
 import { ProjectCard } from "@/components/portfolio/project-card"
 import { PlaceholderProjectCard } from "@/components/portfolio/placeholder-project-card"
@@ -78,15 +78,15 @@ export default function PortfolioPage() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
-                {projects.map((project) => (
+                {useMemo(() => projects.map((project) => (
                   <ProjectCard
                     key={project.id}
                     project={project}
                     onImageClick={openLightbox}
                   />
-                ))}
+                )), [openLightbox])}
 
-                <PlaceholderProjectCard />
+                {useMemo(() => <PlaceholderProjectCard />, [])}
               </div>
 
               <div className="text-center space-y-2 sm:space-y-3 pt-4 sm:pt-6 pb-2 px-2">

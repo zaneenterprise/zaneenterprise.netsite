@@ -5,3 +5,7 @@
 ## 2025-03-05 - [Next.js Image Loader Stability]
 **Learning:** Custom loaders passed to the Next.js `Image` component should be stable (useCallback) to prevent the component from potentially re-triggering loader logic or internal updates unnecessarily.
 **Action:** Wrap custom loader functions in `useCallback` and memoize their dependencies.
+
+## 2025-03-05 - [React.memo and Client Components]
+**Learning:** Using `React.memo` in Next.js App Router requires the component to be explicitly marked with `"use client"`, even if it was previously a Shared Component or used within a Client Component tree. Failure to do so can cause CI/build failures.
+**Action:** Always add `"use client"` when introducing React features like `memo`, `useMemo`, or `useCallback` to a component.

@@ -39,7 +39,7 @@ export function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
   const optimizedSrc = useMemo(() => getBunnyCDNUrl(src, optimizationOptions), [src, optimizationOptions])
 
   // Stabilize the loader function for the Next.js Image component
-  const customLoader = useCallback(({ width: loaderWidth, quality }: { width: number; quality?: number }) => {
+  const customLoader = useCallback(({ src: _loaderSrc, width: loaderWidth, quality }: { src: string; width: number; quality?: number }) => {
     return getBunnyCDNUrl(src, {
       ...optimizationOptions,
       width: loaderWidth,

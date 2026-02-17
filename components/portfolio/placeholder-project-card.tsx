@@ -1,8 +1,13 @@
+import { memo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Sparkles } from "lucide-react"
 
-export function PlaceholderProjectCard() {
+/**
+ * PlaceholderProjectCard is memoized as it has no props and never needs to re-render
+ * after its initial mount.
+ */
+export const PlaceholderProjectCard = memo(function PlaceholderProjectCard() {
     return (
         <Card className="overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 border-dashed border-2">
             <CardContent className="p-0">
@@ -37,4 +42,4 @@ export function PlaceholderProjectCard() {
             </CardContent>
         </Card>
     )
-}
+})

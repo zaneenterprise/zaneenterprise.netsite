@@ -4,6 +4,11 @@ import { Badge } from "@/components/ui/badge"
 import { ProjectCarousel } from "./project-carousel"
 import { projects } from "@/lib/data"
 
+/**
+ * ⚡ BOLT OPTIMIZATION: Memoized ProjectCard
+ * Prevents unnecessary re-renders of items in the portfolio grid when
+ * the parent state changes (like opening the lightbox).
+ */
 export const ProjectCard = memo(({
     project,
     onImageClick,

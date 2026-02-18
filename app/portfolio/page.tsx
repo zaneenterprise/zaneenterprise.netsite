@@ -3,8 +3,6 @@
 import type React from "react"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { BrandLogo } from "@/components/brand-logo"
@@ -25,6 +23,11 @@ export default function PortfolioPage() {
     index: number
   } | null>(null)
 
+  /**
+   * ⚡ BOLT OPTIMIZATION: Stable callback references
+   * Wrapping handlers in useCallback prevents unnecessary re-renders of memoized child components
+   * (ProjectCard) when this parent component re-renders (e.g. during lightbox toggle).
+   */
   const openLightbox = useCallback((images: { url: string; alt: string }[], index: number) => {
     setLightboxData({ images, index })
   }, [])

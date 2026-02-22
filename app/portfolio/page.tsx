@@ -25,6 +25,7 @@ export default function PortfolioPage() {
     index: number
   } | null>(null)
 
+  // memoized handlers to ensure stable references for memoized ProjectCard components
   const openLightbox = useCallback((images: { url: string; alt: string }[], index: number) => {
     setLightboxData({ images, index })
   }, [])

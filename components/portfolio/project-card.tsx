@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { ProjectCarousel } from "./project-carousel"
 import { projects } from "@/lib/data"
 
+// Memoized to prevent unnecessary re-renders when parent state (like lightbox) changes
 export const ProjectCard = memo(function ProjectCard({
     project,
     onImageClick,

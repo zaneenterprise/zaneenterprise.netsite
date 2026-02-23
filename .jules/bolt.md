@@ -9,3 +9,9 @@
 **Learning:** Running `pnpm dev` or `pnpm build` in a Next.js project can automatically update `next-env.d.ts`, sometimes adding environment-specific type imports (e.g., from `.next/dev/`). These changes should not be committed as they can break type checking in other environments or in CI.
 
 **Action:** Always check for and revert accidental changes to `next-env.d.ts` before submitting a PR.
+
+## 2025-02-23 - [Environment] Cloudflare Pages Node.js Compatibility
+
+**Learning:** Cloudflare Pages relies on `.nvmrc` for the Node.js version. If this version is lower than the engine requirements in `package.json`, or if the platform doesn't support the specified version (like Node 25), the build will fail. Using Node 20 LTS (20.18.1) ensures maximum compatibility and stable builds.
+
+**Action:** Maintain Node 20.18.1 across `.nvmrc`, `package.json`, and `Dockerfile` for this project to prevent CI failures.

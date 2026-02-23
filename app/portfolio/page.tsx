@@ -9,7 +9,7 @@ import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { BrandLogo } from "@/components/brand-logo"
 import { SiteFooter } from "@/components/site-footer"
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { projects } from "@/lib/data"
 import { ProjectCard } from "@/components/portfolio/project-card"
 import { PlaceholderProjectCard } from "@/components/portfolio/placeholder-project-card"
@@ -25,13 +25,15 @@ export default function PortfolioPage() {
     index: number
   } | null>(null)
 
-  const openLightbox = (images: { url: string; alt: string }[], index: number) => {
+  // Memoize handlers to prevent unnecessary re-renders of the ProjectCard grid
+  // when the lightbox state changes.
+  const openLightbox = useCallback((images: { url: string; alt: string }[], index: number) => {
     setLightboxData({ images, index })
-  }
+  }, [])
 
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
     setLightboxData(null)
-  }
+  }, [])
 
   return (
     <>

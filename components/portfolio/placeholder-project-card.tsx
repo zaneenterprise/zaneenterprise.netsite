@@ -1,8 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Sparkles } from "lucide-react"
+import { memo } from "react"
 
-export function PlaceholderProjectCard() {
+// Memoize to prevent unnecessary re-renders as this component is static
+// and doesn't need to update when parent state changes.
+export const PlaceholderProjectCard = memo(function PlaceholderProjectCard() {
     return (
         <Card className="overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 border-dashed border-2">
             <CardContent className="p-0">
@@ -37,4 +40,4 @@ export function PlaceholderProjectCard() {
             </CardContent>
         </Card>
     )
-}
+})

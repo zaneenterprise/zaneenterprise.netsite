@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
@@ -15,29 +15,37 @@ export function ImageLightbox({
 }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
+    /**
+     * Memoized navigation handlers. They depend on projectImages.length but use
+     * functional updates to remain independent of the currentIndex state value.
+     */
+    const handleNext = useCallback(() => {
+        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
+    }, [projectImages.length])
+
+    const handlePrev = useCallback(() => {
+        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
+    }, [projectImages.length])
+
+    /**
+     * Optimized event listener. By using memoized handlers, we avoid
+     * re-registering the keydown listener on every image change (currentIndex).
+     */
     useEffect(() => {
-        const handleEscape = (e: KeyboardEvent) => {
+        const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose()
             if (e.key === "ArrowLeft") handlePrev()
             if (e.key === "ArrowRight") handleNext()
         }
 
-        document.addEventListener("keydown", handleEscape)
+        document.addEventListener("keydown", handleKeyDown)
         document.body.style.overflow = "hidden"
 
         return () => {
-            document.removeEventListener("keydown", handleEscape)
+            document.removeEventListener("keydown", handleKeyDown)
             document.body.style.overflow = "unset"
         }
-    }, [currentIndex])
-
-    const handleNext = () => {
-        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
-    }
-
-    const handlePrev = () => {
-        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
-    }
+    }, [onClose, handleNext, handlePrev])
 
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         onClose()

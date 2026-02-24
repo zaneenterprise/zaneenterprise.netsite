@@ -1,9 +1,14 @@
+import { memo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ProjectCarousel } from "./project-carousel"
 import { projects } from "@/lib/data"
 
-export function ProjectCard({
+/**
+ * Optimized ProjectCard component using React.memo to prevent unnecessary re-renders
+ * when the parent state (like the lightbox) changes but the project props remain the same.
+ */
+export const ProjectCard = memo(function ProjectCard({
     project,
     onImageClick,
 }: {
@@ -36,4 +41,4 @@ export function ProjectCard({
             </CardContent>
         </Card>
     )
-}
+})

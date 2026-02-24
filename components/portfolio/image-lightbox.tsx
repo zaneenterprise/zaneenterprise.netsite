@@ -21,11 +21,11 @@ export function ImageLightbox({
      */
     const handleNext = useCallback(() => {
         setCurrentIndex((prev) => (prev + 1) % projectImages.length)
-    }, [projectImages.length])
+    }, [projectImages])
 
     const handlePrev = useCallback(() => {
         setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
-    }, [projectImages.length])
+    }, [projectImages])
 
     /**
      * Optimized event listener. By using memoized handlers, we avoid

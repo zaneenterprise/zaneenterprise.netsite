@@ -1,9 +1,14 @@
+/**
+ * ⚡ BOLT OPTIMIZATION: Memoized component to prevent unnecessary re-renders.
+ * Impact: Reduces re-render churn in the project grid when parent state (lightbox) changes.
+ */
+import { memo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ProjectCarousel } from "./project-carousel"
 import { projects } from "@/lib/data"
 
-export function ProjectCard({
+export const ProjectCard = memo(function ProjectCard({
     project,
     onImageClick,
 }: {
@@ -36,4 +41,4 @@ export function ProjectCard({
             </CardContent>
         </Card>
     )
-}
+})

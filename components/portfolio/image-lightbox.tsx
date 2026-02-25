@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useCallback } from "react"
+import type { MouseEvent } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
@@ -44,7 +45,7 @@ export function ImageLightbox({
         // currentIndex removed from dependencies as handlers are stable and use functional updates.
     }, [onClose, handleNext, handlePrev])
 
-    const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleBackdropClick = (e: MouseEvent<HTMLDivElement>) => {
         onClose()
     }
 

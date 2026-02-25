@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, memo, useCallback } from "react"
+import type { MouseEvent } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { CDNImage } from "@/components/cdn-image"
 import { projects } from "@/lib/data"
@@ -18,12 +19,12 @@ export const ProjectCarousel = memo(function ProjectCarousel({
 }) {
     const [currentIndex, setCurrentIndex] = useState(0)
 
-    const next = useCallback((e: React.MouseEvent) => {
+    const next = useCallback((e: MouseEvent) => {
         e.stopPropagation()
         setCurrentIndex((prev) => (prev + 1) % project.images.length)
     }, [project.images.length])
 
-    const prev = useCallback((e: React.MouseEvent) => {
+    const prev = useCallback((e: MouseEvent) => {
         e.stopPropagation()
         setCurrentIndex((curr) => (curr - 1 + project.images.length) % project.images.length)
     }, [project.images.length])

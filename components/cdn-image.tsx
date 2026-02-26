@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useMemo, useCallback } from 'react'
+import { memo, useMemo } from 'react'
 import Image, { ImageProps } from 'next/image'
 import { getBunnyCDNUrl, type BunnyImageOptions } from '@/lib/cdn-utils'
 
@@ -24,19 +24,17 @@ export const CDNImage = memo(function CDNImage({ src, cdnOptions, ...props }: CD
 
   const optimizedSrc = useMemo(() => getBunnyCDNUrl(src, optimizationOptions), [src, optimizationOptions])
 
-  const customLoader = useCallback(({ width, quality }: { width: number; quality?: number }) => {
-    return getBunnyCDNUrl(src, {
-      ...optimizationOptions,
-      width,
-      quality: quality || optimizationOptions.quality,
-    })
-  }, [src, optimizationOptions])
-
   return (
     <Image
       {...props}
       src={optimizedSrc}
-      loader={customLoader}
+      loader={({ width, quality }) => {
+        return getBunnyCDNUrl(src, {
+          ...optimizationOptions,
+          width,
+          quality: quality || optimizationOptions.quality,
+        })
+      }}
     />
   )
 })

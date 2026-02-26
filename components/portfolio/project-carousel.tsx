@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { CDNImage } from "@/components/cdn-image"
 import { projects } from "@/lib/data"
@@ -14,15 +14,15 @@ export function ProjectCarousel({
 }) {
     const [currentIndex, setCurrentIndex] = useState(0)
 
-    const next = (e: React.MouseEvent) => {
+    const next = useCallback((e: React.MouseEvent) => {
         e.stopPropagation()
         setCurrentIndex((prev) => (prev + 1) % project.images.length)
-    }
+    }, [project.images.length])
 
-    const prev = (e: React.MouseEvent) => {
+    const prev = useCallback((e: React.MouseEvent) => {
         e.stopPropagation()
         setCurrentIndex((curr) => (curr - 1 + project.images.length) % project.images.length)
-    }
+    }, [project.images.length])
 
     return (
         <div className="relative group">

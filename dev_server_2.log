@@ -1,0 +1,34 @@
+ WARN  Unsupported engine: wanted: {"node":">=25.4.0"} (current: {"node":"v22.22.0","pnpm":"10.17.1"})
+
+> zaneenterprise@1.1.0 dev /app
+> next dev
+
+▲ Next.js 16.1.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+
+✓ Starting...
+✓ Ready in 665ms
+Image with src "/images/pawcasso1.avif" has a "loader" property that does not implement width. Please implement it or use the "unoptimized" property instead.
+Read more: https://nextjs.org/docs/messages/next-image-missing-loader-width
+Image with src "/images/azbuddy1.avif" has a "loader" property that does not implement width. Please implement it or use the "unoptimized" property instead.
+Read more: https://nextjs.org/docs/messages/next-image-missing-loader-width
+Image with src "/images/gard1.avif" has a "loader" property that does not implement width. Please implement it or use the "unoptimized" property instead.
+Read more: https://nextjs.org/docs/messages/next-image-missing-loader-width
+ GET /portfolio 200 in 1409ms (compile: 893ms, render: 516ms)
+Image with src "/images/pawcasso1.avif" has a "loader" property that does not implement width. Please implement it or use the "unoptimized" property instead.
+Read more: https://nextjs.org/docs/messages/next-image-missing-loader-width
+Image with src "/images/azbuddy1.avif" has a "loader" property that does not implement width. Please implement it or use the "unoptimized" property instead.
+Read more: https://nextjs.org/docs/messages/next-image-missing-loader-width
+Image with src "/images/gard1.avif" has a "loader" property that does not implement width. Please implement it or use the "unoptimized" property instead.
+Read more: https://nextjs.org/docs/messages/next-image-missing-loader-width
+ GET /portfolio 200 in 324ms (compile: 70ms, render: 254ms)
+Image with src "/images/pawcasso1.avif" has a "loader" property that does not implement width. Please implement it or use the "unoptimized" property instead.
+Read more: https://nextjs.org/docs/messages/next-image-missing-loader-width
+Image with src "/images/azbuddy1.avif" has a "loader" property that does not implement width. Please implement it or use the "unoptimized" property instead.
+Read more: https://nextjs.org/docs/messages/next-image-missing-loader-width
+Image with src "/images/gard1.avif" has a "loader" property that does not implement width. Please implement it or use the "unoptimized" property instead.
+Read more: https://nextjs.org/docs/messages/next-image-missing-loader-width
+ GET /portfolio 200 in 272ms (compile: 69ms, render: 203ms)
+ ELIFECYCLE  Command failed.
+[?25h

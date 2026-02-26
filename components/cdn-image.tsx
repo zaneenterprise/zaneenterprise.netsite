@@ -24,11 +24,11 @@ export const CDNImage = memo(function CDNImage({ src, cdnOptions, ...props }: CD
 
   const optimizedSrc = useMemo(() => getBunnyCDNUrl(src, optimizationOptions), [src, optimizationOptions])
 
-  const customLoader = useCallback((p: { src: string; width: number; quality?: number }) => {
+  const customLoader = useCallback(({ width, quality }: { width: number; quality?: number }) => {
     return getBunnyCDNUrl(src, {
       ...optimizationOptions,
-      width: p.width,
-      quality: p.quality || optimizationOptions.quality,
+      width,
+      quality: quality || optimizationOptions.quality,
     })
   }, [src, optimizationOptions])
 

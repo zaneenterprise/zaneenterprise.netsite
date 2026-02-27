@@ -1,0 +1,3 @@
+## 2025-05-14 - [React Memoization & Environment Hygiene]
+**Learning:** In this Next.js project, running the dev server or build process (especially with Turbopack) automatically modifies `next-env.d.ts` to include local route types. This can lead to environment-specific leaks if committed. Additionally, standard memoization (React.memo) is easily negated by passing object literals (like `cdnOptions`) as props.
+**Action:** Always revert `next-env.d.ts` changes before committing. Ensure props passed to memoized components are stable (defined as constants or memoized) to prevent unnecessary re-renders.

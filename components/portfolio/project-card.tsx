@@ -1,9 +1,10 @@
+import React from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ProjectCarousel } from "./project-carousel"
 import { projects } from "@/lib/data"
 
-export function ProjectCard({
+export const ProjectCard = React.memo(function ProjectCard({
     project,
     onImageClick,
 }: {
@@ -36,4 +37,4 @@ export function ProjectCard({
             </CardContent>
         </Card>
     )
-}
+})

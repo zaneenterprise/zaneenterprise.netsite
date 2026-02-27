@@ -25,6 +25,9 @@ export default function PortfolioPage() {
     index: number
   } | null>(null)
 
+  // BOLT OPTIMIZATION: Memoize handlers to prevent ProjectCard from re-rendering
+  // when the lightbox is opened or closed. This keeps the grid interactive during state changes.
+  // Expected Impact: Eliminates redundant re-renders for all ProjectCard components (N items) during lightbox toggles.
   const openLightbox = useCallback((images: { url: string; alt: string }[], index: number) => {
     setLightboxData({ images, index })
   }, [])

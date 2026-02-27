@@ -15,6 +15,10 @@ export function ImageLightbox({
 }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
+    // BOLT OPTIMIZATION: Memoize navigation handlers to maintain stable references.
+    // This prevents the global keyboard event listener from being removed and re-added
+    // every time the user switches images, reducing main thread churn.
+    // Expected Impact: Reduces event listener re-registrations from 1 per image view to 1 per lightbox session.
     const handleNext = useCallback(() => {
         setCurrentIndex((prev) => (prev + 1) % projectImages.length)
     }, [projectImages.length])

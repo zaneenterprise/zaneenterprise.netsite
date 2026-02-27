@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge"
 import { ProjectCarousel } from "./project-carousel"
 import { projects } from "@/lib/data"
 
+// BOLT OPTIMIZATION: Memoize ProjectCard to avoid redundant re-renders
+// when other parts of the portfolio page update (like the lightbox state).
 export const ProjectCard = React.memo(function ProjectCard({
     project,
     onImageClick,

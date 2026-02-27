@@ -15,6 +15,8 @@ const DEFAULT_OPTIONS: BunnyImageOptions = {
   auto_optimize: 'medium',
 }
 
+// BOLT OPTIMIZATION: Memoize CDNImage and its internal logic to prevent
+// expensive URL regeneration and re-renders in large image grids.
 export const CDNImage = React.memo(function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
   const optimizationOptions = useMemo(() => {
     const options: BunnyImageOptions = {

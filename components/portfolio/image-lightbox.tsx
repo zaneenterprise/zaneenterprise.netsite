@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
@@ -15,35 +15,38 @@ export function ImageLightbox({
 }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
+    const handleNext = useCallback(() => {
+        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
+    }, [projectImages.length])
+
+    const handlePrev = useCallback(() => {
+        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
+    }, [projectImages.length])
+
     useEffect(() => {
-        const handleEscape = (e: KeyboardEvent) => {
+        const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose()
             if (e.key === "ArrowLeft") handlePrev()
             if (e.key === "ArrowRight") handleNext()
         }
 
-        document.addEventListener("keydown", handleEscape)
+        document.addEventListener("keydown", handleKeyDown)
         document.body.style.overflow = "hidden"
 
         return () => {
-            document.removeEventListener("keydown", handleEscape)
+            document.removeEventListener("keydown", handleKeyDown)
             document.body.style.overflow = "unset"
         }
-    }, [currentIndex])
-
-    const handleNext = () => {
-        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
-    }
-
-    const handlePrev = () => {
-        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
-    }
+    }, [onClose, handlePrev, handleNext])
 
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         onClose()
     }
 
     if (projectImages.length === 0) return null
+
+    const nextIndex = (currentIndex + 1) % projectImages.length
+    const prevIndex = (currentIndex - 1 + projectImages.length) % projectImages.length
 
     return (
         <div
@@ -127,6 +130,19 @@ export function ImageLightbox({
                     className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
                     style={{ maxWidth: "90vw" }}
                 />
+                {/* Hidden preloading images */}
+                {projectImages.length > 1 && (
+                    <div className="hidden" aria-hidden="true">
+                        <img
+                            src={getBunnyCDNUrl(projectImages[nextIndex].url, { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
+                            alt="preload"
+                        />
+                        <img
+                            src={getBunnyCDNUrl(projectImages[prevIndex].url, { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
+                            alt="preload"
+                        />
+                    </div>
+                )}
             </div>
         </div>
     )

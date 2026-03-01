@@ -1,9 +1,13 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
+/**
+ * ImageLightbox component for viewing project images in a full-screen overlay.
+ * Optimized with stable event handlers and image preloading.
+ */
 export function ImageLightbox({
     projectImages,
     initialIndex,
@@ -15,29 +19,30 @@ export function ImageLightbox({
 }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
+    // Memoized navigation handlers to maintain stable references
+    const handleNext = useCallback(() => {
+        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
+    }, [projectImages.length])
+
+    const handlePrev = useCallback(() => {
+        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
+    }, [projectImages.length])
+
     useEffect(() => {
-        const handleEscape = (e: KeyboardEvent) => {
+        const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose()
             if (e.key === "ArrowLeft") handlePrev()
             if (e.key === "ArrowRight") handleNext()
         }
 
-        document.addEventListener("keydown", handleEscape)
+        document.addEventListener("keydown", handleKeyDown)
         document.body.style.overflow = "hidden"
 
         return () => {
-            document.removeEventListener("keydown", handleEscape)
+            document.removeEventListener("keydown", handleKeyDown)
             document.body.style.overflow = "unset"
         }
-    }, [currentIndex])
-
-    const handleNext = () => {
-        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
-    }
-
-    const handlePrev = () => {
-        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
-    }
+    }, [onClose, handleNext, handlePrev])
 
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         onClose()
@@ -45,11 +50,31 @@ export function ImageLightbox({
 
     if (projectImages.length === 0) return null
 
+    // Preload next and previous images for instantaneous transitions
+    const nextIndex = (currentIndex + 1) % projectImages.length
+    const prevIndex = (currentIndex - 1 + projectImages.length) % projectImages.length
+
     return (
         <div
             className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4"
             onClick={handleBackdropClick}
         >
+            {/* Hidden preloading of adjacent images */}
+            <div className="hidden" aria-hidden="true">
+                {projectImages.length > 1 && (
+                    <>
+                        <img
+                            src={getBunnyCDNUrl(projectImages[nextIndex].url, { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
+                            alt=""
+                        />
+                        <img
+                            src={getBunnyCDNUrl(projectImages[prevIndex].url, { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
+                            alt=""
+                        />
+                    </>
+                )}
+            </div>
+
             <button
                 onClick={(e) => {
                     e.stopPropagation()

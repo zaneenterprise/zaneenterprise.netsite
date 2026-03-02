@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
@@ -15,33 +15,33 @@ export function ImageLightbox({
 }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
+    const handleNext = useCallback(() => {
+        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
+    }, [projectImages.length])
+
+    const handlePrev = useCallback(() => {
+        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
+    }, [projectImages.length])
+
+    const handleBackdropClick = useCallback(() => {
+        onClose()
+    }, [onClose])
+
     useEffect(() => {
-        const handleEscape = (e: KeyboardEvent) => {
+        const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose()
             if (e.key === "ArrowLeft") handlePrev()
             if (e.key === "ArrowRight") handleNext()
         }
 
-        document.addEventListener("keydown", handleEscape)
+        document.addEventListener("keydown", handleKeyDown)
         document.body.style.overflow = "hidden"
 
         return () => {
-            document.removeEventListener("keydown", handleEscape)
+            document.removeEventListener("keydown", handleKeyDown)
             document.body.style.overflow = "unset"
         }
-    }, [currentIndex])
-
-    const handleNext = () => {
-        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
-    }
-
-    const handlePrev = () => {
-        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
-    }
-
-    const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        onClose()
-    }
+    }, [onClose, handlePrev, handleNext])
 
     if (projectImages.length === 0) return null
 
@@ -121,6 +121,19 @@ export function ImageLightbox({
                 }}
                 className="relative max-w-7xl max-h-[90vh] animate-in zoom-in-95 duration-200"
             >
+                {/* Preload next and previous images for instantaneous transitions */}
+                {projectImages.length > 1 && (
+                    <div className="hidden" aria-hidden="true">
+                        <img
+                            src={getBunnyCDNUrl(projectImages[(currentIndex + 1) % projectImages.length].url, { width: 2048, quality: 90, auto_optimize: 'low' })}
+                            alt=""
+                        />
+                        <img
+                            src={getBunnyCDNUrl(projectImages[(currentIndex - 1 + projectImages.length) % projectImages.length].url, { width: 2048, quality: 90, auto_optimize: 'low' })}
+                            alt=""
+                        />
+                    </div>
+                )}
                 <img
                     src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
                     alt={projectImages[currentIndex]?.alt || "Project image"}

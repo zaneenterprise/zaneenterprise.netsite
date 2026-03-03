@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
+import React from "react"
+
+const LIGHTBOX_IMAGE_OPTIONS = { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true } as const
 
 export function ImageLightbox({
     projectImages,
@@ -44,6 +47,9 @@ export function ImageLightbox({
     }
 
     if (projectImages.length === 0) return null
+
+    const nextIndex = (currentIndex + 1) % projectImages.length
+    const prevIndex = (currentIndex - 1 + projectImages.length) % projectImages.length
 
     return (
         <div
@@ -122,11 +128,25 @@ export function ImageLightbox({
                 className="relative max-w-7xl max-h-[90vh] animate-in zoom-in-95 duration-200"
             >
                 <img
-                    src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
+                    src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", LIGHTBOX_IMAGE_OPTIONS)}
                     alt={projectImages[currentIndex]?.alt || "Project image"}
                     className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
                     style={{ maxWidth: "90vw" }}
                 />
+
+                {/* Preload next and previous images */}
+                {projectImages.length > 1 && (
+                    <div className="hidden">
+                        <img
+                            src={getBunnyCDNUrl(projectImages[nextIndex].url, LIGHTBOX_IMAGE_OPTIONS)}
+                            alt="Preload next"
+                        />
+                        <img
+                            src={getBunnyCDNUrl(projectImages[prevIndex].url, LIGHTBOX_IMAGE_OPTIONS)}
+                            alt="Preload prev"
+                        />
+                    </div>
+                )}
             </div>
         </div>
     )

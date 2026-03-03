@@ -33,6 +33,9 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
+# Build artifacts
+*.tsbuildinfo
+
 # IDE settings
 .vscode/
 .idea/

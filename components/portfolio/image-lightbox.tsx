@@ -52,29 +52,29 @@ export function ImageLightbox({
 
     if (projectImages.length === 0) return null
 
-    // Preload next and previous images
-    const nextIndex = (currentIndex + 1) % projectImages.length
-    const prevIndex = (currentIndex - 1 + projectImages.length) % projectImages.length
+    // Programmatic preloading of adjacent images
+    useEffect(() => {
+        if (projectImages.length <= 1) return
+
+        const nextIndex = (currentIndex + 1) % projectImages.length
+        const prevIndex = (currentIndex - 1 + projectImages.length) % projectImages.length
+
+        const preloadUrls = [
+            getBunnyCDNUrl(projectImages[nextIndex].url, LIGHTBOX_IMAGE_OPTIONS),
+            getBunnyCDNUrl(projectImages[prevIndex].url, LIGHTBOX_IMAGE_OPTIONS)
+        ]
+
+        preloadUrls.forEach(url => {
+            const img = new Image()
+            img.src = url
+        })
+    }, [currentIndex, projectImages])
 
     return (
         <div
             className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4"
             onClick={handleBackdropClick}
         >
-            {/* Hidden preload tags */}
-            {projectImages.length > 1 && (
-                <div className="hidden">
-                    <img
-                        src={getBunnyCDNUrl(projectImages[nextIndex].url, LIGHTBOX_IMAGE_OPTIONS)}
-                        alt=""
-                    />
-                    <img
-                        src={getBunnyCDNUrl(projectImages[prevIndex].url, LIGHTBOX_IMAGE_OPTIONS)}
-                        alt=""
-                    />
-                </div>
-            )}
-
             <button
                 onClick={(e) => {
                     e.stopPropagation()

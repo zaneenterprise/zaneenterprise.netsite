@@ -1,0 +1,3 @@
+## 2025-05-15 - [Optimized Portfolio and Lightbox Performance]
+**Learning:** Cascading re-renders in the portfolio list were triggered by lightbox state changes because event handlers like 'openLightbox' weren't memoized and 'ProjectCard' was a functional component re-rendering on every parent update. Additionally, Next.js 'Image' loader requires explicit 'width' destructuring to satisfy internal checks.
+**Action:** Use 'React.memo' and 'useCallback' to stabilize the component tree, and ensure 'width' is explicitly named in custom loaders to avoid console warnings. Implement hidden preloading for image sequences to ensure instantaneous UI transitions.

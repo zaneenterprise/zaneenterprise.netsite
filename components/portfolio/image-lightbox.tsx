@@ -25,7 +25,8 @@ export function ImageLightbox({
         const preloadIndices = [nextIndex, prevIndex]
 
         preloadIndices.forEach((idx) => {
-            const img = new Image()
+            if (typeof window === 'undefined') return
+            const img = new window.Image()
             img.src = getBunnyCDNUrl(projectImages[idx].url, {
                 width: 2048,
                 quality: 90,

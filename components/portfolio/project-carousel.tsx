@@ -1,11 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState, memo } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { CDNImage } from "@/components/cdn-image"
 import { projects } from "@/lib/data"
 
-export function ProjectCarousel({
+const CAROUSEL_CDN_OPTIONS = { quality: 85, auto_optimize: 'high' } as const
+
+export const ProjectCarousel = memo(function ProjectCarousel({
     project,
     onImageClick,
 }: {
@@ -36,7 +38,7 @@ export function ProjectCarousel({
                     fill
                     className="object-contain"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
-                    cdnOptions={{ quality: 85, auto_optimize: 'high' }}
+                    cdnOptions={CAROUSEL_CDN_OPTIONS}
                 />
             </div>
 
@@ -71,4 +73,4 @@ export function ProjectCarousel({
             </div>
         </div>
     )
-}
+})

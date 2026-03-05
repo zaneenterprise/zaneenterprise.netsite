@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React, { useState, useCallback } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -9,7 +9,6 @@ import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { BrandLogo } from "@/components/brand-logo"
 import { SiteFooter } from "@/components/site-footer"
-import { useState, useCallback } from "react"
 import { projects } from "@/lib/data"
 import { ProjectCard } from "@/components/portfolio/project-card"
 import { PlaceholderProjectCard } from "@/components/portfolio/placeholder-project-card"

@@ -1,9 +1,14 @@
+import React from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ProjectCarousel } from "./project-carousel"
 import { projects } from "@/lib/data"
 
-export function ProjectCard({
+/**
+ * ⚡ Bolt: Memoized ProjectCard to prevent re-renders when other cards change
+ * or when the parent PortfolioPage state (lightbox) updates.
+ */
+export const ProjectCard = React.memo(function ProjectCard({
     project,
     onImageClick,
 }: {
@@ -36,4 +41,6 @@ export function ProjectCard({
             </CardContent>
         </Card>
     )
-}
+})
+
+ProjectCard.displayName = "ProjectCard"

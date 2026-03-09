@@ -1,10 +1,8 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
-
-const LIGHTBOX_IMAGE_OPTIONS = { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true } as const
 
 export function ImageLightbox({
     projectImages,
@@ -17,45 +15,29 @@ export function ImageLightbox({
 }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
-    const handleNext = useCallback(() => {
-        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
-    }, [projectImages.length])
-
-    const handlePrev = useCallback(() => {
-        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
-    }, [projectImages.length])
-
     useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
+        const handleEscape = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose()
             if (e.key === "ArrowLeft") handlePrev()
             if (e.key === "ArrowRight") handleNext()
         }
 
-        document.addEventListener("keydown", handleKeyDown)
+        document.addEventListener("keydown", handleEscape)
         document.body.style.overflow = "hidden"
 
         return () => {
-            document.removeEventListener("keydown", handleKeyDown)
+            document.removeEventListener("keydown", handleEscape)
             document.body.style.overflow = "unset"
         }
-    }, [onClose, handlePrev, handleNext])
+    }, [currentIndex])
 
-    // Preload next and previous images
-    useEffect(() => {
-        if (projectImages.length <= 1) return
+    const handleNext = () => {
+        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
+    }
 
-        const nextIndex = (currentIndex + 1) % projectImages.length
-        const prevIndex = (currentIndex - 1 + projectImages.length) % projectImages.length
-
-        const preloadImage = (url: string) => {
-            const img = new Image()
-            img.src = getBunnyCDNUrl(url, LIGHTBOX_IMAGE_OPTIONS)
-        }
-
-        preloadImage(projectImages[nextIndex].url)
-        preloadImage(projectImages[prevIndex].url)
-    }, [currentIndex, projectImages])
+    const handlePrev = () => {
+        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
+    }
 
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         onClose()
@@ -140,7 +122,7 @@ export function ImageLightbox({
                 className="relative max-w-7xl max-h-[90vh] animate-in zoom-in-95 duration-200"
             >
                 <img
-                    src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", LIGHTBOX_IMAGE_OPTIONS)}
+                    src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
                     alt={projectImages[currentIndex]?.alt || "Project image"}
                     className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
                     style={{ maxWidth: "90vw" }}

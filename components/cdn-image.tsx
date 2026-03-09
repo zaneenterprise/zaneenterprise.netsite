@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import Image, { ImageProps } from 'next/image'
 import { getBunnyCDNUrl, type BunnyImageOptions } from '@/lib/cdn-utils'
 
@@ -9,7 +8,7 @@ export interface CDNImageProps extends Omit<ImageProps, 'src' | 'loader'> {
   cdnOptions?: BunnyImageOptions
 }
 
-export const CDNImage = React.memo(({ src, cdnOptions, ...props }: CDNImageProps) => {
+export function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
   const defaultOptions: BunnyImageOptions = {
     quality: 85,
     format: 'webp',
@@ -28,7 +27,7 @@ export const CDNImage = React.memo(({ src, cdnOptions, ...props }: CDNImageProps
   const optimizedSrc = getBunnyCDNUrl(src, optimizationOptions)
 
   const customLoader = ({ src: loaderSrc, width: loaderWidth, quality }: { src: string; width: number; quality?: number }) => {
-    const cdnUrl = getBunnyCDNUrl(loaderSrc, {
+    const cdnUrl = getBunnyCDNUrl(src, {
       ...optimizationOptions,
       width: loaderWidth,
       quality: quality || optimizationOptions.quality,
@@ -43,12 +42,8 @@ export const CDNImage = React.memo(({ src, cdnOptions, ...props }: CDNImageProps
       loader={customLoader}
     />
   )
-})
-
-CDNImage.displayName = 'CDNImage'
-
-const LOGO_CDN_OPTIONS = { quality: 90 }
+}
 
 export function LogoImage(props: Omit<CDNImageProps, 'cdnOptions'>) {
-  return <CDNImage {...props} cdnOptions={LOGO_CDN_OPTIONS} />
+  return <CDNImage {...props} cdnOptions={{ quality: 90 }} />
 }

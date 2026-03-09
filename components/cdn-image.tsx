@@ -27,8 +27,8 @@ export const CDNImage = React.memo(({ src, cdnOptions, ...props }: CDNImageProps
 
   const optimizedSrc = getBunnyCDNUrl(src, optimizationOptions)
 
-  const customLoader = ({ width: loaderWidth, quality }: { src: string; width: number; quality?: number }) => {
-    const cdnUrl = getBunnyCDNUrl(src, {
+  const customLoader = ({ src: loaderSrc, width: loaderWidth, quality }: { src: string; width: number; quality?: number }) => {
+    const cdnUrl = getBunnyCDNUrl(loaderSrc, {
       ...optimizationOptions,
       width: loaderWidth,
       quality: quality || optimizationOptions.quality,

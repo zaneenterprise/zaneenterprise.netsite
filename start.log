@@ -1,0 +1,16 @@
+ WARN  Unsupported engine: wanted: {"node":">=25.4.0"} (current: {"node":"v22.22.0","pnpm":"10.17.1"})
+
+> zaneenterprise@1.1.0 start /app
+> next start
+
+⨯ Failed to start server
+Error: listen EADDRINUSE: address already in use :::3000
+    at <unknown> (Error: listen EADDRINUSE: address already in use :::3000)
+    at new Promise (<anonymous>) {
+  code: 'EADDRINUSE',
+  errno: -98,
+  syscall: 'listen',
+  address: '::',
+  port: 3000
+}
+ ELIFECYCLE  Command failed with exit code 1.

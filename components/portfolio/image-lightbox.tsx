@@ -15,6 +15,26 @@ export function ImageLightbox({
 }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
+    // Preload next and previous images
+    useEffect(() => {
+        const preloadIndices = [
+            (currentIndex + 1) % projectImages.length,
+            (currentIndex - 1 + projectImages.length) % projectImages.length
+        ]
+
+        preloadIndices.forEach(idx => {
+            if (projectImages[idx]) {
+                const img = new Image()
+                img.src = getBunnyCDNUrl(projectImages[idx].url, {
+                    width: 2048,
+                    quality: 90,
+                    auto_optimize: 'low',
+                    sharpen: true
+                })
+            }
+        })
+    }, [currentIndex, projectImages])
+
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose()

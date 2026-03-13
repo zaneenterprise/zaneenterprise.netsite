@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import Image, { ImageProps } from 'next/image'
 import { getBunnyCDNUrl, type BunnyImageOptions } from '@/lib/cdn-utils'
 
@@ -8,7 +9,11 @@ export interface CDNImageProps extends Omit<ImageProps, 'src' | 'loader'> {
   cdnOptions?: BunnyImageOptions
 }
 
-export function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
+/**
+ * Optimized Image component that uses BunnyCDN for image processing.
+ * Memoized to prevent unnecessary re-renders when parent state changes.
+ */
+export const CDNImage = React.memo(({ src, cdnOptions, ...props }: CDNImageProps) => {
   const defaultOptions: BunnyImageOptions = {
     quality: 85,
     format: 'webp',
@@ -26,13 +31,12 @@ export function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
 
   const optimizedSrc = getBunnyCDNUrl(src, optimizationOptions)
 
-  const customLoader = ({ src: loaderSrc, width: loaderWidth, quality }: { src: string; width: number; quality?: number }) => {
-    const cdnUrl = getBunnyCDNUrl(src, {
+  const customLoader = ({ width: loaderWidth, quality }: { src: string; width: number; quality?: number }) => {
+    return getBunnyCDNUrl(src, {
       ...optimizationOptions,
       width: loaderWidth,
       quality: quality || optimizationOptions.quality,
     })
-    return cdnUrl
   }
 
   return (
@@ -42,8 +46,17 @@ export function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
       loader={customLoader}
     />
   )
-}
+})
 
-export function LogoImage(props: Omit<CDNImageProps, 'cdnOptions'>) {
-  return <CDNImage {...props} cdnOptions={{ quality: 90 }} />
-}
+CDNImage.displayName = 'CDNImage'
+
+const LOGO_CDN_OPTIONS: BunnyImageOptions = { quality: 90 }
+
+/**
+ * Specialized version of CDNImage for logos.
+ */
+export const LogoImage = React.memo((props: Omit<CDNImageProps, 'cdnOptions'>) => {
+  return <CDNImage {...props} cdnOptions={LOGO_CDN_OPTIONS} />
+})
+
+LogoImage.displayName = 'LogoImage'

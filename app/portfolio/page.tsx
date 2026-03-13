@@ -1,23 +1,16 @@
 "use client"
 
-import type React from "react"
+import React, { useCallback, useState } from "react"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { BrandLogo } from "@/components/brand-logo"
 import { SiteFooter } from "@/components/site-footer"
-import { useState } from "react"
 import { projects } from "@/lib/data"
 import { ProjectCard } from "@/components/portfolio/project-card"
 import { PlaceholderProjectCard } from "@/components/portfolio/placeholder-project-card"
 import { ImageLightbox } from "@/components/portfolio/image-lightbox"
-
-
-
-
 
 export default function PortfolioPage() {
   const [lightboxData, setLightboxData] = useState<{
@@ -25,13 +18,14 @@ export default function PortfolioPage() {
     index: number
   } | null>(null)
 
-  const openLightbox = (images: { url: string; alt: string }[], index: number) => {
+  // Memoized handlers to prevent unnecessary re-renders of ProjectCard components
+  const openLightbox = useCallback((images: { url: string; alt: string }[], index: number) => {
     setLightboxData({ images, index })
-  }
+  }, [])
 
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
     setLightboxData(null)
-  }
+  }, [])
 
   return (
     <>

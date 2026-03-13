@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { CDNImage } from "@/components/cdn-image"
 import { projects } from "@/lib/data"

@@ -1,5 +1,5 @@
-# Use the latest Node.js 25 "Current" release with security fixes (Jan 2026)
-FROM node:25.4.0-alpine AS base
+# Use Node.js 22.14.0 LTS for stability and compatibility with Cloudflare Pages
+FROM node:22.14.0-alpine AS base
 
 # Install pnpm globally
 RUN npm install -g pnpm
@@ -27,7 +27,7 @@ ENV NEXT_PUBLIC_BUNNY_CDN_HOSTNAME=${NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}
 RUN pnpm run build
 
 # Production stage - use minimal node alpine
-FROM node:25.4.0-alpine AS runner
+FROM node:22.14.0-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production

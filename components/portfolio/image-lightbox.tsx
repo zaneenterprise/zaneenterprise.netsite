@@ -16,6 +16,27 @@ export function ImageLightbox({
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
     useEffect(() => {
+        const nextIndex = (currentIndex + 1) % projectImages.length
+        const prevIndex = (currentIndex - 1 + projectImages.length) % projectImages.length
+
+        const preloadImage = (index: number) => {
+            const url = getBunnyCDNUrl(projectImages[index]?.url || "/placeholder.svg", {
+                width: 2048,
+                quality: 90,
+                auto_optimize: 'low',
+                sharpen: true
+            })
+            const img = new Image()
+            img.src = url
+        }
+
+        if (projectImages.length > 1) {
+            preloadImage(nextIndex)
+            preloadImage(prevIndex)
+        }
+    }, [currentIndex, projectImages])
+
+    useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose()
             if (e.key === "ArrowLeft") handlePrev()

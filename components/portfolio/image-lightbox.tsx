@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl, type BunnyImageOptions } from "@/lib/cdn-utils"
 
@@ -23,6 +23,14 @@ export function ImageLightbox({
 }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
+    const handleNext = useCallback(() => {
+        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
+    }, [projectImages.length])
+
+    const handlePrev = useCallback(() => {
+        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
+    }, [projectImages.length])
+
     // Handle keyboard navigation and body scroll lock
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
@@ -38,7 +46,7 @@ export function ImageLightbox({
             document.removeEventListener("keydown", handleEscape)
             document.body.style.overflow = "unset"
         }
-    }, [currentIndex])
+    }, [onClose, handleNext, handlePrev])
 
     // Programmatic preloading of adjacent images for instantaneous transitions
     useEffect(() => {
@@ -54,14 +62,6 @@ export function ImageLightbox({
             img.src = getBunnyCDNUrl(projectImages[idx].url, LIGHTBOX_IMAGE_OPTIONS)
         })
     }, [currentIndex, projectImages])
-
-    const handleNext = () => {
-        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
-    }
-
-    const handlePrev = () => {
-        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
-    }
 
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         onClose()

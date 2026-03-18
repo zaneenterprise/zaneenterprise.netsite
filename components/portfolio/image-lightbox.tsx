@@ -2,7 +2,15 @@
 
 import { useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
-import { getBunnyCDNUrl } from "@/lib/cdn-utils"
+import { getBunnyCDNUrl, type BunnyImageOptions } from "@/lib/cdn-utils"
+
+// Consistent options for lightbox images to ensure preloading hits the cache
+const LIGHTBOX_IMAGE_OPTIONS: BunnyImageOptions = {
+    width: 2048,
+    quality: 90,
+    auto_optimize: 'low',
+    sharpen: true
+}
 
 export function ImageLightbox({
     projectImages,
@@ -15,6 +23,7 @@ export function ImageLightbox({
 }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
+    // Handle keyboard navigation and body scroll lock
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose()
@@ -30,6 +39,21 @@ export function ImageLightbox({
             document.body.style.overflow = "unset"
         }
     }, [currentIndex])
+
+    // Programmatic preloading of adjacent images for instantaneous transitions
+    useEffect(() => {
+        if (projectImages.length <= 1) return
+
+        const nextIndex = (currentIndex + 1) % projectImages.length
+        const prevIndex = (currentIndex - 1 + projectImages.length) % projectImages.length
+
+        const indicesToPreload = [nextIndex, prevIndex]
+
+        indicesToPreload.forEach(idx => {
+            const img = new Image()
+            img.src = getBunnyCDNUrl(projectImages[idx].url, LIGHTBOX_IMAGE_OPTIONS)
+        })
+    }, [currentIndex, projectImages])
 
     const handleNext = () => {
         setCurrentIndex((prev) => (prev + 1) % projectImages.length)
@@ -122,7 +146,7 @@ export function ImageLightbox({
                 className="relative max-w-7xl max-h-[90vh] animate-in zoom-in-95 duration-200"
             >
                 <img
-                    src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
+                    src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", LIGHTBOX_IMAGE_OPTIONS)}
                     alt={projectImages[currentIndex]?.alt || "Project image"}
                     className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
                     style={{ maxWidth: "90vw" }}

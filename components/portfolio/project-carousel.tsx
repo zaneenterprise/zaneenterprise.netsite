@@ -4,6 +4,10 @@ import { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { CDNImage } from "@/components/cdn-image"
 import { projects } from "@/lib/data"
+import type { BunnyImageOptions } from "@/lib/cdn-utils"
+
+// Stable constant for carousel images to maintain CDNImage memoization effectiveness
+const CAROUSEL_CDN_OPTIONS: BunnyImageOptions = { quality: 85, auto_optimize: 'high' }
 
 export function ProjectCarousel({
     project,
@@ -36,7 +40,7 @@ export function ProjectCarousel({
                     fill
                     className="object-contain"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
-                    cdnOptions={{ quality: 85, auto_optimize: 'high' }}
+                    cdnOptions={CAROUSEL_CDN_OPTIONS}
                 />
             </div>
 

@@ -1,0 +1,3 @@
+## 2025-03-14 - [Portfolio Optimization]
+**Learning:** Cascading re-renders in the portfolio list (3 projects, multiple images each) were triggered by lightbox state changes in the parent `PortfolioPage`. By applying `React.memo` to `ProjectCard` and wrapping state-updating handlers in `useCallback`, re-renders were restricted only to the necessary components. Programmatic preloading in the lightbox significantly improved perceived performance (TTI for next image) by pre-fetching high-res assets.
+**Action:** Always wrap state-passing handlers in `useCallback` when parent state (like a modal/lightbox) is expected to change frequently without affecting the underlying list. Use programmatic `new Image()` preloading for sequential assets.

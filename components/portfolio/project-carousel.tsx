@@ -4,7 +4,15 @@ import { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { CDNImage } from "@/components/cdn-image"
 import { projects } from "@/lib/data"
+import { BunnyImageOptions } from "@/lib/cdn-utils"
 
+const CAROUSEL_CDN_OPTIONS: BunnyImageOptions = { quality: 85, auto_optimize: 'high' }
+
+/**
+ * Project image carousel with optimized stable props passed to CDNImage
+ * ensuring that carousel state updates do not trigger unnecessary
+ * re-renders of the child image component.
+ */
 export function ProjectCarousel({
     project,
     onImageClick,
@@ -36,7 +44,7 @@ export function ProjectCarousel({
                     fill
                     className="object-contain"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
-                    cdnOptions={{ quality: 85, auto_optimize: 'high' }}
+                    cdnOptions={CAROUSEL_CDN_OPTIONS}
                 />
             </div>
 

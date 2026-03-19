@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useCallback, useMemo } from "react"
+import React, { useEffect, useState, useCallback, useMemo } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 

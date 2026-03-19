@@ -36,10 +36,11 @@ export const CDNImage = React.memo(({ src, cdnOptions, ...props }: CDNImageProps
   const optimizedSrc = useMemo(() => getBunnyCDNUrl(src, optimizationOptions), [src, optimizationOptions])
 
   // Memoized loader to prevent re-creating it on every render which can trigger Next.js image re-loads
+  // The loader parameters must be explicitly destructured for Next.js internal validation.
   const customLoader = useCallback(({ width, quality }: { src: string; width: number; quality?: number }) => {
     return getBunnyCDNUrl(src, {
       ...optimizationOptions,
-      width: width,
+      width,
       quality: quality || optimizationOptions.quality,
     })
   }, [src, optimizationOptions])

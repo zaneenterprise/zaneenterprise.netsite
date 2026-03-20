@@ -1,0 +1,3 @@
+## 2025-05-15 - [Portfolio and Image Memoization]
+**Learning:** In 'ImageLightbox', opening or closing the lightbox triggers a state update in the 'PortfolioPage' component. Without memoization, this causes a cascading re-render of the entire project list, including every 'ProjectCard' and all 'CDNImage' components within them. Memoizing these components and stabilizing their props (handlers and options objects) eliminates these redundant re-renders.
+**Action:** Always wrap state-dependent handlers in 'useCallback' and memoize list items in performance-critical views. Ensure that object literals passed as props are moved to stable constants or memoized to maintain 'React.memo' effectiveness.

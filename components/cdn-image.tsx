@@ -28,10 +28,10 @@ export const CDNImage = React.memo(({ src, cdnOptions, ...props }: CDNImageProps
     return opts
   }, [cdnOptions, props.width, ('fill' in props)])
 
-  const customLoader = useCallback(({ src: _src, width, quality }: { src: string; width: number; quality?: number }) => {
+  const customLoader = useCallback(({ src: loaderSrc, width: loaderWidth, quality }: { src: string; width: number; quality?: number }) => {
     return getBunnyCDNUrl(src, {
       ...optimizationOptions,
-      width,
+      width: loaderWidth,
       quality: quality || optimizationOptions.quality,
     })
   }, [src, optimizationOptions])

@@ -31,6 +31,27 @@ export function ImageLightbox({
         }
     }, [currentIndex])
 
+    // Preload next and previous images
+    useEffect(() => {
+        if (projectImages.length <= 1) return
+
+        const nextIndex = (currentIndex + 1) % projectImages.length
+        const prevIndex = (currentIndex - 1 + projectImages.length) % projectImages.length
+
+        const preloadImage = (index: number) => {
+            const img = new Image()
+            img.src = getBunnyCDNUrl(projectImages[index].url, {
+                width: 2048,
+                quality: 90,
+                auto_optimize: 'low',
+                sharpen: true
+            })
+        }
+
+        preloadImage(nextIndex)
+        preloadImage(prevIndex)
+    }, [currentIndex, projectImages])
+
     const handleNext = () => {
         setCurrentIndex((prev) => (prev + 1) % projectImages.length)
     }

@@ -9,6 +9,8 @@ export interface CDNImageProps extends Omit<ImageProps, 'src' | 'loader'> {
   cdnOptions?: BunnyImageOptions
 }
 
+const LOGO_CDN_OPTIONS = { quality: 90 } as const
+
 export const CDNImage = React.memo(({ src, cdnOptions, ...props }: CDNImageProps) => {
   const optimizationOptions = useMemo(() => {
     const defaultOptions: BunnyImageOptions = {
@@ -54,5 +56,5 @@ export const CDNImage = React.memo(({ src, cdnOptions, ...props }: CDNImageProps
 CDNImage.displayName = 'CDNImage'
 
 export function LogoImage(props: Omit<CDNImageProps, 'cdnOptions'>) {
-  return <CDNImage {...props} cdnOptions={{ quality: 90 }} />
+  return <CDNImage {...props} cdnOptions={LOGO_CDN_OPTIONS} />
 }

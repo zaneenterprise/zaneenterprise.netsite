@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
@@ -31,13 +31,13 @@ export function ImageLightbox({
         }
     }, [currentIndex])
 
-    const handleNext = () => {
+    const handleNext = useCallback(() => {
         setCurrentIndex((prev) => (prev + 1) % projectImages.length)
-    }
+    }, [projectImages.length])
 
-    const handlePrev = () => {
+    const handlePrev = useCallback(() => {
         setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
-    }
+    }, [projectImages.length])
 
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         onClose()

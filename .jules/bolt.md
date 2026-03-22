@@ -1,0 +1,3 @@
+## 2025-05-15 - [Portfolio Lightbox Optimization]
+**Learning:** In the Portfolio page, opening and closing the image lightbox triggered a re-render of the entire project grid (18 ProjectCard renders and 30 CDNImage renders). This was caused by unstable event handlers (`openLightbox`, `closeLightbox`) and a lack of memoization in the `ProjectCard` and `CDNImage` components.
+**Action:** Apply `React.memo` to all leaf and intermediate components in a list, and wrap any handlers passed down to them in `useCallback`. Ensure props like `cdnOptions` are stabilized (moved to constants or memoized) to maintain the effectiveness of `React.memo`.

@@ -1,0 +1,5 @@
+## 2025-05-15 - [Portfolio Rendering & Image Optimization]
+**Learning:** Cascading re-renders in the portfolio list occurred because the `openLightbox` and `closeLightbox` handlers in the parent `PortfolioPage` were being recreated on every render. Even though `ProjectCard` and `CDNImage` were memoized, they would still re-render because their props (the handlers and object literals like `cdnOptions`) were not stable.
+**Action:** Always wrap parent event handlers in `useCallback` when passing them down to memoized children. Also, move object/array literals (like `cdnOptions`) to stable constants outside the component or memoize them with `useMemo`.
+**Learning:** The perceived performance of the lightbox can be significantly improved by programmatically preloading adjacent images (next/prev) in a `useEffect` hook. This ensures that the images are already in the browser cache when the user navigates, leading to instantaneous transitions.
+**Action:** Implement a lightweight preloading mechanism for carousel-like components to eliminate loading flickers during user navigation.

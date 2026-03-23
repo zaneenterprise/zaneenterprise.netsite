@@ -1,34 +1,45 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState, useCallback, useMemo } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { CDNImage } from "@/components/cdn-image"
 import { projects } from "@/lib/data"
+import { type BunnyImageOptions } from "@/lib/cdn-utils"
 
-export function ProjectCarousel({
+const CAROUSEL_CDN_OPTIONS: BunnyImageOptions = { quality: 85, auto_optimize: 'high' }
+
+/**
+ * Optimized ProjectCarousel component that memoizes its render output and stabilizes event handlers.
+ * This prevents parent re-renders from triggering expensive carousel updates.
+ */
+export const ProjectCarousel = React.memo(({
     project,
     onImageClick,
 }: {
     project: (typeof projects)[0]
     onImageClick: (images: { url: string; alt: string }[], index: number) => void
-}) {
+}) => {
     const [currentIndex, setCurrentIndex] = useState(0)
 
-    const next = (e: React.MouseEvent) => {
+    const next = useCallback((e: React.MouseEvent) => {
         e.stopPropagation()
         setCurrentIndex((prev) => (prev + 1) % project.images.length)
-    }
+    }, [project.images.length])
 
-    const prev = (e: React.MouseEvent) => {
+    const prev = useCallback((e: React.MouseEvent) => {
         e.stopPropagation()
         setCurrentIndex((curr) => (curr - 1 + project.images.length) % project.images.length)
-    }
+    }, [project.images.length])
+
+    const handleMainImageClick = useCallback(() => {
+        onImageClick(project.images, currentIndex)
+    }, [onImageClick, project.images, currentIndex])
 
     return (
         <div className="relative group">
             <div
                 className="relative aspect-[9/16] sm:aspect-[3/4] rounded-lg overflow-hidden bg-muted cursor-pointer hover:ring-2 hover:ring-brand/50 transition-all"
-                onClick={() => onImageClick(project.images, currentIndex)}
+                onClick={handleMainImageClick}
             >
                 <CDNImage
                     src={project.images[currentIndex].url || "/placeholder.svg"}
@@ -36,7 +47,7 @@ export function ProjectCarousel({
                     fill
                     className="object-contain"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
-                    cdnOptions={{ quality: 85, auto_optimize: 'high' }}
+                    cdnOptions={CAROUSEL_CDN_OPTIONS}
                 />
             </div>
 
@@ -71,4 +82,6 @@ export function ProjectCarousel({
             </div>
         </div>
     )
-}
+})
+
+ProjectCarousel.displayName = 'ProjectCarousel'

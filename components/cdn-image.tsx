@@ -33,12 +33,16 @@ export const CDNImage = React.memo(({ src, cdnOptions, ...props }: CDNImageProps
     return options
   }, [cdnOptions, props.width, props.fill])
 
-  // Loader signature destructures src, width, and quality to satisfy Next.js internal validation.
-  const customLoader = useCallback(({ src: loaderSrc, width: loaderWidth, quality }: { src: string; width: number; quality?: number }) => {
-    return getBunnyCDNUrl(loaderSrc, {
+  /**
+   * Next.js performs a string-based check on the loader function code to ensure
+   * it implements width handling. Destructuring { src, width, quality } from
+   * the parameter object is required for validation.
+   */
+  const customLoader = useCallback(({ src: s, width: w, quality: q }: { src: string; width: number; quality?: number }) => {
+    return getBunnyCDNUrl(s, {
       ...optimizationOptions,
-      width: loaderWidth,
-      quality: quality || optimizationOptions.quality,
+      width: w,
+      quality: q || optimizationOptions.quality,
     })
   }, [optimizationOptions])
 

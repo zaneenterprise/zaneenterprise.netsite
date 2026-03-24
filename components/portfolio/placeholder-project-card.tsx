@@ -1,8 +1,12 @@
+import React from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Sparkles } from "lucide-react"
 
-export function PlaceholderProjectCard() {
+/**
+ * Memoized PlaceholderProjectCard for consistent performance in the grid.
+ */
+export const PlaceholderProjectCard = React.memo(() => {
     return (
         <Card className="overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 border-dashed border-2">
             <CardContent className="p-0">
@@ -37,4 +41,6 @@ export function PlaceholderProjectCard() {
             </CardContent>
         </Card>
     )
-}
+})
+
+PlaceholderProjectCard.displayName = 'PlaceholderProjectCard'

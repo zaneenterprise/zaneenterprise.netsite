@@ -3,5 +3,5 @@
 **Action:** Always wrap derived optimization options in 'useMemo' and use functional state updates within memoized handlers (useCallback) to maintain stable references in 'useEffect' dependency arrays.
 
 ## 2025-05-14 - [CI Stability and Node.js Parity]
-**Learning:** Cloudflare Pages builds can fail if there is a version mismatch between '.nvmrc', 'package.json' engines, and the build environment. Standardizing on Node.js 25.4.0 across all configs ensures consistency and avoids 'unsupported engine' warnings or CI failures.
-**Action:** Align Node.js versions in 'package.json', '.nvmrc', and 'Dockerfile' to match the production environment requirements.
+**Learning:** Cloudflare Pages builds can fail if there is a version mismatch between '.nvmrc', 'package.json' engines, and the build environment. Standardizing on Node.js 22.14.0 (LTS) across all configuration files and engine specifications ensures CI stability.
+**Action:** Align Node.js version 22.14.0 across 'package.json', '.nvmrc', and 'Dockerfile' to match the specific environment requirements and ensure Cloudflare Pages CI compatibility.

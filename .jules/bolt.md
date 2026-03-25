@@ -1,0 +1,3 @@
+## 2025-05-15 - Optimizing Portfolio Lightbox Interactions
+**Learning:** In a list-heavy page like a portfolio, triggering a state change in the parent (e.g., opening a lightbox) causes a full re-render of all list items (ProjectCards and their contained CDNImages). By implementing React.memo on the items and ensuring all props—especially function handlers and configuration objects—are referentially stable (via useCallback, useMemo, or module-level constants), we can reduce re-renders from O(N) to O(1) during these interactions.
+**Action:** Always verify that components passed to lists are memoized and that their props are stable, particularly when the parent manages global UI state like modals or lightboxes.

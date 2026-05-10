@@ -1,13 +1,13 @@
-# Use the latest Node.js 25 "Current" release with security fixes (Jan 2026)
-FROM node:25.4.0-alpine AS base
+# Use a pinned Node.js 25 release for reproducible builds
+FROM node:25.8.0-alpine AS base
 
-# Install pnpm globally
-RUN npm install -g pnpm
+# Use the pnpm version pinned in package.json via Corepack
+RUN corepack enable
 
 # Dependencies stage
 FROM base AS deps
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml .npmrc ./
 RUN pnpm install --frozen-lockfile
 
 # Build stage
@@ -27,7 +27,7 @@ ENV NEXT_PUBLIC_BUNNY_CDN_HOSTNAME=${NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}
 RUN pnpm run build
 
 # Production stage - use minimal node alpine
-FROM node:25.4.0-alpine AS runner
+FROM node:25.8.0-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production

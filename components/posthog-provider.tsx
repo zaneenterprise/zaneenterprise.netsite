@@ -26,6 +26,7 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
         person_profiles: 'identified_only',
         capture_pageview: false,
         capture_pageleave: true,
+        disable_session_recording: false,
       })
 
       if (!cancelled) {

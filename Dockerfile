@@ -1,5 +1,5 @@
-# Use a pinned Node.js 25 release for reproducible builds
-FROM node:25.8.0-alpine AS base
+# Use the supported Node.js 24 release line for Cloudflare/Vercel compatibility
+FROM node:24-alpine AS base
 
 # Use the pnpm version pinned in package.json via Corepack
 RUN corepack enable
@@ -27,7 +27,7 @@ ENV NEXT_PUBLIC_BUNNY_CDN_HOSTNAME=${NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}
 RUN pnpm run build
 
 # Production stage - use minimal node alpine
-FROM node:25.8.0-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production

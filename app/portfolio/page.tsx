@@ -92,7 +92,7 @@ export default function PortfolioPage() {
                   Ready to Start Your Project?
                 </h2>
                 <p className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto">
-                  Let's build something exceptional together.
+                  Let&apos;s build something exceptional together.
                 </p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-3 pt-1 sm:pt-2">
                   <Link href="/contact" prefetch={false} className="w-full sm:w-auto">

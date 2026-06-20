@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import Image from "next/image"
+import { useCallback, useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
@@ -14,6 +15,14 @@ export function ImageLightbox({
     onClose: () => void
 }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
+
+    const handleNext = useCallback(() => {
+        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
+    }, [projectImages.length])
+
+    const handlePrev = useCallback(() => {
+        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
+    }, [projectImages.length])
 
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
@@ -29,17 +38,9 @@ export function ImageLightbox({
             document.removeEventListener("keydown", handleEscape)
             document.body.style.overflow = "unset"
         }
-    }, [currentIndex])
+    }, [handleNext, handlePrev, onClose])
 
-    const handleNext = () => {
-        setCurrentIndex((prev) => (prev + 1) % projectImages.length)
-    }
-
-    const handlePrev = () => {
-        setCurrentIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length)
-    }
-
-    const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleBackdropClick = () => {
         onClose()
     }
 
@@ -121,11 +122,14 @@ export function ImageLightbox({
                 }}
                 className="relative max-w-7xl max-h-[90vh] animate-in zoom-in-95 duration-200"
             >
-                <img
+                <Image
                     src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
                     alt={projectImages[currentIndex]?.alt || "Project image"}
                     className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
                     style={{ maxWidth: "90vw" }}
+                    width={2048}
+                    height={2048}
+                    unoptimized
                 />
             </div>
         </div>

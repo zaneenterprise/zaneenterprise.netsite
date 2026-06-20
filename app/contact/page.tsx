@@ -74,7 +74,7 @@ export default function ContactPage() {
                 Reach out to get started
               </h1>
               <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-2xl mx-auto px-2">
-                Ready to start your project? Let's talk about how I can help bring your ideas to life.
+                Ready to start your project? Let&apos;s talk about how I can help bring your ideas to life.
               </p>
             </div>
 
@@ -137,7 +137,7 @@ export default function ContactPage() {
               <Card className="border-2">
                 <CardHeader>
                   <CardTitle className="text-xl sm:text-2xl">Send a Message</CardTitle>
-                  <CardDescription>Fill out the form and I'll get back to you soon</CardDescription>
+                  <CardDescription>Fill out the form and I&apos;ll get back to you soon</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -168,7 +168,7 @@ export default function ContactPage() {
                     {submitStatus === "success" && (
                       <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20">
                         <p className="text-sm text-green-600 dark:text-green-400">
-                          Message sent successfully! I'll get back to you soon.
+                          Message sent successfully! I&apos;ll get back to you soon.
                         </p>
                       </div>
                     )}

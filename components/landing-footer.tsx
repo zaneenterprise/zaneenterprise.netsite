@@ -82,7 +82,7 @@ export function LandingFooter() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                You're already here!
+                You&apos;re already here!
               </motion.p>
               {[...Array(6)].map((_, i) => (
                 <motion.div

@@ -5,10 +5,11 @@ import { getBunnyCDNUrl, type BunnyImageOptions } from '@/lib/cdn-utils'
 
 export interface CDNImageProps extends Omit<ImageProps, 'src' | 'loader'> {
   src: string
+  alt: string
   cdnOptions?: BunnyImageOptions
 }
 
-export function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
+export function CDNImage({ src, cdnOptions, alt, ...props }: CDNImageProps) {
   const defaultOptions: BunnyImageOptions = {
     quality: 85,
     format: 'webp',
@@ -38,6 +39,7 @@ export function CDNImage({ src, cdnOptions, ...props }: CDNImageProps) {
   return (
     <Image
       {...props}
+      alt={alt}
       src={optimizedSrc}
       loader={customLoader}
     />

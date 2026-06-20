@@ -11,7 +11,7 @@ interface CodeMarqueeProps {
 }
 
 export function CodeMarquee({ snippet, className }: CodeMarqueeProps) {
-  const lines = snippet.length ? snippet : [""]
+  const lines = useMemo(() => (snippet.length ? snippet : [""]), [snippet])
   const duplicated = useMemo(() => [...lines, ...lines], [lines])
   const duration = Math.max(lines.length * 0.5, 10)
 

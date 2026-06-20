@@ -19,7 +19,7 @@ export function PlaceholderProjectCard() {
                     </div>
 
                     <p className="text-xs text-muted-foreground leading-relaxed mb-2.5">
-                        Ready to bring your ideas to life? Let's collaborate on creating something amazing that stands out.
+                        Ready to bring your ideas to life? Let&apos;s collaborate on creating something amazing that stands out.
                     </p>
 
                     <div className="flex flex-wrap gap-1 mt-auto">

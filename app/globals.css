@@ -101,6 +101,11 @@
   body {
     @apply bg-background text-foreground;
   }
+  a[href],
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
 }
 
 @keyframes soft-fade-in {

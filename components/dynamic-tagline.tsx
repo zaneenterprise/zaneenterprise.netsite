@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react"
 import { taglines } from "@/lib/data"
 
+const fallbackTagline = taglines[0]
+
 export function DynamicTagline() {
-    const [tagline, setTagline] = useState<(typeof taglines)[number] | null>(null)
+    const [tagline, setTagline] = useState<(typeof taglines)[number]>(fallbackTagline)
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -13,14 +15,6 @@ export function DynamicTagline() {
 
         return () => clearTimeout(timeout)
     }, [])
-
-    if (!tagline) {
-        return (
-            <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-balance text-foreground leading-tight">
-                {"\u00A0"}
-            </h1>
-        )
-    }
 
     return (
         <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-balance text-foreground leading-tight">

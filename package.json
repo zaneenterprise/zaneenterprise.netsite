@@ -10,7 +10,7 @@
     "dev": "next dev",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "start": "node .next/standalone/server.js"
+    "start": "node scripts/start-standalone.cjs"
   },
   "dependencies": {
     "@radix-ui/react-label": "2.1.8",

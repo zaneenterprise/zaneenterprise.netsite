@@ -110,8 +110,8 @@
 
 @keyframes soft-fade-in {
   0% {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    opacity: 0.01;
+    transform: translateY(6px) scale(0.99);
   }
   100% {
     opacity: 1;
@@ -120,8 +120,24 @@
 }
 
 .animate-soft-fade-in {
-  animation: soft-fade-in 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  opacity: 0;
+  animation: soft-fade-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  opacity: 0.01;
+}
+
+@keyframes page-shell-in {
+  0% {
+    opacity: 0.01;
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.animate-page-shell-in {
+  animation: page-shell-in 220ms ease-out both;
+  opacity: 0.01;
 }
 
 @keyframes footer-pop {

@@ -124,6 +124,28 @@
   opacity: 0;
 }
 
+@keyframes footer-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 16px) scale(0.92);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1.04);
+  }
+  32% {
+    transform: translate(-50%, 0) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.animate-footer-pop {
+  animation: footer-pop 320ms ease-out both;
+}
+
 @keyframes vertical-marquee {
   0% {
     transform: translateY(0);

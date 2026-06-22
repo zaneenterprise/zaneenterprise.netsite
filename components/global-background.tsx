@@ -9,7 +9,6 @@ export function GlobalBackground({ image }: { image: string }) {
                         src={image}
                         alt=""
                         fill
-                        priority
                         sizes="100vw"
                         aria-hidden
                         className="object-cover scale-110 blur-[8px]"

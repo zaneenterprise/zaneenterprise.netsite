@@ -16,21 +16,27 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
     }
 
     let cancelled = false
+    let timeout: ReturnType<typeof setTimeout> | undefined
+    let idleCallback: number | undefined
 
     const loadClient = async () => {
-      const { default: posthog } = await import('posthog-js')
-      if (cancelled) return
+      try {
+        const { default: posthog } = await import('posthog-js')
+        if (cancelled) return
 
-      posthog.init(posthogKey, {
-        api_host: posthogHost,
-        person_profiles: 'identified_only',
-        capture_pageview: false,
-        capture_pageleave: true,
-        disable_session_recording: false,
-      })
+        posthog.init(posthogKey, {
+          api_host: posthogHost,
+          person_profiles: 'identified_only',
+          capture_pageview: false,
+          capture_pageleave: true,
+          disable_session_recording: false,
+        })
 
-      if (!cancelled) {
-        setClient(posthog)
+        if (!cancelled) {
+          setClient(posthog)
+        }
+      } catch {
+        // Analytics must never affect page rendering.
       }
     }
 
@@ -42,14 +48,15 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
 
       const win = window as Window & {
         requestIdleCallback?: (callback: () => void) => number
+        cancelIdleCallback?: (handle: number) => void
       }
 
       if (typeof win.requestIdleCallback === 'function') {
-        win.requestIdleCallback(() => {
+        idleCallback = win.requestIdleCallback(() => {
           void loadClient()
         })
       } else {
-        setTimeout(() => {
+        timeout = setTimeout(() => {
           void loadClient()
         }, 1500)
       }
@@ -59,6 +66,15 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       cancelled = true
+      if (timeout) {
+        clearTimeout(timeout)
+      }
+      if (idleCallback !== undefined) {
+        const win = window as Window & {
+          cancelIdleCallback?: (handle: number) => void
+        }
+        win.cancelIdleCallback?.(idleCallback)
+      }
     }
   }, [])
 

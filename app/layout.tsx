@@ -1,12 +1,10 @@
 import type React from "react"
 import type { Metadata } from "next"
-import Image from "next/image"
 import { Suspense } from "react"
 import { Montserrat, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import { PHProvider } from "@/components/posthog-provider"
 import { PostHogPageView } from "@/components/posthog-pageview"
-import { PageFade } from "@/components/page-fade"
 import { GlobalBackground } from "@/components/global-background"
 import { getBunnyCDNHostname, getBunnyCDNUrl } from "@/lib/cdn-utils"
 
@@ -95,21 +93,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <link rel="dns-prefetch" href={`https://${cdnHost}`} />
           </>
         ) : null}
-        <link rel="preload" href={backgroundImage} as="image" />
       </head>
       <PHProvider>
         <body className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
-          <PageFade>
-            <GlobalBackground image={backgroundImage} />
-            <Suspense fallback={null}>
-              <PostHogPageView />
-            </Suspense>
-            <div className="relative z-10 min-h-screen">{children}</div>
-          </PageFade>
+          <GlobalBackground image={backgroundImage} />
+          <Suspense fallback={null}>
+            <PostHogPageView />
+          </Suspense>
+          <div className="relative z-10 min-h-screen">{children}</div>
         </body>
       </PHProvider>
     </html>
   )
 }
-
 

@@ -1,7 +1,6 @@
 "use client"
 
 import { useCallback, useEffect, useState, type MouseEvent } from "react"
-import { AnimatePresence, motion } from "framer-motion"
 
 import { BrandLogo } from "@/components/brand-logo"
 
@@ -58,51 +57,13 @@ export function LandingFooter() {
         </div>
       </footer>
 
-      <AnimatePresence>
-        {showPopup && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.3, y: 100 }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              y: 0,
-              transition: { type: "spring", stiffness: 500, damping: 25, mass: 0.8 },
-            }}
-            exit={{ opacity: 0, scale: 0.5, y: 50, transition: { duration: 0.2 } }}
-            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
-          >
-            <motion.div
-              animate={{ rotate: [0, -3, 3, -3, 3, 0] }}
-              transition={{ duration: 0.5, delay: 0.2, ease: "easeInOut" }}
-              className="relative"
-            >
-              <motion.p
-                className="text-2xl sm:text-3xl font-bold whitespace-nowrap bg-gradient-to-r from-brand to-brand/70 bg-clip-text text-transparent drop-shadow-lg"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1 }}
-              >
-                You&apos;re already here!
-              </motion.p>
-              {[...Array(6)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute w-2 h-2 bg-yellow-300 rounded-full"
-                  initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
-                  animate={{
-                    opacity: [1, 1, 0],
-                    scale: [0, 1, 0.5],
-                    x: [0, Math.cos((i * Math.PI * 2) / 6) * 60],
-                    y: [0, Math.sin((i * Math.PI * 2) / 6) * 60],
-                  }}
-                  transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                  style={{ left: "50%", top: "50%" }}
-                />
-              ))}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {showPopup && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 animate-footer-pop motion-reduce:animate-none">
+          <p className="text-2xl sm:text-3xl font-bold whitespace-nowrap bg-gradient-to-r from-brand to-brand/70 bg-clip-text text-transparent drop-shadow-lg">
+            You&apos;re already here!
+          </p>
+        </div>
+      )}
     </>
   )
 }

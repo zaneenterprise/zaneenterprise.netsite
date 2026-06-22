@@ -13,6 +13,13 @@ export function ProjectCarousel({
     onImageClick: (images: { url: string; alt: string }[], index: number) => void
 }) {
     const [currentIndex, setCurrentIndex] = useState(0)
+    const currentImage = project.images[currentIndex]
+
+    if (!currentImage) {
+        return (
+            <div className="relative aspect-[9/16] sm:aspect-[3/4] rounded-lg overflow-hidden bg-muted" />
+        )
+    }
 
     const next = (e: React.MouseEvent) => {
         e.stopPropagation()
@@ -31,8 +38,8 @@ export function ProjectCarousel({
                 onClick={() => onImageClick(project.images, currentIndex)}
             >
                 <CDNImage
-                    src={project.images[currentIndex].url || "/placeholder.svg"}
-                    alt={project.images[currentIndex].alt}
+                    src={currentImage.url || "/placeholder.svg"}
+                    alt={currentImage.alt}
                     fill
                     className="object-contain"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
@@ -42,14 +49,14 @@ export function ProjectCarousel({
 
             <button
                 onClick={prev}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1.5 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 focus-visible:opacity-100 transition-opacity z-10"
                 aria-label="Previous image"
             >
                 <ChevronLeft className="h-4 w-4" />
             </button>
             <button
                 onClick={next}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1.5 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 focus-visible:opacity-100 transition-opacity z-10"
                 aria-label="Next image"
             >
                 <ChevronRight className="h-4 w-4" />

@@ -10,12 +10,12 @@ export default function NotFound() {
       <div className="w-full max-w-7xl mx-auto bg-white dark:bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden flex flex-col min-h-[calc(100vh-1.5rem*2)]">
         <nav className="border-b border-border px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
           <div className="flex items-center justify-between gap-2">
-            <Link href="/" prefetch={false} className="min-w-0 hover:opacity-80 transition-opacity">
+            <Link href="/" className="min-w-0 hover:opacity-80 transition-opacity">
               <BrandLogo />
             </Link>
 
             <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-              <Link href="/contact" prefetch={false}>
+              <Link href="/contact">
                 <Button
                   size="sm"
                   className="bg-foreground text-background hover:bg-foreground/90 text-xs sm:text-sm px-2 sm:px-3"
@@ -40,18 +40,18 @@ export default function NotFound() {
             </p>
 
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-3">
-              <Link href="/" prefetch={false} className="w-full sm:w-auto">
+              <Link href="/" className="w-full sm:w-auto">
                 <Button className="w-full sm:w-auto bg-foreground text-background hover:bg-foreground/90">
                   <Home className="h-4 w-4 mr-2" />
                   Back to Home
                 </Button>
               </Link>
-              <Link href="/portfolio" prefetch={false} className="w-full sm:w-auto">
+              <Link href="/portfolio" className="w-full sm:w-auto">
                 <Button variant="outline" className="w-full sm:w-auto bg-transparent">
                   View Portfolio
                 </Button>
               </Link>
-              <Link href="/contact" prefetch={false} className="w-full sm:w-auto">
+              <Link href="/contact" className="w-full sm:w-auto">
                 <Button variant="ghost" className="w-full sm:w-auto">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Contact Me

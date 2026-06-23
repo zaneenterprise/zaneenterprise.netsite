@@ -29,14 +29,14 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
           person_profiles: 'identified_only',
           capture_pageview: false,
           capture_pageleave: true,
-          disable_session_recording: false,
+          disable_session_recording: true,
         })
 
         if (!cancelled) {
           setClient(posthog)
         }
       } catch {
-        // Analytics must never affect page rendering.
+        return
       }
     }
 

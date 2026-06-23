@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 
-const MIN_VISIBLE_MS = 1000
+const MIN_VISIBLE_MS = 200
 const MAX_WAIT_MS = 3500
 const HIDE_ANIMATION_MS = 600
 

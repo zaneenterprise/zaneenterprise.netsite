@@ -50,14 +50,13 @@ export default function ContactPage() {
           <div className="flex items-center justify-between gap-2">
             <Link
               href="/"
-              prefetch={false}
               className="min-w-0 hover:opacity-80 transition-opacity"
             >
               <BrandLogo />
             </Link>
 
             <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-              <Link href="/" prefetch={false}>
+              <Link href="/">
                 <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm px-2 sm:px-3">
                   <ArrowLeft className="h-4 w-4" />
                   <span className="hidden sm:inline">Back</span>

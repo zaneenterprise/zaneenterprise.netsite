@@ -1,11 +1,15 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import dynamic from "next/dynamic"
 
 import { LandingFooter } from "@/components/landing-footer"
 import { DynamicTagline } from "@/components/dynamic-tagline"
-import { DynamicCodeMarquee } from "@/components/dynamic-code-marquee"
 import { BrandLogo } from "@/components/brand-logo"
 import { services } from "@/lib/data"
+
+const DynamicCodeMarquee = dynamic(
+  () => import("@/components/dynamic-code-marquee").then((m) => m.DynamicCodeMarquee),
+)
 
 export default function LandingPage() {
 
@@ -14,14 +18,14 @@ export default function LandingPage() {
       <div className="w-full max-w-7xl mx-auto bg-white dark:bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl overflow-hidden flex flex-col min-h-[calc(100vh-1.5rem*2)]">
         <nav className="border-b border-border px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
           <div className="flex items-center justify-between gap-2">
-            <Link href="/" prefetch={false} className="min-w-0">
+            <Link href="/" className="min-w-0">
               <BrandLogo />
             </Link>
 
             <div className="hidden lg:flex items-center gap-6 xl:gap-8" />
 
             <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-              <Link href="/contact" prefetch={false}>
+              <Link href="/contact">
                 <Button
                   size="sm"
                   className="bg-foreground text-background hover:bg-foreground/90 text-xs sm:text-sm px-2 sm:px-3"
@@ -50,7 +54,7 @@ export default function LandingPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-1.5 sm:gap-3 pt-1 sm:pt-4 px-1">
-              <Link href="/contact" prefetch={false}>
+              <Link href="/contact">
                 <Button
                   size="lg"
                   className="bg-foreground text-background hover:bg-foreground/90 w-full sm:w-auto sm:min-w-[160px] text-sm sm:text-base"
@@ -58,7 +62,7 @@ export default function LandingPage() {
                   Contact Me
                 </Button>
               </Link>
-              <Link href="/portfolio" prefetch={false}>
+              <Link href="/portfolio">
                 <Button
                   size="lg"
                   variant="outline"

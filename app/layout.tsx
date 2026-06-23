@@ -95,6 +95,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <link rel="dns-prefetch" href={`https://${cdnHost}`} />
           </>
         ) : null}
+        <link
+          rel="preload"
+          as="image"
+          href={backgroundImage}
+          fetchPriority="high"
+        />
       </head>
       <PHProvider>
         <body

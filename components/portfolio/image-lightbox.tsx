@@ -141,12 +141,12 @@ export function ImageLightbox({
                 }}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
-                className="relative flex items-center justify-center w-full h-full px-4 py-16 sm:py-20 animate-in zoom-in-95 duration-200"
+                className="relative flex items-center justify-center w-full h-full p-4 animate-in zoom-in-95 duration-200"
             >
                 <Image
                     src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
                     alt={projectImages[currentIndex]?.alt || "Project image"}
-                    className="max-w-full max-h-full w-auto h-auto object-contain"
+                    className="w-auto h-auto max-h-[82vh] max-w-[86vw] object-contain"
                     width={2048}
                     height={2048}
                     unoptimized

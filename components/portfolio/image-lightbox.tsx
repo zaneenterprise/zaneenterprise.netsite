@@ -120,13 +120,12 @@ export function ImageLightbox({
                 onClick={(e) => {
                     e.stopPropagation()
                 }}
-                className="relative max-w-7xl max-h-[90vh] animate-in zoom-in-95 duration-200"
+                className="relative flex items-center justify-center w-full h-full animate-in zoom-in-95 duration-200"
             >
                 <Image
                     src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
                     alt={projectImages[currentIndex]?.alt || "Project image"}
-                    className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
-                    style={{ maxWidth: "90vw" }}
+                    className="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain"
                     width={2048}
                     height={2048}
                     unoptimized

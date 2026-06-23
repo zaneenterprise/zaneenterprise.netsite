@@ -1,7 +1,8 @@
 "use client"
 
+import type React from "react"
 import Image from "next/image"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
@@ -15,6 +16,7 @@ export function ImageLightbox({
     onClose: () => void
 }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
+    const touchStartX = useRef<number | null>(null)
 
     const handleNext = useCallback(() => {
         setCurrentIndex((prev) => (prev + 1) % projectImages.length)
@@ -42,6 +44,23 @@ export function ImageLightbox({
 
     const handleBackdropClick = () => {
         onClose()
+    }
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        touchStartX.current = e.touches[0].clientX
+    }
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        if (touchStartX.current === null || projectImages.length <= 1) {
+            touchStartX.current = null
+            return
+        }
+        const deltaX = e.changedTouches[0].clientX - touchStartX.current
+        if (Math.abs(deltaX) > 50) {
+            if (deltaX < 0) handleNext()
+            else handlePrev()
+        }
+        touchStartX.current = null
     }
 
     if (projectImages.length === 0) return null
@@ -120,12 +139,14 @@ export function ImageLightbox({
                 onClick={(e) => {
                     e.stopPropagation()
                 }}
-                className="relative flex items-center justify-center w-full h-full animate-in zoom-in-95 duration-200"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                className="relative flex items-center justify-center w-full h-full px-4 py-16 sm:py-20 animate-in zoom-in-95 duration-200"
             >
                 <Image
                     src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
                     alt={projectImages[currentIndex]?.alt || "Project image"}
-                    className="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain"
+                    className="max-w-full max-h-full w-auto h-auto object-contain"
                     width={2048}
                     height={2048}
                     unoptimized

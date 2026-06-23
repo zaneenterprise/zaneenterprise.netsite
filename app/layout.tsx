@@ -6,6 +6,7 @@ import "./globals.css"
 import { PHProvider } from "@/components/posthog-provider"
 import { PostHogPageView } from "@/components/posthog-pageview"
 import { GlobalBackground } from "@/components/global-background"
+import { LoadCurtain } from "@/components/load-curtain"
 import { PageFade } from "@/components/page-fade"
 import { getBunnyCDNHostname, getBunnyCDNUrl } from "@/lib/cdn-utils"
 
@@ -86,7 +87,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const cdnHost = getBunnyCDNHostname()
   const backgroundImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, auto_optimize: 'medium' })
   return (
-    <html lang="en">
+    <html lang="en" style={{ backgroundColor: "oklch(0.15 0 0)" }}>
       <head>
         {cdnHost ? (
           <>
@@ -96,8 +97,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         ) : null}
       </head>
       <PHProvider>
-        <body className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
+        <body
+          className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+          style={{ backgroundColor: "transparent" }}
+        >
           <GlobalBackground image={backgroundImage} />
+          <LoadCurtain backgroundImage={backgroundImage} />
           <Suspense fallback={null}>
             <PostHogPageView />
           </Suspense>

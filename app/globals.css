@@ -139,6 +139,51 @@
   animation: page-shell-in 220ms ease-out both;
 }
 
+@keyframes site-curtain-fallback {
+  0%,
+  82% {
+    opacity: 1;
+    visibility: visible;
+  }
+  99% {
+    opacity: 0;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes site-curtain-hide {
+  0% {
+    opacity: 1;
+    visibility: visible;
+  }
+  99% {
+    opacity: 0;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.site-load-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  background: oklch(0.15 0 0);
+  pointer-events: auto;
+  animation: site-curtain-fallback 4s ease forwards;
+}
+
+.site-load-curtain--hidden {
+  pointer-events: none;
+  animation: site-curtain-hide 560ms ease forwards;
+}
+
 @keyframes footer-pop {
   0% {
     opacity: 0;

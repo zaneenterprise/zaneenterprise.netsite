@@ -36,8 +36,8 @@ export function BrandLogo({ className, showText = true, size = "md", textClassNa
             />
             {showText && (
                 <div className={cn("truncate", textSizeClasses[size], textClassName)}>
-                    <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500 }}>Zane</span>
-                    <span style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 200 }}>Enterprise</span>
+                    <span style={{ fontFamily: "var(--font-sans)", fontWeight: 500 }}>Zane</span>
+                    <span style={{ fontFamily: "var(--font-sans)", fontWeight: 200 }}>Enterprise</span>
                     {size === "sm" && <span className="text-muted-foreground ml-0.5">LLC</span>}
                 </div>
             )}

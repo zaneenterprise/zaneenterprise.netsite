@@ -3,6 +3,7 @@
 import type React from "react"
 import Image from "next/image"
 import { useCallback, useEffect, useRef, useState } from "react"
+import { createPortal } from "react-dom"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
@@ -63,9 +64,9 @@ export function ImageLightbox({
         touchStartX.current = null
     }
 
-    if (projectImages.length === 0) return null
+    if (projectImages.length === 0 || typeof document === "undefined") return null
 
-    return (
+    return createPortal(
         <div
             className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4"
             onClick={handleBackdropClick}
@@ -152,6 +153,7 @@ export function ImageLightbox({
                     unoptimized
                 />
             </div>
-        </div>
+        </div>,
+        document.body,
     )
 }

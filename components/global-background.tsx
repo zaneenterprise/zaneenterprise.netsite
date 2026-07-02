@@ -12,7 +12,6 @@ export function GlobalBackground({ image }: { image: string }) {
                         sizes="100vw"
                         aria-hidden
                         className="object-cover scale-110 blur-[8px]"
-                        unoptimized
                     />
                 </div>
             </div>

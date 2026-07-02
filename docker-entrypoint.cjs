@@ -152,7 +152,6 @@ function logStartup() {
     env_present: {
       next_public_posthog_key: Boolean(process.env.NEXT_PUBLIC_POSTHOG_KEY),
       next_public_posthog_host: Boolean(process.env.NEXT_PUBLIC_POSTHOG_HOST),
-      next_public_bunny_cdn_hostname: Boolean(process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME),
     },
   })
 }

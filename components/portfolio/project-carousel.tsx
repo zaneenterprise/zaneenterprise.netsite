@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { CDNImage } from "@/components/cdn-image"
 import { projects } from "@/lib/data"
 
 export function ProjectCarousel({
@@ -37,13 +37,12 @@ export function ProjectCarousel({
                 className="relative aspect-[9/16] sm:aspect-[3/4] rounded-lg overflow-hidden bg-muted cursor-pointer hover:ring-2 hover:ring-brand/50 transition-all"
                 onClick={() => onImageClick(project.images, currentIndex)}
             >
-                <CDNImage
+                <Image
                     src={currentImage.url || "/placeholder.svg"}
                     alt={currentImage.alt}
                     fill
                     className="object-contain"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
-                    cdnOptions={{ quality: 85, auto_optimize: 'high' }}
                 />
             </div>
 

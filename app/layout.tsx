@@ -8,7 +8,8 @@ import { PostHogPageView } from "@/components/posthog-pageview"
 import { GlobalBackground } from "@/components/global-background"
 import { LoadCurtain } from "@/components/load-curtain"
 import { PageFade } from "@/components/page-fade"
-import { getBunnyCDNHostname, getBunnyCDNUrl } from "@/lib/cdn-utils"
+
+const backgroundImage = "/background.avif"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
     siteName: "ZaneEnterprise",
     images: [
       {
-        url: getBunnyCDNUrl("/opengraph-image.png", { width: 1200, quality: 85, auto_optimize: 'medium' }),
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
         alt: "ZaneEnterprise - App & Website Development",
@@ -56,17 +57,17 @@ export const metadata: Metadata = {
     title: "ZaneEnterprise - App & Website Development",
     description: "Anything from development, to hosting, to optimization",
     creator: "@zaneenterprise",
-    images: [getBunnyCDNUrl("/opengraph-image.png", { width: 1200, quality: 85, auto_optimize: 'medium' })],
+    images: ["/opengraph-image.png"],
   },
   icons: {
     icon: [
       {
-        url: getBunnyCDNUrl("/favicon-32.png", { width: 32, quality: 90, auto_optimize: 'low' }),
+        url: "/favicon-32.png",
         sizes: "32x32",
         type: "image/png",
       },
       {
-        url: getBunnyCDNUrl("/favicon-16.png", { width: 16, quality: 90, auto_optimize: 'low' }),
+        url: "/favicon-16.png",
         sizes: "16x16",
         type: "image/png",
       },
@@ -76,7 +77,7 @@ export const metadata: Metadata = {
     ],
     apple: [
       {
-        url: getBunnyCDNUrl("/apple-touch-icon.png", { width: 180, quality: 90, auto_optimize: 'low' }),
+        url: "/apple-touch-icon.png",
         sizes: "180x180",
       },
     ],
@@ -84,17 +85,9 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const cdnHost = getBunnyCDNHostname()
-  const backgroundImage = getBunnyCDNUrl('/background.avif', { width: 1920, quality: 75, auto_optimize: 'medium' })
   return (
     <html lang="en" style={{ backgroundColor: "#fff", colorScheme: "light" }}>
       <head>
-        {cdnHost ? (
-          <>
-            <link rel="preconnect" href={`https://${cdnHost}`} />
-            <link rel="dns-prefetch" href={`https://${cdnHost}`} />
-          </>
-        ) : null}
         <link
           rel="preload"
           as="image"

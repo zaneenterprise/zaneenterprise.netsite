@@ -1,4 +1,4 @@
-import { LogoImage } from "@/components/cdn-image"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 
 interface BrandLogoProps {
@@ -23,12 +23,11 @@ export function BrandLogo({ className, showText = true, size = "md", textClassNa
 
     return (
         <div className={cn("flex items-center gap-1.5 sm:gap-2", className)}>
-            <LogoImage
+            <Image
                 src="/logo.svg"
                 alt="ZaneEnterprise Logo"
                 width={48}
                 height={48}
-                unoptimized
                 className={cn(
                     "flex-shrink-0 transition-all duration-300 hover:scale-110 hover:rotate-12 hover:brightness-125",
                     sizeClasses[size]

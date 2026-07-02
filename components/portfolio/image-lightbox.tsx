@@ -5,7 +5,6 @@ import Image from "next/image"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
-import { getBunnyCDNUrl } from "@/lib/cdn-utils"
 
 export function ImageLightbox({
     projectImages,
@@ -143,12 +142,11 @@ export function ImageLightbox({
             >
                 <Image
                     onClick={(e) => e.stopPropagation()}
-                    src={getBunnyCDNUrl(projectImages[currentIndex]?.url || "/placeholder.svg", { width: 2048, quality: 90, auto_optimize: 'low', sharpen: true })}
+                    src={projectImages[currentIndex]?.url || "/placeholder.svg"}
                     alt={projectImages[currentIndex]?.alt || "Project image"}
                     className="w-auto h-auto max-h-[82vh] max-w-[86vw] object-contain"
                     width={2048}
                     height={2048}
-                    unoptimized
                 />
             </div>
         </div>,

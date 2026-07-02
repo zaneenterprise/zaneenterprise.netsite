@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     title: "ZaneEnterprise - App & Website Development",
     description: "Anything from development, to hosting, to optimization",
     creator: "@zaneenterprise",
-    images: [getBunnyCDNUrl("/twitter-image.png", { width: 1200, quality: 85, auto_optimize: 'medium' })],
+    images: [getBunnyCDNUrl("/opengraph-image.png", { width: 1200, quality: 85, auto_optimize: 'medium' })],
   },
   icons: {
     icon: [

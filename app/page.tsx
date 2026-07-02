@@ -75,7 +75,7 @@ export default function LandingPage() {
 
             <div className="pt-3 sm:pt-8 lg:pt-12">
               <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 px-0.5">
-                {services.map((service, index) => {
+                {services.map((service) => {
                   const Icon = service.icon
                   return (
                     <div

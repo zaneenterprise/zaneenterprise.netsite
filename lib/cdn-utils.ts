@@ -18,10 +18,6 @@ export function getBunnyCDNHostname(): string {
   return process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME || ''
 }
 
-export function isCDNEnabled(): boolean {
-  return !!getBunnyCDNHostname()
-}
-
 export function getBunnyCDNUrl(imagePath: string, options: BunnyImageOptions = {}): string {
   const cdnHostname = getBunnyCDNHostname()
   if (!cdnHostname) {

@@ -3,7 +3,7 @@
 import Image, { ImageProps } from 'next/image'
 import { getBunnyCDNUrl, type BunnyImageOptions } from '@/lib/cdn-utils'
 
-export interface CDNImageProps extends Omit<ImageProps, 'src' | 'loader'> {
+interface CDNImageProps extends Omit<ImageProps, 'src' | 'loader'> {
   src: string
   alt: string
   cdnOptions?: BunnyImageOptions
@@ -27,7 +27,7 @@ export function CDNImage({ src, cdnOptions, alt, ...props }: CDNImageProps) {
 
   const optimizedSrc = getBunnyCDNUrl(src, optimizationOptions)
 
-  const customLoader = ({ src: loaderSrc, width: loaderWidth, quality }: { src: string; width: number; quality?: number }) => {
+  const customLoader = ({ width: loaderWidth, quality }: { src: string; width: number; quality?: number }) => {
     const cdnUrl = getBunnyCDNUrl(src, {
       ...optimizationOptions,
       width: loaderWidth,

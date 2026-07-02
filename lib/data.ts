@@ -6,26 +6,7 @@ export const services = [
   { icon: Zap, label: "Fast Delivery" },
 ]
 
-export const taglines = [
-    { text: "Want a site or app that's actually awesome?" },
-    { text: "Want a site or app that doesn't suck?" },
-    { text: "Need a killer site or app?" },
-    { text: "Tired of mediocre apps and boring sites?" },
-    { text: "Want your site or app to actually stand out?" },
-    { text: "Sick of boring sites and apps?" },
-    { text: "Ready for a site or app that slaps?" },
-    { text: "Need a site or app with personality?" },
-    { text: "Your idea deserves more than a basic app." },
-    { text: "Done with dull, lifeless apps?" },
-    { text: "Want to finally be proud of your website or app?" },
-    { text: "Your app idea plus my skills equals something seriously cool." },
-    { text: "Forget cookie cutter." },
-    { text: "Want a website or app worth sharing?" },
-    { text: "No more yawning at your own website." },
-    { text: "Tired of stale apps and boring websites?" },
-    { text: "Ready for a site or app that slaps?" },
-    { text: "Want a website or app that people will actually notice?" },
-]
+export const homepageTagline = "Want a site or app that's actually awesome?"
 
 export const projects = [
   {
@@ -49,13 +30,6 @@ export const projects = [
       },
     ],
     tags: ["React Native", "Mobile", "iOS", "Android"],
-    features: [
-      "Multiple color themes (Vibrant, Pastel, Ocean, Sunset, Gray, Halloween)",
-      "Real-time canvas updates as your cat plays",
-      "Save and share your cat's artwork",
-      "Interactive bird chase mechanics",
-    ],
-    color: "from-pink-500 to-purple-600",
   },
   {
     id: "azbuddy",
@@ -86,15 +60,6 @@ export const projects = [
       },
     ],
     tags: ["React", "Custom Scheduling Portal", "Portfolio"],
-    features: [
-      "Custom-designed animated buttons and transitions",
-      "Seamless single-page navigation",
-      "Social media integration (YouTube, Facebook)",
-      "Desert-inspired color scheme and branding",
-      "Custom admin portal for gig management and scheduling",
-      "Real-time schedule updates and performance tracking",
-    ],
-    color: "from-orange-500 to-teal-500",
   },
   {
     id: "gardenerplus",
@@ -117,12 +82,5 @@ export const projects = [
       },
     ],
     tags: ["Swift", "AI/ML", "Mobile", "Python Backend"],
-    features: [
-      "AI-powered plant health diagnostics",
-      "Personalized care recommendations and reminders",
-      "Photo analysis with care history integration",
-      "Track multiple plants with detailed profiles",
-    ],
-    color: "from-green-500 to-emerald-600",
   },
 ]

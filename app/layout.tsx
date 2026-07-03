@@ -7,7 +7,6 @@ import { PHProvider } from "@/components/posthog-provider"
 import { PostHogPageView } from "@/components/posthog-pageview"
 import { GlobalBackground } from "@/components/global-background"
 import { LoadCurtain } from "@/components/load-curtain"
-import { CurtainDebug } from "@/components/curtain-debug"
 import { PageFade } from "@/components/page-fade"
 
 const backgroundImage = "/background.avif"
@@ -102,7 +101,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           dangerouslySetInnerHTML={{
             __html:
-              'try{var n=Date.now(),r=null,se=null;try{r=localStorage.getItem("ze-last-visit")}catch(e){se="get:"+e}var p=+r,v=!!(p&&n-p<864e5);if(v){var d=document.documentElement;d.setAttribute("data-return-visit","");d.style.backgroundColor="oklch(0.15 0 0)"}try{localStorage.setItem("ze-last-visit",""+n)}catch(e){se=(se?se+";":"")+"set:"+e}window.__zeBoot={v:3,raw:r,ageMs:p?n-p:null,returnVisit:v,storageError:se};console.log("[ZE-DEBUG] boot",JSON.stringify(window.__zeBoot))}catch(x){console.log("[ZE-DEBUG] boot FATAL",String(x))}',
+              'try{var n=Date.now(),p=+localStorage.getItem("ze-last-visit");if(p&&n-p<864e5){var d=document.documentElement;d.setAttribute("data-return-visit","");d.style.backgroundColor="oklch(0.15 0 0)"}localStorage.setItem("ze-last-visit",""+n)}catch(x){}',
           }}
         />
       </head>
@@ -113,7 +112,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           <GlobalBackground image={backgroundImage} />
           <LoadCurtain backgroundImage={backgroundImage} />
-          <CurtainDebug />
           <Suspense fallback={null}>
             <PostHogPageView />
           </Suspense>

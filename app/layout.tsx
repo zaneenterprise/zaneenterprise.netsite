@@ -101,7 +101,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           dangerouslySetInnerHTML={{
             __html:
-              'try{if(sessionStorage.getItem("ze-visited"))document.documentElement.setAttribute("data-return-visit","");sessionStorage.setItem("ze-visited","1")}catch(e){}',
+              'try{var n=Date.now(),p=+localStorage.getItem("ze-last-visit");if(p&&n-p<864e5){var d=document.documentElement;d.setAttribute("data-return-visit","");d.style.backgroundColor="oklch(0.15 0 0)"}localStorage.setItem("ze-last-visit",""+n)}catch(x){}',
           }}
         />
       </head>

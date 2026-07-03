@@ -86,13 +86,23 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" style={{ backgroundColor: "#fff", colorScheme: "light" }}>
+    <html
+      lang="en"
+      style={{ backgroundColor: "#fff", colorScheme: "light" }}
+      suppressHydrationWarning
+    >
       <head>
         <link
           rel="preload"
           as="image"
           href={backgroundImage}
           fetchPriority="high"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'try{if(sessionStorage.getItem("ze-visited"))document.documentElement.setAttribute("data-return-visit","");sessionStorage.setItem("ze-visited","1")}catch(e){}',
+          }}
         />
       </head>
       <PHProvider>

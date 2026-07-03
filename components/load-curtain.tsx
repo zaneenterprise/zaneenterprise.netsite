@@ -11,6 +11,11 @@ export function LoadCurtain({ backgroundImage }: { backgroundImage: string }) {
   const [isGone, setIsGone] = useState(false)
 
   useEffect(() => {
+    if (document.documentElement.hasAttribute("data-return-visit")) {
+      setIsGone(true)
+      return
+    }
+
     let cancelled = false
     let revealed = false
     let hideTimer: ReturnType<typeof setTimeout> | undefined

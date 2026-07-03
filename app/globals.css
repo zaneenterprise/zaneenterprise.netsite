@@ -184,6 +184,15 @@
   animation: site-curtain-hide 560ms ease forwards;
 }
 
+html[data-return-visit] .site-load-curtain {
+  display: none;
+  animation: none;
+}
+
+html[data-return-visit] .animate-page-shell-in {
+  animation: none;
+}
+
 @keyframes footer-pop {
   0% {
     opacity: 0;

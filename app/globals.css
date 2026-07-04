@@ -193,6 +193,11 @@ html[data-return-visit] .animate-page-shell-in {
   animation: none;
 }
 
+html[data-return-visit] .animate-soft-fade-in {
+  animation: none;
+  opacity: 1;
+}
+
 @keyframes footer-pop {
   0% {
     opacity: 0;

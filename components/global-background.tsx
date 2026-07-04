@@ -10,13 +10,22 @@ export function GlobalBackground({ image }: { image: string }) {
 
     useEffect(() => {
         const img = imgRef.current
-        if (img && !(img.complete && img.naturalWidth > 0)) {
-            setLoadsLate(true)
+        if (!img || (img.complete && img.naturalWidth > 0)) return
+
+        setLoadsLate(true)
+        const show = () => setLoaded(true)
+        img.addEventListener("load", show, { once: true })
+        img.addEventListener("error", show, { once: true })
+        return () => {
+            img.removeEventListener("load", show)
+            img.removeEventListener("error", show)
         }
     }, [])
 
     const fadeClass = loadsLate
-        ? ` transition-opacity duration-700 ease-out ${loaded ? "opacity-100" : "opacity-0"}`
+        ? loaded
+            ? " opacity-100 transition-opacity duration-700 ease-out"
+            : " opacity-0"
         : ""
 
     return (
@@ -30,7 +39,6 @@ export function GlobalBackground({ image }: { image: string }) {
                         fill
                         sizes="100vw"
                         aria-hidden
-                        onLoad={() => setLoaded(true)}
                         className={`object-cover scale-110 blur-[8px]${fadeClass}`}
                     />
                 </div>

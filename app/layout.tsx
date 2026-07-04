@@ -88,7 +88,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      style={{ backgroundColor: "#fff", colorScheme: "light" }}
+      style={{ backgroundColor: "oklch(0.15 0 0)", colorScheme: "light" }}
       suppressHydrationWarning
     >
       <head>

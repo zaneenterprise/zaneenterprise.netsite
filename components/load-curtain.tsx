@@ -6,13 +6,26 @@ const MIN_VISIBLE_MS = 200
 const MAX_WAIT_MS = 3500
 const HIDE_ANIMATION_MS = 600
 
+const debug = (event: string, data?: Record<string, unknown>) => {
+  console.log(
+    `[ZE-DEBUG] curtain:${event}`,
+    JSON.stringify({ t: Math.round(performance.now()), ...data }),
+  )
+}
+
 export function LoadCurtain({ backgroundImage }: { backgroundImage: string }) {
   const [isHiding, setIsHiding] = useState(false)
   const [isGone, setIsGone] = useState(false)
 
   useEffect(() => {
-    if (document.documentElement.hasAttribute("data-return-visit")) {
+    const returnVisit = document.documentElement.hasAttribute(
+      "data-return-visit",
+    )
+    debug("hydrated", { returnVisit })
+
+    if (returnVisit) {
       setIsGone(true)
+      debug("skipped-return-visit")
       return
     }
 
@@ -27,11 +40,17 @@ export function LoadCurtain({ backgroundImage }: { backgroundImage: string }) {
       image.src = backgroundImage
 
       if (image.complete && image.naturalWidth > 0) {
+        debug("background-already-cached")
         resolve()
         return
       }
 
-      const finish = () => resolve()
+      const finish = () => {
+        debug("background-settled", {
+          waitedMs: Math.round(performance.now() - startedAt),
+        })
+        resolve()
+      }
       image.addEventListener("load", finish, { once: true })
       image.addEventListener("error", finish, { once: true })
 
@@ -45,27 +64,32 @@ export function LoadCurtain({ backgroundImage }: { backgroundImage: string }) {
         ? document.fonts.ready.then(() => undefined).catch(() => undefined)
         : Promise.resolve()
 
-    const reveal = () => {
+    const reveal = (reason: string) => {
       if (cancelled || revealed) return
       revealed = true
 
       const elapsed = performance.now() - startedAt
       const remaining = Math.max(0, MIN_VISIBLE_MS - elapsed)
+      debug("reveal", { reason, elapsedMs: Math.round(elapsed) })
 
       hideTimer = setTimeout(() => {
         if (cancelled) return
         setIsHiding(true)
+        debug("fade-out-started")
         removeTimer = setTimeout(() => {
-          if (!cancelled) setIsGone(true)
+          if (!cancelled) {
+            setIsGone(true)
+            debug("removed")
+          }
         }, HIDE_ANIMATION_MS)
       }, remaining)
     }
 
-    const maxTimer = setTimeout(reveal, MAX_WAIT_MS)
+    const maxTimer = setTimeout(() => reveal("max-wait-timeout"), MAX_WAIT_MS)
 
     Promise.allSettled([waitForBackground, waitForFonts]).then(() => {
       clearTimeout(maxTimer)
-      requestAnimationFrame(reveal)
+      requestAnimationFrame(() => reveal("assets-ready"))
     })
 
     return () => {

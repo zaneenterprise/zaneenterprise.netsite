@@ -10,6 +10,11 @@ import { LoadCurtain } from "@/components/load-curtain"
 import { CurtainDebug } from "@/components/curtain-debug"
 import { PageFade } from "@/components/page-fade"
 
+// Emit `s-maxage=300, stale-while-revalidate` instead of `max-age=0` so the
+// CDN in front (Cloudflare) is allowed to cache the prerendered HTML at the
+// edge once HTML caching is enabled there.
+export const revalidate = 300
+
 const backgroundImage = "/background.avif"
 
 const montserrat = Montserrat({

@@ -1,8 +1,16 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { PostHogProvider } from 'posthog-js/react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import type { PostHog } from 'posthog-js'
+
+// Custom context instead of posthog-js/react: importing that package pulls the
+// entire posthog-js runtime into the initial bundle, defeating the idle-time
+// dynamic import below.
+const PostHogClientContext = createContext<PostHog | null>(null)
+
+export function usePostHogClient() {
+  return useContext(PostHogClientContext)
+}
 
 export function PHProvider({ children }: { children: React.ReactNode }) {
   const [client, setClient] = useState<PostHog | null>(null)
@@ -78,9 +86,9 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  if (!client) {
-    return <>{children}</>
-  }
-
-  return <PostHogProvider client={client}>{children}</PostHogProvider>
+  return (
+    <PostHogClientContext.Provider value={client}>
+      {children}
+    </PostHogClientContext.Provider>
+  )
 }

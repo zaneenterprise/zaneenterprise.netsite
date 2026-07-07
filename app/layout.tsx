@@ -9,6 +9,7 @@ import { GlobalBackground } from "@/components/global-background"
 import { LoadCurtain } from "@/components/load-curtain"
 import { CurtainDebug } from "@/components/curtain-debug"
 import { PageFade } from "@/components/page-fade"
+import { ConsoleEasterEgg } from "@/components/console-easter-egg"
 
 // Emit `s-maxage=300, stale-while-revalidate` instead of `max-age=0` so the
 // CDN in front (Cloudflare) is allowed to cache the prerendered HTML at the
@@ -116,6 +117,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}
           style={{ backgroundColor: "transparent" }}
         >
+          <ConsoleEasterEgg />
           <GlobalBackground image={backgroundImage} />
           <LoadCurtain backgroundImage={backgroundImage} />
           <CurtainDebug />

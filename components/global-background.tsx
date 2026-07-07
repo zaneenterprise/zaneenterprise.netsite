@@ -39,6 +39,9 @@ export function GlobalBackground({ image }: { image: string }) {
                         fill
                         sizes="100vw"
                         aria-hidden
+                        // sync so a cached image decodes into the reload's first
+                        // paint instead of popping in afterwards (black flash)
+                        decoding="sync"
                         className={`object-cover scale-110 blur-[8px]${fadeClass}`}
                     />
                 </div>

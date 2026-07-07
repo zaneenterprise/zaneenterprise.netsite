@@ -7,7 +7,6 @@ import { PHProvider } from "@/components/posthog-provider"
 import { PostHogPageView } from "@/components/posthog-pageview"
 import { GlobalBackground } from "@/components/global-background"
 import { LoadCurtain } from "@/components/load-curtain"
-import { CurtainDebug } from "@/components/curtain-debug"
 import { PageFade } from "@/components/page-fade"
 import { ConsoleEasterEgg } from "@/components/console-easter-egg"
 
@@ -16,7 +15,7 @@ import { ConsoleEasterEgg } from "@/components/console-easter-egg"
 // edge once HTML caching is enabled there.
 export const revalidate = 300
 
-const backgroundImage = "/background.avif"
+const backgroundImage = "/background-1920.avif"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -108,7 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           dangerouslySetInnerHTML={{
             __html:
-              'try{var n=Date.now(),r=null,se=null;try{r=localStorage.getItem("ze-last-visit")}catch(e){se="get:"+e}var p=+r,v=!!(p&&n-p<864e5);if(v){var d=document.documentElement;d.setAttribute("data-return-visit","");d.style.backgroundColor="oklch(0.15 0 0)"}try{localStorage.setItem("ze-last-visit",""+n)}catch(e){se=(se?se+";":"")+"set:"+e}window.__zeBoot={v:4,raw:r,ageMs:p?n-p:null,returnVisit:v,storageError:se};console.log("[ZE-DEBUG] boot",JSON.stringify(window.__zeBoot));(function(){var L=window.__ZE_LOG=window.__ZE_LOG||[],t0=performance.now(),last="";function f(){try{var d=document.documentElement,b=document.body,c=document.querySelector(".site-load-curtain"),i=document.querySelector(\'img[src*="background"]\');var s=JSON.stringify({htmlBg:getComputedStyle(d).backgroundColor,bodyBg:b?getComputedStyle(b).backgroundColor:null,curtain:c?getComputedStyle(c).opacity+"/"+getComputedStyle(c).display:"none",img:i?(i.complete?"done":"loading"):"none"});if(s!==last){last=s;var t=Math.round(performance.now()-t0);L.push({event:"preframe",t:t,state:s});console.log("[ZE-DEBUG] preframe @"+t+"ms",s)}}catch(e){}if(performance.now()-t0<8000)requestAnimationFrame(f)}requestAnimationFrame(f)})()}catch(x){console.log("[ZE-DEBUG] boot FATAL",String(x))}',
+              'try{var n=Date.now(),p=+localStorage.getItem("ze-last-visit");if(p&&n-p<864e5){var d=document.documentElement;d.setAttribute("data-return-visit","");d.style.backgroundColor="oklch(0.15 0 0)"}localStorage.setItem("ze-last-visit",""+n)}catch(x){}',
           }}
         />
       </head>
@@ -120,7 +119,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ConsoleEasterEgg />
           <GlobalBackground image={backgroundImage} />
           <LoadCurtain backgroundImage={backgroundImage} />
-          <CurtainDebug />
           <Suspense fallback={null}>
             <PostHogPageView />
           </Suspense>

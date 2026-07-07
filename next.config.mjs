@@ -41,7 +41,7 @@ const nextConfig = {
         ],
       },
       {
-        source: '/background.avif',
+        source: '/background-1920.avif',
         headers: [
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],

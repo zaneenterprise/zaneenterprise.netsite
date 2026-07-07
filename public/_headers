@@ -16,5 +16,5 @@
 /logo.svg
   Cache-Control: public, max-age=31536000, immutable
 
-/background.avif
+/background-1920.avif
   Cache-Control: public, max-age=31536000, immutable

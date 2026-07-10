@@ -15,14 +15,15 @@ export default function NotFound() {
             </Link>
 
             <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-              <Link href="/contact">
-                <Button
-                  size="sm"
-                  className="bg-foreground text-background hover:bg-foreground/90 text-xs sm:text-sm px-2 sm:px-3"
-                >
+              <Button
+                asChild
+                size="sm"
+                className="bg-foreground text-background hover:bg-foreground/90 text-xs sm:text-sm px-2 sm:px-3"
+              >
+                <Link href="/contact">
                   Contact
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </div>
         </nav>
@@ -40,23 +41,23 @@ export default function NotFound() {
             </p>
 
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-3">
-              <Link href="/" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto bg-foreground text-background hover:bg-foreground/90">
+              <Button asChild className="w-full sm:w-auto bg-foreground text-background hover:bg-foreground/90">
+                <Link href="/">
                   <Home className="h-4 w-4 mr-2" />
                   Back to Home
-                </Button>
-              </Link>
-              <Link href="/portfolio" className="w-full sm:w-auto">
-                <Button variant="outline" className="w-full sm:w-auto bg-transparent">
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="w-full sm:w-auto bg-transparent">
+                <Link href="/portfolio">
                   View Portfolio
-                </Button>
-              </Link>
-              <Link href="/contact" className="w-full sm:w-auto">
-                <Button variant="ghost" className="w-full sm:w-auto">
+                </Link>
+              </Button>
+              <Button asChild variant="ghost" className="w-full sm:w-auto">
+                <Link href="/contact">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Contact Me
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </div>
         </main>

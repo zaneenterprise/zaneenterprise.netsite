@@ -13,6 +13,8 @@ import { useState } from "react"
 import { BrandLogo } from "@/components/brand-logo"
 import { SiteFooter } from "@/components/site-footer"
 
+const SUBMIT_TIMEOUT_MS = 15_000
+
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
@@ -22,23 +24,29 @@ export default function ContactPage() {
     setIsSubmitting(true)
     setSubmitStatus("idle")
 
-    const formData = new FormData(e.currentTarget)
+    const form = e.currentTarget
+    const formData = new FormData(form)
+    const controller = new AbortController()
+    const timeout = window.setTimeout(() => controller.abort(), SUBMIT_TIMEOUT_MS)
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formData,
+        signal: controller.signal,
       })
+      const result = (await response.json().catch(() => null)) as { success?: boolean } | null
 
-      if (response.ok) {
+      if (response.ok && result?.success === true) {
         setSubmitStatus("success")
-          ; (e.target as HTMLFormElement).reset()
+        form.reset()
       } else {
         setSubmitStatus("error")
       }
     } catch {
       setSubmitStatus("error")
     } finally {
+      window.clearTimeout(timeout)
       setIsSubmitting(false)
     }
   }
@@ -56,12 +64,12 @@ export default function ContactPage() {
             </Link>
 
             <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-              <Link href="/">
-                <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm px-2 sm:px-3">
-                  <ArrowLeft className="h-4 w-4" />
+              <Button asChild variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm px-2 sm:px-3">
+                <Link href="/" aria-label="Back to home">
+                  <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                   <span className="hidden sm:inline">Back</span>
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </div>
         </nav>
@@ -80,7 +88,9 @@ export default function ContactPage() {
             <div className="grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
               <Card className="border-2">
                 <CardHeader>
-                  <CardTitle className="text-xl sm:text-2xl">Contact Information</CardTitle>
+                  <CardTitle className="text-xl sm:text-2xl">
+                    <h2>Contact Information</h2>
+                  </CardTitle>
                   <CardDescription>Get in touch via phone or fill out the form</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -135,22 +145,37 @@ export default function ContactPage() {
 
               <Card className="border-2">
                 <CardHeader>
-                  <CardTitle className="text-xl sm:text-2xl">Send a Message</CardTitle>
+                  <CardTitle className="text-xl sm:text-2xl">
+                    <h2>Send a Message</h2>
+                  </CardTitle>
                   <CardDescription>Fill out the form and I&apos;ll get back to you soon</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form
+                    action="https://api.web3forms.com/submit"
+                    method="POST"
+                    onSubmit={handleSubmit}
+                    className="space-y-4"
+                  >
                     <input type="hidden" name="access_key" value="5e473c65-d194-41d6-9e6e-36b98694c848" />
                     <input type="hidden" name="subject" value="New Contact Form Submission from ZaneEnterprise" />
+                    <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" />
 
                     <div className="space-y-2">
                       <Label htmlFor="name">Name</Label>
-                      <Input id="name" name="name" placeholder="Your name" required />
+                      <Input id="name" name="name" placeholder="Your name" autoComplete="name" required />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" name="email" type="email" placeholder="your@email.com" required />
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="your@email.com"
+                        autoComplete="email"
+                        required
+                      />
                     </div>
 
                     <div className="space-y-2">
@@ -165,7 +190,11 @@ export default function ContactPage() {
                     </div>
 
                     {submitStatus === "success" && (
-                      <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20">
+                      <div
+                        className="p-3 rounded-lg bg-green-500/10 border border-green-500/20"
+                        role="status"
+                        aria-live="polite"
+                      >
                         <p className="text-sm text-green-600 dark:text-green-400">
                           Message sent successfully! I&apos;ll get back to you soon.
                         </p>
@@ -173,7 +202,10 @@ export default function ContactPage() {
                     )}
 
                     {submitStatus === "error" && (
-                      <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                      <div
+                        className="p-3 rounded-lg bg-red-500/10 border border-red-500/20"
+                        role="alert"
+                      >
                         <p className="text-sm text-red-600 dark:text-red-400">
                           Something went wrong. Please try again or call me directly.
                         </p>
@@ -184,6 +216,7 @@ export default function ContactPage() {
                       type="submit"
                       className="w-full bg-foreground text-background hover:bg-foreground/90"
                       disabled={isSubmitting}
+                      aria-busy={isSubmitting}
                     >
                       {isSubmitting ? (
                         "Sending..."

@@ -27,6 +27,7 @@ export function ImageLightbox({
     }, [projectImages.length])
 
     useEffect(() => {
+        const previousOverflow = document.body.style.overflow
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose()
             if (e.key === "ArrowLeft") handlePrev()
@@ -38,7 +39,7 @@ export function ImageLightbox({
 
         return () => {
             document.removeEventListener("keydown", handleEscape)
-            document.body.style.overflow = "unset"
+            document.body.style.overflow = previousOverflow
         }
     }, [handleNext, handlePrev, onClose])
 
@@ -69,8 +70,13 @@ export function ImageLightbox({
         <div
             className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4"
             onClick={handleBackdropClick}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Project image viewer"
         >
             <button
+                type="button"
+                autoFocus
                 onClick={(e) => {
                     e.stopPropagation()
                     onClose()
@@ -93,6 +99,7 @@ export function ImageLightbox({
             {projectImages.length > 1 && (
                 <>
                     <button
+                        type="button"
                         onClick={(e) => {
                             e.stopPropagation()
                             handlePrev()
@@ -103,6 +110,7 @@ export function ImageLightbox({
                         <ChevronLeft className="h-8 w-8" />
                     </button>
                     <button
+                        type="button"
                         onClick={(e) => {
                             e.stopPropagation()
                             handleNext()
@@ -120,17 +128,24 @@ export function ImageLightbox({
                     onClick={(e) => e.stopPropagation()}
                     className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-[10001]"
                 >
-                    {projectImages.map((_, idx) => (
+                    {projectImages.map((image, idx) => (
                         <button
-                            key={idx}
+                            key={image.url}
+                            type="button"
                             onClick={(e) => {
                                 e.stopPropagation()
                                 setCurrentIndex(idx)
                             }}
-                            className={`h-2 rounded-full transition-all shadow-lg ${idx === currentIndex ? "w-8 bg-white" : "w-2 bg-white/50 hover:bg-white/75"
-                                }`}
+                            className="flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                             aria-label={`Go to image ${idx + 1}`}
-                        />
+                            aria-current={idx === currentIndex ? "true" : undefined}
+                        >
+                            <span
+                                aria-hidden="true"
+                                className={`h-2 rounded-full transition-all shadow-lg ${idx === currentIndex ? "w-8 bg-white" : "w-2 bg-white/50 hover:bg-white/75"
+                                    }`}
+                            />
+                        </button>
                     ))}
                 </div>
             )}

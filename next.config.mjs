@@ -19,31 +19,31 @@ const nextConfig = {
       {
         source: '/images/:path*',
         headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'Cache-Control', value: 'public, max-age=86400' },
         ],
       },
       {
         source: '/opengraph-image.png',
         headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'Cache-Control', value: 'public, max-age=86400' },
         ],
       },
       {
-        source: '/:file(favicon-16|favicon-32).png',
+        source: '/:file(favicon-16|favicon-32|apple-touch-icon).png',
         headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'Cache-Control', value: 'public, max-age=86400' },
         ],
       },
       {
         source: '/logo.svg',
         headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'Cache-Control', value: 'public, max-age=86400' },
         ],
       },
       {
         source: '/background-1920.avif',
         headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'Cache-Control', value: 'public, max-age=86400' },
         ],
       },
     ]

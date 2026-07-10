@@ -19,20 +19,21 @@ export default function PortfolioPage() {
             </Link>
 
             <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-              <Link href="/contact">
-                <Button
-                  size="sm"
-                  className="bg-foreground text-background hover:bg-foreground/90 text-xs sm:text-sm px-2 sm:px-3"
-                >
+              <Button
+                asChild
+                size="sm"
+                className="bg-foreground text-background hover:bg-foreground/90 text-xs sm:text-sm px-2 sm:px-3"
+              >
+                <Link href="/contact">
                   Contact
-                </Button>
-              </Link>
-              <Link href="/">
-                <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm px-2 sm:px-3">
-                  <ArrowLeft className="h-4 w-4" />
+                </Link>
+              </Button>
+              <Button asChild variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm px-2 sm:px-3">
+                <Link href="/" aria-label="Back to home">
+                  <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                   <span className="hidden sm:inline">Back</span>
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </div>
         </nav>
@@ -56,16 +57,20 @@ export default function PortfolioPage() {
                 Let&apos;s build something exceptional together.
               </p>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-3 pt-1 sm:pt-2">
-                <Link href="/contact" className="w-full sm:w-auto">
-                  <Button size="sm" className="bg-foreground text-background hover:bg-foreground/90 w-full">
+                <Button
+                  asChild
+                  size="sm"
+                  className="bg-foreground text-background hover:bg-foreground/90 w-full sm:w-auto"
+                >
+                  <Link href="/contact">
                     Start a Project
-                  </Button>
-                </Link>
-                <Link href="/" className="w-full sm:w-auto">
-                  <Button size="sm" variant="outline" className="w-full bg-transparent">
+                  </Link>
+                </Button>
+                <Button asChild size="sm" variant="outline" className="w-full sm:w-auto bg-transparent">
+                  <Link href="/">
                     Back to Home
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
               </div>
             </div>
           </div>

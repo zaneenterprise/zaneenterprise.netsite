@@ -6,7 +6,6 @@ import "./globals.css"
 import { PHProvider } from "@/components/posthog-provider"
 import { PostHogPageView } from "@/components/posthog-pageview"
 import { GlobalBackground } from "@/components/global-background"
-import { LoadCurtain } from "@/components/load-curtain"
 import { PageFade } from "@/components/page-fade"
 import { ConsoleEasterEgg } from "@/components/console-easter-egg"
 
@@ -104,12 +103,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href={backgroundImage}
           fetchPriority="high"
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              'try{var n=Date.now(),p=+localStorage.getItem("ze-last-visit");if(p&&n-p<864e5){var d=document.documentElement;d.setAttribute("data-return-visit","");d.style.backgroundColor="oklch(0.15 0 0)"}localStorage.setItem("ze-last-visit",""+n)}catch(x){}',
-          }}
-        />
       </head>
       <PHProvider>
         <body
@@ -118,7 +111,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           <ConsoleEasterEgg />
           <GlobalBackground image={backgroundImage} />
-          <LoadCurtain backgroundImage={backgroundImage} />
           <Suspense fallback={null}>
             <PostHogPageView />
           </Suspense>

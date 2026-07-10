@@ -25,14 +25,15 @@ export default function LandingPage() {
             <div className="hidden lg:flex items-center gap-6 xl:gap-8" />
 
             <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-              <Link href="/contact">
-                <Button
-                  size="sm"
-                  className="bg-foreground text-background hover:bg-foreground/90 text-xs sm:text-sm px-2 sm:px-3"
-                >
+              <Button
+                asChild
+                size="sm"
+                className="bg-foreground text-background hover:bg-foreground/90 text-xs sm:text-sm px-2 sm:px-3"
+              >
+                <Link href="/contact">
                   Contact
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </div>
         </nav>
@@ -44,7 +45,7 @@ export default function LandingPage() {
             </div>
 
             <div className="min-h-[60px] sm:min-h-[100px] lg:min-h-[120px] flex items-center justify-center px-1 overflow-hidden">
-              <div className="animate-soft-fade-in w-full">
+              <div className="w-full">
                 <DynamicTagline />
               </div>
             </div>
@@ -54,23 +55,25 @@ export default function LandingPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-1.5 sm:gap-3 pt-1 sm:pt-4 px-1">
-              <Link href="/contact">
-                <Button
-                  size="lg"
-                  className="bg-foreground text-background hover:bg-foreground/90 w-full sm:w-auto sm:min-w-[160px] text-sm sm:text-base"
-                >
+              <Button
+                asChild
+                size="lg"
+                className="bg-foreground text-background hover:bg-foreground/90 w-full sm:w-auto sm:min-w-[160px] text-sm sm:text-base"
+              >
+                <Link href="/contact">
                   Contact Me
-                </Button>
-              </Link>
-              <Link href="/portfolio">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full sm:w-auto sm:min-w-[160px] bg-transparent border-2 text-sm sm:text-base"
-                >
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto sm:min-w-[160px] bg-transparent border-2 text-sm sm:text-base"
+              >
+                <Link href="/portfolio">
                   View Portfolio
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
 
             <div className="pt-3 sm:pt-8 lg:pt-12">

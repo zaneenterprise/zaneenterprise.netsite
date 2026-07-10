@@ -6,9 +6,11 @@ services:
       args:
         NEXT_PUBLIC_POSTHOG_KEY: ${NEXT_PUBLIC_POSTHOG_KEY:-}
         NEXT_PUBLIC_POSTHOG_HOST: ${NEXT_PUBLIC_POSTHOG_HOST:-}
+        DEPLOYMENT_ENV: ${DEPLOYMENT_ENV:-production}
     environment:
       NODE_ENV: production
       ENABLE_ADVANCED_LOGGING: "true"
       NEXT_PUBLIC_POSTHOG_KEY: ${NEXT_PUBLIC_POSTHOG_KEY:-}
       NEXT_PUBLIC_POSTHOG_HOST: ${NEXT_PUBLIC_POSTHOG_HOST:-}
+      DEPLOYMENT_ENV: ${DEPLOYMENT_ENV:-production}
     restart: unless-stopped

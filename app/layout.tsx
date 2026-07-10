@@ -15,6 +15,7 @@ import { ConsoleEasterEgg } from "@/components/console-easter-egg"
 export const revalidate = 300
 
 const backgroundImage = "/background-1920.avif"
+const isTestDeployment = process.env.DEPLOYMENT_ENV === "test"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -41,6 +42,19 @@ export const metadata: Metadata = {
   creator: "ZaneEnterprise",
   publisher: "ZaneEnterprise",
   metadataBase: new URL("https://zaneenterprise.net"),
+  alternates: {
+    canonical: "/",
+  },
+  robots: isTestDeployment
+    ? {
+        index: false,
+        follow: false,
+        nocache: true,
+      }
+    : {
+        index: true,
+        follow: true,
+      },
   openGraph: {
     type: "website",
     locale: "en_US",

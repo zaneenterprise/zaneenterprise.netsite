@@ -15,7 +15,20 @@ const nextConfig = {
     root: projectRoot,
   },
   async headers() {
+    const testHeaders = process.env.DEPLOYMENT_ENV === 'test'
+      ? ['/', '/:path*'].map((source) => ({
+          source,
+          headers: [
+            {
+              key: 'X-Robots-Tag',
+              value: 'noindex, nofollow, noarchive',
+            },
+          ],
+        }))
+      : []
+
     return [
+      ...testHeaders,
       {
         source: '/images/:path*',
         headers: [

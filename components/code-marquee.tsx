@@ -8,9 +8,14 @@ import { cn } from "@/lib/utils"
 interface CodeMarqueeProps {
   snippet: string[]
   className?: string
+  onCycleComplete?: () => void
 }
 
-export function CodeMarquee({ snippet, className }: CodeMarqueeProps) {
+export function CodeMarquee({
+  snippet,
+  className,
+  onCycleComplete,
+}: CodeMarqueeProps) {
   const lines = useMemo(() => (snippet.length ? snippet : [""]), [snippet])
   const duplicated = useMemo(() => [...lines, ...lines], [lines])
   const duration = Math.max(lines.length * 0.5, 10)
@@ -28,6 +33,7 @@ export function CodeMarquee({ snippet, className }: CodeMarqueeProps) {
       <div
         className="absolute top-0 left-0 right-0 p-1 sm:p-4 lg:p-8 animate-vertical-marquee"
         aria-hidden="true"
+        onAnimationIteration={onCycleComplete}
         style={
           {
             animationDuration: `${duration}s`,

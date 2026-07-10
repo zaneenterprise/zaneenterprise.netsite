@@ -25,6 +25,7 @@ const montserrat = Montserrat({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  preload: false,
 })
 
 export const metadata: Metadata = {
@@ -110,14 +111,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       style={{ backgroundColor: "oklch(0.15 0 0)", colorScheme: "light" }}
       suppressHydrationWarning
     >
-      <head>
-        <link
-          rel="preload"
-          as="image"
-          href={backgroundImage}
-          fetchPriority="high"
-        />
-      </head>
       <PHProvider>
         <body
           className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}

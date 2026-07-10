@@ -6,6 +6,15 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 
+const focusableSelector = [
+    "a[href]",
+    "button:not([disabled])",
+    "input:not([disabled])",
+    "select:not([disabled])",
+    "textarea:not([disabled])",
+    '[tabindex]:not([tabindex="-1"])',
+].join(",")
+
 export function ImageLightbox({
     projectImages,
     initialIndex,
@@ -16,6 +25,8 @@ export function ImageLightbox({
     onClose: () => void
 }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
+    const dialogRef = useRef<HTMLDivElement>(null)
+    const closeButtonRef = useRef<HTMLButtonElement>(null)
     const touchStartX = useRef<number | null>(null)
 
     const handleNext = useCallback(() => {
@@ -27,21 +38,105 @@ export function ImageLightbox({
     }, [projectImages.length])
 
     useEffect(() => {
+        if (projectImages.length === 0) return
+
         const previousOverflow = document.body.style.overflow
-        const handleEscape = (e: KeyboardEvent) => {
-            if (e.key === "Escape") onClose()
-            if (e.key === "ArrowLeft") handlePrev()
-            if (e.key === "ArrowRight") handleNext()
+        const backgroundElements = Array.from(document.body.children).filter(
+            (element): element is HTMLElement =>
+                element instanceof HTMLElement &&
+                element !== dialogRef.current &&
+                !element.contains(dialogRef.current),
+        )
+        const previousBackgroundState = backgroundElements.map((element) => ({
+            element,
+            ariaHidden: element.getAttribute("aria-hidden"),
+            inert: element.hasAttribute("inert"),
+        }))
+
+        const getFocusableElements = () =>
+            Array.from(
+                dialogRef.current?.querySelectorAll<HTMLElement>(focusableSelector) ?? [],
+            ).filter((element) => element.getClientRects().length > 0)
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                event.preventDefault()
+                event.stopPropagation()
+                onClose()
+                return
+            }
+
+            if (event.key === "ArrowLeft") {
+                event.preventDefault()
+                event.stopPropagation()
+                handlePrev()
+                return
+            }
+
+            if (event.key === "ArrowRight") {
+                event.preventDefault()
+                event.stopPropagation()
+                handleNext()
+                return
+            }
+
+            if (event.key !== "Tab") return
+
+            const focusableElements = getFocusableElements()
+            if (focusableElements.length === 0) {
+                event.preventDefault()
+                dialogRef.current?.focus()
+                return
+            }
+
+            const firstElement = focusableElements[0]
+            const lastElement = focusableElements[focusableElements.length - 1]
+
+            if (
+                event.shiftKey &&
+                (document.activeElement === firstElement ||
+                    !dialogRef.current?.contains(document.activeElement))
+            ) {
+                event.preventDefault()
+                lastElement.focus()
+            } else if (
+                !event.shiftKey &&
+                (document.activeElement === lastElement ||
+                    !dialogRef.current?.contains(document.activeElement))
+            ) {
+                event.preventDefault()
+                firstElement.focus()
+            }
         }
 
-        document.addEventListener("keydown", handleEscape)
+        const handleFocusIn = (event: FocusEvent) => {
+            if (!dialogRef.current?.contains(event.target as Node)) {
+                closeButtonRef.current?.focus()
+            }
+        }
+
+        previousBackgroundState.forEach(({ element }) => {
+            element.setAttribute("aria-hidden", "true")
+            element.setAttribute("inert", "")
+        })
+
+        document.addEventListener("keydown", handleKeyDown, true)
+        document.addEventListener("focusin", handleFocusIn)
         document.body.style.overflow = "hidden"
+        closeButtonRef.current?.focus()
 
         return () => {
-            document.removeEventListener("keydown", handleEscape)
+            document.removeEventListener("keydown", handleKeyDown, true)
+            document.removeEventListener("focusin", handleFocusIn)
             document.body.style.overflow = previousOverflow
+            previousBackgroundState.forEach(({ element, ariaHidden, inert }) => {
+                if (ariaHidden === null) element.removeAttribute("aria-hidden")
+                else element.setAttribute("aria-hidden", ariaHidden)
+
+                if (!inert) element.removeAttribute("inert")
+            })
         }
-    }, [handleNext, handlePrev, onClose])
+    }, [handleNext, handlePrev, onClose, projectImages.length])
 
     const handleBackdropClick = () => {
         onClose()
@@ -68,15 +163,17 @@ export function ImageLightbox({
 
     return createPortal(
         <div
+            ref={dialogRef}
             className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4"
             onClick={handleBackdropClick}
             role="dialog"
             aria-modal="true"
             aria-label="Project image viewer"
+            tabIndex={-1}
         >
             <button
+                ref={closeButtonRef}
                 type="button"
-                autoFocus
                 onClick={(e) => {
                     e.stopPropagation()
                     onClose()

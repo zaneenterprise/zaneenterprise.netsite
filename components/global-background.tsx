@@ -38,6 +38,7 @@ export function GlobalBackground({ image }: { image: string }) {
                         alt=""
                         fill
                         sizes="100vw"
+                        preload
                         aria-hidden
                         // sync so a cached image decodes into the reload's first
                         // paint instead of popping in afterwards (black flash)

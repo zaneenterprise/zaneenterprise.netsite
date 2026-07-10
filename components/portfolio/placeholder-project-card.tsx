@@ -7,7 +7,7 @@ export function PlaceholderProjectCard() {
         <Card className="overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 border-dashed border-2">
             <CardContent className="p-0">
                 <div className="p-3 sm:p-4">
-                    <div className="relative aspect-[9/16] sm:aspect-[3/4] rounded-lg overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center">
+                    <div className="relative aspect-[4/3] sm:aspect-[3/4] rounded-lg overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center">
                         <Sparkles className="h-12 w-12 sm:h-16 sm:w-16 text-brand/30" />
                     </div>
                 </div>

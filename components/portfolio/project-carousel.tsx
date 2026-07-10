@@ -23,10 +23,16 @@ export function ProjectCarousel({
 }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const currentImage = project.images[currentIndex]
+  const aspectRatioClass =
+    project.id === "azbuddy"
+      ? "aspect-[4/3] sm:aspect-[3/4]"
+      : "aspect-[9/16] sm:aspect-[3/4]"
 
   if (!currentImage) {
     return (
-      <div className="relative aspect-[9/16] overflow-hidden rounded-lg bg-muted sm:aspect-[3/4]" />
+      <div
+        className={`relative overflow-hidden rounded-lg bg-muted ${aspectRatioClass}`}
+      />
     )
   }
 
@@ -52,7 +58,7 @@ export function ProjectCarousel({
     >
       <button
         type="button"
-        className="relative block aspect-[9/16] w-full cursor-pointer overflow-hidden rounded-lg bg-muted transition-all hover:ring-2 hover:ring-brand/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[3/4]"
+        className={`relative block w-full cursor-pointer overflow-hidden rounded-lg bg-muted transition-all hover:ring-2 hover:ring-brand/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand ${aspectRatioClass}`}
         onClick={() => onImageClick(project.images, currentIndex)}
         aria-label={`Open ${currentImage.alt} in the image viewer`}
       >

@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState, type MouseEvent } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 import { BrandLogo } from "@/components/brand-logo"
 
@@ -17,9 +17,7 @@ export function LandingFooter() {
     }
   }, [showPopup])
 
-  const handleClick = useCallback((event: MouseEvent<HTMLElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
+  const handleClick = useCallback(() => {
     setShowPopup(true)
   }, [])
 
@@ -46,19 +44,28 @@ export function LandingFooter() {
             <div className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">CSS</div>
           </div>
           <div className="text-center py-2 sm:py-4 border-t border-border/50">
-            <div
-              className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-md hover:opacity-80 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
               onClick={handleClick}
+              aria-label="Made by ZaneEnterprise"
             >
               <span className="text-xs sm:text-sm text-muted-foreground">Made by</span>
               <BrandLogo size="sm" />
-            </div>
+            </button>
           </div>
         </div>
       </footer>
 
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {showPopup ? "You're already here!" : ""}
+      </div>
+
       {showPopup && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 animate-footer-pop motion-reduce:animate-none">
+        <div
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 animate-footer-pop motion-reduce:animate-none"
+          aria-hidden="true"
+        >
           <p className="text-2xl sm:text-3xl font-bold whitespace-nowrap bg-gradient-to-r from-brand to-brand/70 bg-clip-text text-transparent drop-shadow-lg">
             You&apos;re already here!
           </p>

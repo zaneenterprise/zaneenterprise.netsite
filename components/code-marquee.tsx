@@ -18,12 +18,16 @@ export function CodeMarquee({ snippet, className }: CodeMarqueeProps) {
   return (
     <div
       className={cn(
-        "bg-[#1e1e1e] rounded-lg p-1 sm:p-4 lg:p-8 text-left font-mono text-[8px] sm:text-xs lg:text-base overflow-hidden h-48 sm:h-80 lg:h-96 relative w-full",
+        "code-marquee bg-[#1e1e1e] rounded-lg p-1 sm:p-4 lg:p-8 text-left font-mono text-[8px] sm:text-xs lg:text-base overflow-hidden h-48 sm:h-80 lg:h-96 relative w-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
         className,
       )}
+      role="img"
+      aria-label="Source code example demonstrating custom app development. Hover or focus the panel to pause motion."
+      tabIndex={0}
     >
       <div
         className="absolute top-0 left-0 right-0 p-1 sm:p-4 lg:p-8 animate-vertical-marquee"
+        aria-hidden="true"
         style={
           {
             animationDuration: `${duration}s`,

@@ -17,6 +17,7 @@ function toNumber(value, fallback) {
 }
 
 function shouldLogRequest(pathname) {
+  if (pathname === '/health' || pathname === '/health/') return false
   if (logStaticRequests) return true
   return !pathname.startsWith('/_next/')
 }

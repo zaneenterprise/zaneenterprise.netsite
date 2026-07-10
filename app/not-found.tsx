@@ -1,8 +1,14 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowLeft, Home } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { BrandLogo } from "@/components/brand-logo"
 import { SiteFooter } from "@/components/site-footer"
+
+export const metadata: Metadata = {
+  title: "Page Not Found | ZaneEnterprise",
+  description: "The requested page could not be found on ZaneEnterprise.",
+}
 
 export default function NotFound() {
   return (

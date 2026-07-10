@@ -1,24 +1,33 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useRef, useState } from "react"
 import { projects } from "@/lib/data"
 import { ProjectCard } from "@/components/portfolio/project-card"
 import { PlaceholderProjectCard } from "@/components/portfolio/placeholder-project-card"
 import { ImageLightbox } from "@/components/portfolio/image-lightbox"
 
 export function PortfolioGrid() {
+  const lightboxTriggerRef = useRef<HTMLElement | null>(null)
   const [lightboxData, setLightboxData] = useState<{
     images: { url: string; alt: string }[]
     index: number
   } | null>(null)
 
   const openLightbox = (images: { url: string; alt: string }[], index: number) => {
+    lightboxTriggerRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null
     setLightboxData({ images, index })
   }
 
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
+    const trigger = lightboxTriggerRef.current
     setLightboxData(null)
-  }
+
+    window.requestAnimationFrame(() => {
+      if (trigger?.isConnected) trigger.focus()
+      lightboxTriggerRef.current = null
+    })
+  }, [])
 
   return (
     <>

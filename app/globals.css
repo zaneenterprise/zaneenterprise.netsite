@@ -158,3 +158,17 @@
   animation: vertical-marquee linear infinite;
   will-change: transform;
 }
+
+.code-marquee:hover .animate-vertical-marquee,
+.code-marquee:focus .animate-vertical-marquee,
+.code-marquee:focus-within .animate-vertical-marquee {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-vertical-marquee {
+    animation: none;
+    transform: translateY(0);
+    will-change: auto;
+  }
+}
